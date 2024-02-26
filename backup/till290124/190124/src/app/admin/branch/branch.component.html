@@ -1,0 +1,272 @@
+
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Branch</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+      <div class="row">
+        <div class="col-xl-12">
+
+          <div class="tblMN table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>
+                      Programme Name
+                     </th> 
+                      <th>
+                        Branch Code
+                      </th>       
+                      <th>
+                        Branch Name
+                     </th>  
+                                                    
+                      <th class="actionTd1">
+                          Action
+                      </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr  *ngFor="let showBranchdata of pageOfItems">
+                    <td>{{showBranchdata.PROGRAMME_NAME}}</td>
+                    <td>{{showBranchdata.BRANCH_CODE}}</td>
+                    <td>{{showBranchdata.BRANCH_NAME}}</td>
+                    <td>
+                        <!-- <a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#myModal2">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" class="activeBtn{{showBranchdata.STATUS}}" data-bs-toggle="modal" data-bs-target="#myModal3">
+                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                        </a> -->
+
+                        <p class="mb-0" *ngIf="showBranchdata.STATUS==true; else elseBlock">
+                          <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showBranchdata,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          
+                          <a href="#" class="activeBtn{{showBranchdata.STATUS}}" (click)="actvinactv(showBranchdata,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                            <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                        </a>
+                        </p>
+                        <ng-template #elseBlock>
+                          <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          
+                          <a href="#" class="activeBtn{{showBranchdata.STATUS}}" (click)="actvinactv(showBranchdata,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                            <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                          </a>
+
+                        </ng-template>
+                        
+                    </td>
+                  </tr>
+                 
+                </tbody>
+            </table>
+        </div>
+        
+        
+        <div class="col-md-6 pull-left">
+          <jw-pagination [items]="showBranch" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+        </div>
+        <div class="col-md-6 pull-left text-right">
+          <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add</a>
+        </div>
+      </div>
+      </div>
+    </section>  
+
+  </main><!-- End #main -->
+  <div *ngIf="loading" class="loadingSec">
+    <img src="assets/images/loading-gif.gif" alt="ITC-MBS" class="loading"/>            
+  </div>
+<!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Branch</h5>
+        <button type="button" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #branchForm="ngForm" (ngSubmit)="getBranchFormdata(branchForm.value)" novalidate>
+          <div class="modal-body">
+
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+            
+              <div class="row">
+                <div class="col-md-12 mt-3">
+                  
+                  <label class="form-label">Programme <strong class="required"> *</strong> </label>  
+                  <select required class="form-select" ngModel name="PROGRAMME_ID" data-live-search="true" #PROGRAMME_ID="ngModel">
+                    <option value="" disabled>Select One</option>
+                    <option *ngFor="let progrm of showPgm" [value]="progrm.ID">{{progrm.PROGRAMME_NAME}}
+                    </option>
+                  </select>
+                  
+                </div> 
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Branch Code<strong class="required"> *</strong> </label> 
+                  <input type="text" name="BRANCH_CODE" class="form-control" ngModel required #BRANCH_CODE="ngModel" pattern="^[^\s].*[^\s]$"> 
+                  <div class="alert alert-danger" *ngIf="BRANCH_CODE.touched && BRANCH_CODE.invalid">
+                    <div class="" *ngIf="BRANCH_CODE.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="" *ngIf="BRANCH_CODE.errors?.pattern">
+                      Invalid input
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Branch Name<strong class="required"> *</strong> </label>  
+                  <input type="text" name="BRANCH_NAME" ngModel #BRANCH_NAME="ngModel" required class="form-control" pattern="^[^\s].*[^\s]$">
+                  
+
+                  <div class="alert alert-danger" *ngIf="BRANCH_NAME.touched && BRANCH_NAME.invalid">
+                    <div class="" *ngIf="BRANCH_NAME.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="" *ngIf="BRANCH_NAME.errors?.pattern">
+                      Invalid input
+                    </div>
+                  </div>
+                </div>
+                
+                
+
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="resetFormValue(branchForm)" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+            <button class="btn btn-primary"  [disabled]="branchForm.invalid || isSubmit" >Submit</button>
+          </div>
+        </form>
+   
+      
+   
+      </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Branch</h5>
+        <button type="button" #closeButton2 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #branchFormedit="ngForm" (ngSubmit)="branchFormeditdata(branchFormedit.value)" novalidate>
+        <div class="modal-body">
+
+          <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+          <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+            Saved Successfully.
+          </div> 
+          
+            <div class="row">
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Programme <strong class="required"> *</strong> </label>  
+
+               
+                <select required class="form-select" ngModel name="PROGRAMME_ID" data-live-search="true" #PROGRAMME_ID="ngModel" [value]="branchUpdate.PROGRAMME_ID">
+                  <option value="" disabled>Select Course Type</option>
+                  <option *ngFor="let progrm of showPgm" [value]="progrm.ID">{{progrm.PROGRAMME_NAME}}
+                  </option>
+                </select>
+
+                <!-- <input type="text" class="form-control" [(ngModel)]="branchUpdate.PROGRAMME_ID" name="PROGRAMME_ID" [value]="branchUpdate.PROGRAMME_ID"> -->
+                <div class="" *ngIf="PROGRAMME_ID.touched">
+                  <div class="alert alert-danger" *ngIf="PROGRAMME_ID.errors?.required">
+                    This field is required
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Branch Code<strong class="required"> *</strong> </label> 
+                <input type="text" class="form-control" name="BRANCH_CODE"  pattern="^[^\s].*[^\s]$" #BRANCH_CODE="ngModel" required [(ngModel)]="branchUpdate.BRANCH_CODE" [value]="branchUpdate.BRANCH_CODE">
+                <input type="hidden" class="form-control" [(ngModel)]="branchUpdate.ID" name="ID" [value]="branchUpdate.ID">                
+                <div class="alert alert-danger" *ngIf="BRANCH_CODE.touched && BRANCH_CODE.invalid">
+                  <div class="" *ngIf="BRANCH_CODE.errors?.required">
+                    This field is required
+                  </div>
+                  <div class="" *ngIf="BRANCH_CODE.errors?.pattern">
+                    Invalid input
+                  </div>
+                </div>                
+              </div>
+
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Branch Name<strong class="required"> *</strong> </label>  
+                <input type="text" class="form-control" required [(ngModel)]="branchUpdate.BRANCH_NAME" name="BRANCH_NAME" [value]="branchUpdate.BRANCH_NAME" pattern="^[^\s].*[^\s]$">
+                <div class="" *ngIf="BRANCH_NAME.touched">
+                  <div class="alert alert-danger" *ngIf="BRANCH_NAME.errors?.required">
+                    This field is required
+                  </div>
+                </div>
+              </div>
+
+              
+             
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+         <button class="btn btn-primary"  [disabled]="branchFormedit.invalid || isSubmit" >Submit</button>
+        </div>
+        </form>
+      </div>
+  </div>
+</div>
+
+<!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" #closeButton3 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+     
+
+      <form #branchtypeForm="ngForm" (ngSubmit)="branchtypeFormData()">
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Update Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="branchUpdate.STATUS" name="STATUS" [value]="true"> Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="branchUpdate.STATUS" name="STATUS" [value]="false"> Inactive
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" [disabled]="branchtypeForm.invalid">Yes</button>
+        </div>
+      </form>
+
+
+      
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
+
+

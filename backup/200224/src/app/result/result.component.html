@@ -1,0 +1,68 @@
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Result</h1>
+    </div><!-- End Page Title -->
+    <section class="section mainBodySec profile">
+        <div class="row">
+            <div class="col-xl-12">
+                <form #searchResultInp="ngForm" (ngSubmit)="searchResultInput()" novalidate>
+                  <div class="row mb-4">
+                    <div class="col-sm-4 pe-0">                      
+                      <select required class="form-select" [(ngModel)]="selectedSem" name="SEM" #SEM="ngModel">
+                        <option value="0" disabled>Select Sem</option>
+                        <option *ngFor="let showsm of showSem" [value]="showsm.ID">{{showsm.SEM}}</option>
+                      </select>
+                  </div> 
+                                      
+                      <div class="col-sm-4 pe-0">       
+                              <!--<button class="btn btn-primary px-5 py-3 me-1">Search</button>-->
+                              <button class="btn btn-primary px-5 py-3 me-1" [disabled]="searchResultInp.invalid || isSubmit">Search</button>
+                      </div>
+                  </div>              
+              </form>
+              </div>
+
+              <div class="col-xl-12">
+  
+                <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                              <th>Student Name</th>       
+                              <th>Registration No.</th>
+                              <th>Paper Name</th>
+                              <th>Result</th>
+                              <th>Score</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr  *ngFor="let showMI of pageOfItems">
+                            <td>{{showMI.STUDNET_NAME}}</td>
+                            <td>{{showMI.STUDENT_REGISTRATION}}</td>
+                            <td>{{showMI.PAPER_NAME}}</td>
+                            <!-- <td>{{showMI.APPEARING_SEM}}</td> -->
+                            <td>{{showMI.RESULT}}</td>
+                            <td>{{showMI.SCORE}}</td>
+                           
+                          </tr>
+                          <tr *ngIf="addErrormessage" style="background-color: #fff;">
+                            <td colspan="7">
+                              <div class="alert alert-danger alert-dismissible m-0 col-sm-12" role="alert">
+                                Data Not Found
+                              </div>
+                            </td>
+                          </tr>
+                         
+                        </tbody>
+                    </table>
+                </div>
+                <jw-pagination [items]="showMarksInp" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+    
+                <!-- <a class="btn btn-primary mt-4  px-4 py-3" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a> -->
+            </div>
+
+        </div>
+    </section>
+</main><!-- End #main -->
+

@@ -1,0 +1,88 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Attendance Entry <!-- Instructor--> </h1>
+    </div> <!-- End Page Title -->
+    <section class="section mainBodySec">
+      <div class="row">
+
+        <div class="col-sm-6">
+          <p><strong>Date:</strong> {{ classTime_date }}</p>
+      </div>
+      <div class="col-sm-6">
+          <p><strong>Paper Name:</strong> {{ classTime_paper }}</p>
+      </div>
+
+        <div class="col-xl-12">
+  
+          <div class="tblMN table-responsive text-nowrap">
+  
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>
+                    Student name
+                  </th>
+                  <th>
+                    Attendance
+                  </th>
+                  <th class="actionTd1">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let showAtt of pageOfItems">
+                  <td>{{showAtt.STUDENT_NAME}}</td>
+                  <td>
+                    <p class="mb-0" *ngIf="showAtt.IS_ATTENDANCE==1; else elseBlock">
+                      <strong style="color:green">Present</strong>
+                    </p>
+                    <ng-template #elseBlock>
+                      <strong style="color:red">Absent</strong>
+  
+                    </ng-template>
+                  </td>
+                  <td><a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showAtt,$event)"
+                    data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                  <!-- <td>
+  
+                    <p class="mb-0" *ngIf="showInstructr.STATUS==true; else elseBlock">
+                      <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showInstructr,$event)"
+                        data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+  
+                      <a href="#" class="activeBtn{{showInstructr.STATUS}}" (click)="actvinactv(showInstructr,$event)"
+                        data-bs-toggle="modal" data-bs-target="#statusModal">
+                        <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                        <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                      </a>
+                    </p>
+                    <ng-template #elseBlock>
+                      <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil"
+                          aria-hidden="true"></i></a>
+  
+                      <a href="#" class="activeBtn{{showInstructr.STATUS}}" (click)="actvinactv(showInstructr,$event)"
+                        data-bs-toggle="modal" data-bs-target="#statusModal">
+                        <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                        <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                      </a>
+  
+                    </ng-template>
+  
+                  </td> -->
+                </tr>
+  
+              </tbody>
+            </table>
+          </div>
+          <jw-pagination [items]="showAtted" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+          <a class="btn btn-primary mt-4  px-4 py-3" href="#" data-bs-toggle="modal" data-bs-target="#AddModal"
+            role="button">Add </a>
+        </div>
+      </div>
+    </section>
+  </main><!-- End #main -->
+
+
+<app-footer></app-footer>

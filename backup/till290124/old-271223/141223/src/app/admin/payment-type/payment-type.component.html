@@ -1,0 +1,231 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Payment Type</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Payment Type
+                                </th>
+
+                                <th class="actionTd1">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let showpaytp of pageOfItems">
+                                <td>{{showpaytp.PAYMENT_TYPE_NAME}}</td>
+                                <td>
+                                    <p class="mb-0" *ngIf="showpaytp.STATUS==true; else elseBlock">
+                                        <a class="editBtn" title="Edit" data-bs-toggle="modal"
+                                            (click)="editBtn(showpaytp,$event)" data-bs-target="#editModal">
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="#" class="activeBtntrue" data-bs-toggle="modal"
+                                            data-bs-target="#statusModal" (click)="actvinactv(showpaytp,$event)">
+                                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                        </a>
+                                    </p>
+                                    <ng-template #elseBlock>
+                                        <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil"
+                                                aria-hidden="true"></i></a>
+
+                                        <a href="#" class="activeBtn{{showpaytp.STATUS}}"
+                                            (click)="actvinactv(showpaytp,$event)" data-bs-toggle="modal"
+                                            data-bs-target="#statusModal">
+                                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                            <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                                        </a>
+
+                                    </ng-template>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+               
+                
+                <div class="col-md-6 pull-left">
+                    <jw-pagination [items]="showpaymntyp" [pageSize]="pageSize"
+                    (changePage)="onChangePage($event)"></jw-pagination>
+                    </div>
+                    <div class="col-md-6 pull-left text-right">
+                        <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal"
+                        role="button">Add </a>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+<!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Payment Type</h5>
+                <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+            </div>
+            <form #getPaymentTypeForm="ngForm" (ngSubmit)="getPaymentTypeFormdata(getPaymentTypeForm.value)" novalidate>
+                <div class="modal-body">
+
+                    <small class="mandatoryFld"> <strong>*</strong> Mandatory field</small>
+
+                    <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+                        Saved Successfully.
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-12 mt-3">
+                            <label class="form-label"> Payment Type<strong class="required"> *</strong> </label>
+                            <input type="text" name="paymenT_TYPE_NAME" class="form-control"
+                                pattern="^[^\s].*[^\s]$" ngModel required #paymenT_TYPE_NAME="ngModel">
+                            <div class="alert alert-danger"
+                                *ngIf="paymenT_TYPE_NAME.touched && paymenT_TYPE_NAME.invalid">
+                                <div class="" *ngIf="paymenT_TYPE_NAME.errors?.required">
+                                    Code is required
+                                </div>
+                                <div class="" *ngIf="paymenT_TYPE_NAME.errors?.pattern">
+                                    Invalid Input
+                                </div>
+                            </div>
+                            <div class="" *ngIf="paymenT_TYPE_NAME.touched">
+                                <div class="alert alert-danger" *ngIf="paymenT_TYPE_NAME.errors?.required">
+                                    This Field is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" [disabled]="getPaymentTypeForm.invalid || isSubmit">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModal" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Payment Type</h5>
+                <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+            </div>
+            <form #editPaymentTypeForm="ngForm" (ngSubmit)="editPaymentTypeFormdata(editPaymentTypeForm.value)"
+                novalidate>
+                <div class="modal-body">
+
+                    <small class="mandatoryFld"> <strong>*</strong> Mandatory field</small>
+
+                    <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+                        Update Successfully.
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-12 mt-3">
+                            <label class="form-label"> Payment Type<strong class="required"> *</strong> </label>
+
+
+
+                            <!-- Input for PAYMENTT_TYPE_NAME -->
+                            <input type="text" class="form-control" name="paymenT_TYPE_NAME"
+                                #paymenT_TYPE_NAME="ngModel" pattern="^[^\s].*[^\s]$" required
+                                [(ngModel)]="paymenttypeUpdate.PAYMENT_TYPE_NAME"
+                                [value]="paymenttypeUpdate.PAYMENT_TYPE_NAME">
+
+                            <!-- Input for ID -->
+                            <input type="hidden" class="form-control" name="ID" #ID="ngModel"
+                                [(ngModel)]="paymenttypeUpdate.ID"
+                                [value]="paymenttypeUpdate.ID">
+
+                            <div class="alert alert-danger"
+                                *ngIf="paymenT_TYPE_NAME.touched && paymenT_TYPE_NAME.invalid">
+                                <div class="" *ngIf="paymenT_TYPE_NAME.errors?.required">
+                                    Code is required
+                                </div>
+                                <div class="" *ngIf="paymenT_TYPE_NAME.errors?.pattern">
+                                    Invalid College Code
+                                </div>
+                            </div>
+                            <div class="" *ngIf="paymenT_TYPE_NAME.touched">
+                                <div class="alert alert-danger" *ngIf="paymenT_TYPE_NAME.errors?.required">
+                                    This Field is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" [disabled]="editPaymentTypeForm.invalid || isSubmit">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+          <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div>
+       
+  
+        <form #paymentTypeeForm="ngForm" (ngSubmit)="paymentTypeeFormData()">
+          <div class="modal-body text-center">
+            <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+              Update Successfully.
+            </div>
+            <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+            <div class="form-group mt-3 statusClass d-none">
+              <label class="btn btn-toggle active">
+                <input type="radio" [(ngModel)]="paymenttypeUpdate.status" name="status" [value]="true"> Active
+              </label>
+              <label class="btn btn-toggle active">
+                <input type="radio" [(ngModel)]="paymenttypeUpdate.status" name="status" [value]="false"> Inactive
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <button class="btn btn-primary" [disabled]="paymentTypeeForm.invalid">Yes</button>
+          </div>
+        </form>
+  
+  
+        
+      </div>
+    </div>
+  </div>
+
+
+<app-footer></app-footer>
+
+

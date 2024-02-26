@@ -1,0 +1,81 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Attendance Entry <!-- Instructor--> </h1>
+    </div> <!-- End Page Title -->
+    <section class="section mainBodySec">
+      <div class="row">
+
+        <div class="col-sm-4">
+          <h5 class="grayBx"><strong>Date:</strong> {{ classTime_date }}</h5>
+      </div>
+      <div class="col-sm-8">
+          <h5 class="grayBx"><strong>Paper Name:</strong> {{ classTime_paper }}</h5>
+      </div>
+      
+      <form #attendanceForm="ngForm" (ngSubmit)="attendanceFormdata()" novalidate>
+      
+        <div class="col-xl-12">
+          <div class="tblMN table-responsive text-nowrap">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Student name</th>
+                  <th>Attendance</th>
+                  <th class="actionTd1">Action
+
+                    <!-- <input class="form-check-input" type="checkbox" id="selectall" aria-label="..." (change)="selectAllChanged()" /> -->
+                    <input class="form-check-input" type="checkbox" id="selectall" aria-label="..." [(ngModel)]="selectAll" (change)="selectAllChanged($event)" />
+
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let showAtt of pageOfItems">
+                  <td>
+                    {{ showAtt.STUDENT_NAME }}
+                    
+                  </td>
+                  <td>
+                    <p class="mb-0" *ngIf="showAtt.IS_ATTENDANCE == 1; else elseBlock" style="color:green">Present</p>
+                    <ng-template #elseBlock>
+                      <p  class="mb-0" style="color:red">Absent</p>
+                    </ng-template>
+                  </td>
+                  <td class="text-center">
+                  <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]='showAtt.IS_ATTENDANCE === 1'
+                  (change)="onCheckboxChange($event, showAtt)"
+                />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <jw-pagination [items]="showAtted" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+          <button type="button" class="btn btn-primary me-2" (click)="goBack()">Back</button>
+          <button  [disabled]="attendanceForm.invalid || isSubmit" type="submit" class="btn btn-primary">Submit</button>
+          
+          
+        </div>
+      </form>
+      
+
+
+      
+    
+      
+      </div>
+    </section>
+  </main><!-- End #main -->
+
+
+  <!-- ----status change---- -->
+
+
+
+
+<app-footer></app-footer>

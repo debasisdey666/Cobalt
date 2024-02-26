@@ -1,0 +1,203 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Marks Input</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+        <div class="row">
+          <div class="col-xl-12">
+            <form #searchMarksInp="ngForm" (ngSubmit)="searchMarksInput()" novalidate>
+              <div class="row mb-4">
+                  <div class="col-sm-4 pe-0">                      
+                      <select required class="form-select" [(ngModel)]="selectedPaperId" name="PAPER_NAME" #PAPER_NAME="ngModel">
+                        <option value="0" disabled>Select Paper</option>
+                        <option *ngFor="let showpaper of showpr" [value]="showpaper.ID">{{showpaper.PAPER_NAME}}</option>
+                      </select>
+                  </div> 
+                  <div class="col-sm-4 pe-0">                      
+                      <select required class="form-select" [(ngModel)]="selectedSem" name="SEM" #SEM="ngModel">
+                        <option value="0" disabled>Select Paper</option>
+                        <option *ngFor="let showsm of showSem" [value]="showsm.ID">{{showsm.SEM}}</option>
+                      </select>
+                  </div>                 
+                  <div class="col-sm-4 pe-0">       
+                          <!-- <button class="btn btn-primary px-5 py-3 me-1">Search</button>         -->
+                          <button class="btn btn-primary px-5 py-3 me-1">Search</button>
+                  </div>
+              </div>              
+          </form>
+          </div>
+         
+          <div class="col-xl-12">
+  
+              <div class="tblMN table-responsive text-nowrap">
+                  <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th>Registration No.</th>       
+                            <th>Student Name</th>
+                            <th>Sem</th>
+                            <th>Paper</th>
+                            <th>Result</th>
+                            <th>Score</th>
+                            <th class="actionTd1">
+                                Action
+                            </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr  *ngFor="let showMI of pageOfItems">
+                          <td>{{showMI.STUDENT_REGISTRATION}}</td>
+                          <td>{{showMI.STUDNET_NAME}}</td>
+                          <td>{{showMI.APPEARING_SEM}}</td>
+                          <td>{{showMI.PAPER_NAME}}</td>
+                          <td>{{showMI.RESULT}}</td>
+                          <td>{{showMI.SCORE}}</td>
+                          <td>
+                             
+  
+                              <p class="mb-0" *ngIf="showMI.STATUS==true;">
+                                <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showMI,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                  </p> 
+                                <!-- <a href="#" class="activeBtn{{showMI.STATUS}}" (click)="actvinactv(showMI,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                  <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                  <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                              </a> -->
+                           
+                              <!-- <ng-template #elseBlock>
+                                <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                
+                                <a href="#" class="activeBtn{{showMI.STATUS}}" (click)="actvinactv(showMI,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                  <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                  <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                                </a>
+  
+                              </ng-template> -->
+                              
+                          </td>
+                        </tr>
+                        <tr *ngIf="addErrormessage" style="background-color: #fff;">
+                          <td colspan="7">
+                            <div class="alert alert-danger alert-dismissible m-0 col-sm-12" role="alert">
+                              Data Not Found
+                            </div>
+                          </td>
+                        </tr>
+                       
+                      </tbody>
+                  </table>
+              </div>
+              <jw-pagination [items]="showMarksInp" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+  
+              <!-- <a class="btn btn-primary mt-4  px-4 py-3" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a> -->
+          </div>
+        </div>
+      </section>
+      <div *ngIf="loading" class="loadingSec">
+        <img src="assets/images/loading-gif.gif" alt="Image" class="loading"/>            
+      </div>
+
+      <!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Marks Input</h5>
+          <button type="button" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div> 
+        <form #marksInputedit="ngForm" (ngSubmit)="marksInputeditdata(marksInputedit.value)" novalidate>
+          <div class="modal-body">
+  
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+  
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+            
+              <div class="row">
+                
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Registration No.<strong class="required"> *</strong> </label> 
+                  <input type="text" class="form-control" disabled name="STUDENT_REGISTRATION" #STUDENT_REGISTRATION="ngModel" required [(ngModel)]="marksinputUpdate.STUDENT_REGISTRATION" [value]="marksinputUpdate.STUDENT_REGISTRATION" placeholder="e.g: 23">
+                  <input type="hidden" class="form-control" [(ngModel)]="marksinputUpdate.ID" name="ID" [value]="marksinputUpdate.ID">                
+                  <div class="alert alert-danger" *ngIf="STUDENT_REGISTRATION.touched && STUDENT_REGISTRATION.invalid">
+                    <div class="" *ngIf="STUDENT_REGISTRATION.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="" *ngIf="STUDENT_REGISTRATION.errors?.pattern">
+                      Invalid Input
+                    </div>
+                  </div>                
+                </div>
+                <div class="col-md-12 mt-3">
+                    <label class="form-label">Student Name<strong class="required"> *</strong> </label> 
+                    <input type="text" class="form-control" disabled name="STUDNET_NAME" #STUDNET_NAME="ngModel" required [(ngModel)]="marksinputUpdate.STUDNET_NAME" [value]="marksinputUpdate.STUDNET_NAME" placeholder="e.g: 23">
+                    <!-- <input type="hidden" class="form-control" [(ngModel)]="marksinputUpdate.ID" name="ID" [value]="marksinputUpdate.ID">                 -->
+                    <div class="alert alert-danger" *ngIf="STUDNET_NAME.touched && STUDNET_NAME.invalid">
+                      <div class="" *ngIf="STUDNET_NAME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="STUDNET_NAME.errors?.pattern">
+                        Invalid Input
+                      </div>
+                    </div>                
+                  </div>
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Paper Name<strong class="required"> *</strong> </label> 
+                    <input type="text" class="form-control" disabled name="PAPER_NAME" #PAPER_NAME="ngModel" required [(ngModel)]="marksinputUpdate.PAPER_NAME" [value]="marksinputUpdate.PAPER_NAME" placeholder="e.g: 23">
+                    <!-- <input type="hidden" class="form-control" disabled [(ngModel)]="marksinputUpdate.ID" name="ID" [value]="marksinputUpdate.ID">                 -->
+                    <div class="alert alert-danger" *ngIf="PAPER_NAME.touched && PAPER_NAME.invalid">
+                      <div class="" *ngIf="PAPER_NAME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="PAPER_NAME.errors?.pattern">
+                        Invalid Input
+                      </div>
+                    </div>                
+                  </div>
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Score<strong class="required"> *</strong> </label> 
+                    <input type="text" class="form-control" name="SCORE" pattern="^[^a-zA-Z\s!@#$%^&*()_+={}\[\]:;<>,.?~\\/-]+$"   #SCORE="ngModel" required [(ngModel)]="marksinputUpdate.SCORE" [value]="marksinputUpdate.SCORE" placeholder="e.g: 23">
+                    <!-- <input type="hidden" class="form-control" [(ngModel)]="marksinputUpdate.ID" name="ID" [value]="marksinputUpdate.ID">                 -->
+                    <div class="alert alert-danger" *ngIf="SCORE.touched && SCORE.invalid">
+                      <div class="" *ngIf="SCORE.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="SCORE.errors?.pattern">
+                        Invalid Input
+                      </div>
+                    </div>                
+                  </div>
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Result<strong class="required"> *</strong> </label> 
+                    <input type="text" class="form-control" name="RESULT"  #RESULT="ngModel" required [(ngModel)]="marksinputUpdate.RESULT" [value]="marksinputUpdate.RESULT" placeholder="e.g: 23">
+                    <input type="hidden" class="form-control" [(ngModel)]="marksinputUpdate.ID" name="ID" [value]="marksinputUpdate.ID">                
+                    <div class="alert alert-danger" *ngIf="RESULT.touched && RESULT.invalid">
+                      <div class="" *ngIf="RESULT.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="RESULT.errors?.pattern">
+                        Invalid Input
+                      </div>
+                    </div>                
+                  </div>
+                  
+                               
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+           <button class="btn btn-primary"  [disabled]="marksInputedit.invalid || isSubmit" >Submit</button>
+          </div>
+          </form>
+        </div>
+    </div>
+  </div>
+
+</main>
+
+<app-footer></app-footer>

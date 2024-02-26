@@ -1,0 +1,241 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Chapter</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+      <div class="row">
+        <div class="col-xl-12">
+
+          <div class="tblMN table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>
+                      Semester
+                     </th> 
+                      <th>
+                        Branch
+                      </th>  
+                      <th>
+                        Paper
+                      </th> 
+                      <th>
+                        Chapter
+                      </th> 
+                                                    
+                      <th class="actionTd1">
+                          Action
+                      </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr  *ngFor="let showCpt of pageOfItems">
+                    <td>{{showCpt.SEM}}</td>
+                    <td>{{showCpt.BRANCH_NAME}}</td>
+                    <td>{{showCpt.PAPER_NAME}}</td>
+                    <td>{{showCpt.CHAPTER_NAME}}</td>
+                    <td>
+
+                        <p class="mb-0" *ngIf="showCpt.STATUS==true; else elseBlock">
+                          <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showCpt,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          
+                          <a href="#" class="activeBtn{{showCpt.STATUS}}" (click)="actvinactv(showCpt,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                            <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                        </a>
+                        </p>
+                        <ng-template #elseBlock>
+                          <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          
+                          <a href="#" class="activeBtn{{showCpt.STATUS}}" (click)="actvinactv(showCpt,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                            <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                          </a>
+
+                        </ng-template>
+                        
+                    </td>
+                  </tr>
+                 
+                </tbody>
+            </table>
+        </div>
+        <jw-pagination [items]="showCptr" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+        <a class="btn btn-primary mt-4  px-4 py-3" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+        </div>
+      </div>
+    </section>   
+
+  </main><!-- End #main -->
+
+  <!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Chapter</h5>
+        <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #getChapterForm="ngForm" (ngSubmit)="getChapterFormdata(getChapterForm.value)" novalidate>
+          <div class="modal-body">
+
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+            
+              <div class="row">
+                <div class="col-md-12 mt-3">
+                  
+                  <label class="form-label">Paper <strong class="required"> *</strong> </label>  
+                  <!-- <select required class="form-select" ngModel name="PROGRAMME_ID" data-live-search="true" #PROGRAMME_ID="ngModel">
+                    <option value="" disabled>Select One</option>
+                    <option *ngFor="let progrm of showPgm" [value]="progrm.ID">{{progrm.PROGRAMME_NAME}}
+                    </option>
+                  </select> -->
+                  <select required class="form-select" ngModel name="PAPER_ID" data-live-search="true" #PAPER_ID="ngModel">
+                    <option value="" disabled>Select Course Type</option>
+                    <option *ngFor="let paperDropdwn of showpr" [value]="paperDropdwn.ID">{{paperDropdwn.PAPER_NAME}}
+                    </option>
+                  </select> 
+                  <!-- <input type="text" name="PAPER_ID" class="form-control" ngModel required #PAPER_ID="ngModel">  -->
+                  
+                </div> 
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Chapter<strong class="required"> *</strong> </label> 
+                  <input type="text" name="CHAPTER_NAME" class="form-control" ngModel required #CHAPTER_NAME="ngModel" pattern="^(?! )[a-zA-Z\s]+$"> 
+                  <div class="alert alert-danger" *ngIf="CHAPTER_NAME.touched && CHAPTER_NAME.invalid">
+                    <div class="" *ngIf="CHAPTER_NAME.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="" *ngIf="CHAPTER_NAME.errors?.pattern">
+                      Invalid input
+                    </div>
+                  </div>                  
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+            <button class="btn btn-primary"  [disabled]="getChapterForm.invalid || isSubmit" >Submit</button>
+          </div>
+        </form>
+   
+      
+   
+      </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Chapter</h5>
+        <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #chapterFormedit="ngForm" (ngSubmit)="chapterFormeditdata(chapterFormedit.value)" novalidate>
+        <div class="modal-body">
+
+          <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+          <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+            Saved Successfully.
+          </div> 
+          
+            <div class="row">
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Paper <strong class="required"> *</strong> </label>  
+
+               
+                <!-- <select required class="form-select" ngModel name="PROGRAMME_ID" data-live-search="true" #PROGRAMME_ID="ngModel" [value]="branchUpdate.PROGRAMME_ID">
+                  <option value="" disabled>Select Course Type</option>
+                  <option *ngFor="let progrm of showPgm" [value]="progrm.ID">{{progrm.PROGRAMME_NAME}}
+                  </option>
+                </select> -->
+                <select required class="form-select" ngModel name="PAPER_ID" data-live-search="true" #PAPER_ID="ngModel" [(ngModel)]="chapterUpdate.PAPER_ID">
+                  <option value="" disabled>Select Course Type</option>
+                  <option *ngFor="let paperDropdwn of showpr" [value]="paperDropdwn.ID">{{paperDropdwn.PAPER_NAME}}
+                  </option>
+                </select> 
+
+                <!-- <input type="text" class="form-control" [(ngModel)]="chapterUpdate.PAPER_ID" name="PAPER_ID" [value]="chapterUpdate.PAPER_ID"> -->
+                <div class="" *ngIf="PAPER_ID.touched">
+                  <div class="alert alert-danger" *ngIf="PAPER_ID.errors?.required">
+                    This field is required
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Chapter<strong class="required"> *</strong> </label> 
+                <input type="text" class="form-control" name="CHAPTER_NAME" pattern="^(?! )[a-zA-Z\s]+$" #CHAPTER_NAME="ngModel" required [(ngModel)]="chapterUpdate.CHAPTER_NAME" [value]="chapterUpdate.CHAPTER_NAME">
+                <input type="hidden" class="form-control" [(ngModel)]="chapterUpdate.ID" name="ID" [value]="chapterUpdate.ID">                
+                <div class="alert alert-danger" *ngIf="CHAPTER_NAME.touched && CHAPTER_NAME.invalid">
+                  <div class="" *ngIf="CHAPTER_NAME.errors?.required">
+                    This field is required
+                  </div>
+                  <div class="" *ngIf="CHAPTER_NAME.errors?.pattern">
+                    Invalid input
+                  </div>
+                </div>                
+              </div>
+             
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+         <button class="btn btn-primary"  [disabled]="chapterFormedit.invalid || isSubmit" >Submit</button>
+        </div>
+        </form>
+      </div>
+  </div>
+</div>
+
+<!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+     
+
+      <form #chapterStatusForm="ngForm" (ngSubmit)="chapterStatusFormData()">
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Update Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="chapterUpdate.STATUS" name="STATUS" [value]="true"> Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="chapterUpdate.STATUS" name="STATUS" [value]="false"> Inactive
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" [disabled]="chapterStatusForm.invalid">Yes</button>
+        </div>
+      </form>
+
+
+      
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
+
+

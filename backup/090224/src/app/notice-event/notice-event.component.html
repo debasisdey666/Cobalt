@@ -1,0 +1,206 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Notice Event</h1>
+    </div><!-- End Page Title -->
+    <section class="section mainBodySec">
+        <div class="row">
+          <div class="col-xl-12">
+  
+            <div class="tblMN table-responsive text-nowrap">
+  
+              <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>
+                        TYPE                    
+                      </th> 
+                      <th>
+                        Date
+                    </th> 
+                      <th>
+                        TITLE                    
+                      </th> 
+                        <th>
+                            Document
+                        </th>   
+                                                                             
+                        <!-- <th class="actionTd1">
+                            Action
+                        </th> -->
+                    </tr>
+                </thead>
+                  <tbody>
+                    <tr  *ngFor="let showNtEv of pageOfItems">
+                      <td> 
+                        <ng-container *ngIf="showNtEv.TYPE_ID==1">Notice </ng-container>
+                        <ng-container *ngIf="showNtEv.TYPE_ID==2">Event </ng-container>
+                        <ng-container *ngIf="showNtEv.TYPE_ID==3">Scholarship</ng-container>
+                      </td>
+                     
+                      <td> 
+                        {{showNtEv.FROMDATE | date:'dd-MM-yyyy'}}
+                      </td> 
+                      <td>  {{showNtEv.TITLE}} </td>
+                      <td> 
+                        <!-- <a *ngIf="linkurl + showNtEv.FILEPATH.length > 0" href="{{linkurl}}{{showNtEv.FILEPATH}}" target="_blank">Download</a> -->
+                        <a *ngIf="!showNtEv.FILEPATH.endsWith('/')" href="{{linkurl}}{{showNtEv.FILEPATH}}" target="_blank">Download</a>                       
+                      </td>
+                       
+                      <!-- <td>
+                        <a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>  
+                      </td> -->
+                    </tr>                   
+                  </tbody>
+              </table>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <jw-pagination [items]="showNoteEvnt" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+            </div>
+            <div class="col-md-6">
+              <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+            </div> 
+          </div>
+                   
+          
+          </div>
+        </div>
+      </section> 
+
+</main>
+
+<div *ngIf="loading" class="loadingSec">
+  <img src="assets/images/loading-gif.gif" alt="Image" class="loading"/>            
+</div>
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Notice / Event / Scholarship</h5>
+            <button type="reset" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+          </div> 
+  
+          <form #getNoticEvenScholrForm="ngForm" (ngSubmit)="getNoticEvenScholrFormdata(getNoticEvenScholrForm.value)" novalidate enctype="multipart/form-data">
+              <div class="modal-body">
+    
+                <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+    
+                <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+                  Saved Successfully.
+                </div> 
+  
+                <div class="col-md-12 mt-3">
+                    <label class="form-label">Select Type<strong class="required"> *</strong> </label> 
+
+                    <select required class="form-select"  [(ngModel)]="selectedType" name="TYPE_ID" data-live-search="true" #TYPE_ID="ngModel">
+                        <option value="" disabled>Select One</option>
+                        <option value="1">Notice</option>
+                        <option value="2">Event</option>
+                        <option value="3">Scholarship</option>
+                    </select>
+                </div>
+                <!-- <div class="col-md-12 mt-3">
+                  <label class="form-label">Role <strong class="required"> *</strong> </label>
+                  <ul class="list-group" id="studenpaper">
+                    <li class="list-group-item" *ngFor="let papDropdwn of showpr; let i = index">               
+                      <label for="">
+                        <input class="form-check-input me-1" type="checkbox" [id]="'PAPER_ID' + (i + 1)" name="{{ papDropdwn.ID }}" (change)="logCheckboxState(papDropdwn)">
+                        {{ papDropdwn.PAPER_NAME }}
+                      </label>
+                    </li>
+                  </ul>
+                </div> -->
+                <div class="col-md-12 mt-3">
+                    <label class="form-label">From Date<strong class="required"> *</strong> </label> 
+                    <input type="date" name="FROMDATE" class="form-control" ngModel required #FROMDATE="ngModel">
+
+                    <div class="alert alert-danger" *ngIf="FROMDATE.touched && FROMDATE.invalid">
+                      <div class="" *ngIf="FROMDATE.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="FROMDATE.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <label class="form-label">To Date<strong class="required"> *</strong> </label> 
+                    <input type="date" name="TODATE" class="form-control" ngModel required #TODATE="ngModel">
+
+                    <div class="alert alert-danger" *ngIf="TODATE.touched && TODATE.invalid">
+                      <div class="" *ngIf="TODATE.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="TODATE.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">TITLE<strong class="required"> *</strong> </label> 
+                  <input type="text" name="TITLE" class="form-control" ngModel required #TITLE="ngModel">
+
+                  <div class="alert alert-danger" *ngIf="TITLE.touched && TITLE.invalid">
+                    <div class="" *ngIf="TITLE.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="" *ngIf="TITLE.errors?.pattern">
+                      Invalid input
+                    </div>
+                  </div>
+              </div>
+              <div class="col-md-12 mt-3" >
+                <label class="form-label" *ngIf="selectedType != '3'">DETAILS<strong class="required"> *</strong> </label> 
+                <label class="form-label" *ngIf="selectedType == '3'">LINK<strong class="required"> *</strong> </label> 
+                <!-- <input type="text" name="DETAILS" class="form-control" ngModel required #DETAILS="ngModel" [pattern]="selectedType === '3' ? '^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$' : null"> -->
+                <!-- <input type="text" name="DETAILS" class="form-control" ngModel required #DETAILS="ngModel" 
+       [pattern]="selectedType === '3' ? '^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$' : '.*'"> -->
+
+       <input type="text" name="DETAILS" class="form-control" ngModel required #DETAILS="ngModel" 
+       [pattern]="selectedType === '3' ? '^(https?:\/\/).*' : '.*'">
+
+
+         
+                <div class="alert alert-danger" *ngIf="DETAILS.touched && DETAILS.invalid">
+                  <div class="" *ngIf="DETAILS.errors?.required">
+                    This field is required
+                  </div>
+                  <div class="" *ngIf="DETAILS.errors?.pattern">
+                    Invalid input (Link start should be - http:// or https://)
+                  </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-12 mt-3" *ngIf="selectedType == '3'">
+              <label class="form-label">Link<strong class="required"> *</strong> </label> 
+              <input type="text" name="DETAILS" class="form-control" ngModel required #DETAILS="ngModel">
+
+              <div class="alert alert-danger" *ngIf="DETAILS.touched && DETAILS.invalid">
+                <div class="" *ngIf="DETAILS.errors?.required">
+                  This field is required
+                </div>
+                <div class="" *ngIf="DETAILS.errors?.pattern">
+                  Invalid input
+                </div>
+              </div>
+          </div> -->
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Upload Assignment</label>  
+              <input type="file" #FILEPATH class="form-control" (change)="onFileSelected($event)">
+            </div>
+                
+              </div>
+              <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+                <button class="btn btn-primary"  [disabled]="getNoticEvenScholrForm.invalid || isSubmit" >Submit</button>
+
+              </div>
+          </form>
+       
+          
+       
+          </div>
+      </div>
+    </div>

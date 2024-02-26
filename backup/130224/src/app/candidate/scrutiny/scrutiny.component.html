@@ -1,0 +1,166 @@
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Scrutiny</h1>
+    </div><!-- End Page Title -->
+    <section class="section mainBodySec">
+        <div class="row">
+            <div class="col-xl-12">
+
+                <div class="search-container">
+                    <div class="row mb-4">
+                      <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Student Name..." [(ngModel)]="searchFilters['STUDENT_NAME']" (input)="updateFilteredItems()" /></div>
+                      <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Registration No..." [(ngModel)]="searchFilters['REGISTRATION_NO']" (input)="updateFilteredItems()" /></div>
+                        <div class="col-sm-4 pe-0">  <input class="form-control" type="text" placeholder="Search Roll No..." [(ngModel)]="searchFilters['ROLL_NO']" (input)="updateFilteredItems()" /> </div>
+                        
+                    </div>
+                </div>
+
+                <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Student
+                                </th>
+                                <th>
+                                    Registration No.
+                                </th>
+                                <th>
+                                    Roll No.
+                                </th>
+                                <th>
+                                    SEM
+                                </th>
+                                <th>
+                                    Academic Year
+                                </th>
+                                <th>
+                                    Paper Name
+                                </th>
+
+                                <th>
+                                    remarks
+                                </th>
+                                <!-- <th class="actionTd1">
+                                    Action
+                                </th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let showScr of pageOfItems">
+                                <td>{{showScr.STUDENT_NAME}}</td>
+                                <td>{{showScr.REGISTRATION_NO}}</td>
+                                <td>{{showScr.ROLL_NO}}</td>
+                                <td>{{showScr.SEM}}</td>
+                                <td>{{showScr.AY_ID}}</td>
+                                <td>{{showScr.PAPER_NAME}}</td>
+                                <td>{{showScr.REMARKS}}</td>
+                                <!-- <td>
+
+                                    <p class="mb-0" *ngIf="showAy.STATUS==true; else elseBlock">
+                                <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showAy,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                
+                                <a href="#" class="activeBtn{{showAy.STATUS}}" (click)="actvinactv(showAy,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                  <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                  <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                              </a>
+                              </p>
+                              <ng-template #elseBlock>
+                                <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                
+                                <a href="#" class="activeBtn{{showAy.STATUS}} ms-0" (click)="actvinactv(showAy,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                  <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                  <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                                </a>
+  
+                              </ng-template>
+
+                                </td> -->
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="col-md-6 pull-left">
+                <jw-pagination [items]="showAcademicYear" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+              </div>
+              <div class="col-md-6 pull-left text-right">
+                <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+              </div> -->
+              <div class="col-md-6 pull-left mt-3"> 
+                <button (click)="onPreviousButtonClick()" class="paginationBtn" [disabled]="currentPage === 1"> << </button>
+                
+                <!-- Display a subset of pages -->
+                <ng-container *ngFor="let page of getVisiblePages()">
+                    <button (click)="onChangePage(page)" [class.active]="currentPage === page" class="paginationBtn">
+                        {{ page }}
+                    </button>
+                </ng-container>
+                
+                <button (click)="onNextButtonClick()" class="paginationBtn" [disabled]="currentPage === totalPages"> >> </button>          
+            </div>
+            <div class="col-md-6 pull-left text-right"  *ngIf="ROLE_ID == 2">
+                <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+              </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+
+  <!-- Add Modal -->
+  <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Topic</h5>
+          <button type="button" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div> 
+        <form #getScrutinyForm="ngForm" (ngSubmit)="getScrutinyFormdata(getScrutinyForm.value)" novalidate enctype="multipart/form-data">
+            <div class="modal-body">
+  
+              <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+  
+              <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+                Saved Successfully.
+              </div> 
+              
+                <div class="row">
+
+                  <!-- <div class="col-md-12 mt-3">                  
+                    <label class="form-label">Academic Year <strong class="required"> *</strong> </label>  
+                    <select required class="form-select" ngModel name="AY_ID" data-live-search="true" #AY_ID="ngModel" (change)="onAChange($event)">
+                      <option value="" disabled>Select One</option>
+                      <option *ngFor="let acDropdwn of showAcademicYearTrue" [value]="acDropdwn.ID">{{acDropdwn.AY}}
+                      </option>
+                    </select>                  
+                  </div>  -->
+  
+                  <!-- <div class="col-md-12 mt-3">
+                    <label class="form-label">Topic Name<strong class="required"> *</strong> </label> 
+                    <input type="text" name="TOPIC_NAME" class="form-control" ngModel required #TOPIC_NAME="ngModel"> 
+                    <div class="alert alert-danger" *ngIf="TOPIC_NAME.touched && TOPIC_NAME.invalid">
+                      <div class="" *ngIf="TOPIC_NAME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="TOPIC_NAME.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                    
+                  </div> -->
+                  
+                 
+                 
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+              <button class="btn btn-primary" [disabled]="getScrutinyForm.invalid || isSubmit" >Submit</button>
+            </div>
+          </form>
+     
+        
+     
+        </div>
+    </div>
+  </div>

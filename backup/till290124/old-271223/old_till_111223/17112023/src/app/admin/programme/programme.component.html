@@ -1,0 +1,234 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Programme</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+      <div class="row">
+        <div class="col-xl-12">
+
+            <div class="tblMN table-responsive text-nowrap">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                          <th width="25%">
+                            Course
+                          </th>       
+                          <th>
+                            Code
+                         </th>   
+                         <th>
+                          Name
+                       </th>                                
+                          <th class="actionTd1">
+                              Action
+                          </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  *ngFor="let showprgrm of pageOfItems">
+                        <td>{{showprgrm.DESCRIPTION}}</td>
+                        <td>{{showprgrm.PROGRAMME_CODE}}</td>
+                        <td>{{showprgrm.PROGRAMME_NAME}}</td>
+                        <td>
+                            <p class="mb-0" *ngIf="showprgrm.STATUS==true; else elseBlock">
+                              <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showprgrm,$event)"  data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                              
+                              <a href="#" class="activeBtn{{showprgrm.STATUS}}" (click)="actvinactv(showprgrm,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                            </a>
+                            </p>
+                            <ng-template #elseBlock>
+                              <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                              
+                              <a href="#" class="activeBtn{{showprgrm.STATUS}}" (click)="actvinactv(showprgrm,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                              </a>
+
+                            </ng-template>
+                            
+                        </td>
+                      </tr>
+                     
+                    </tbody>
+                  
+                </table>
+            </div>
+            <jw-pagination [items]="showPgm" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+
+            <a class="btn btn-primary mt-4  px-4 py-3" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+        </div>
+      </div>
+    </section>  
+
+  </main><!-- End #main -->
+
+  
+  <!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Programme</h5>
+        <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #getProgrmForm="ngForm" (ngSubmit)="getProgrmFormdata(getProgrmForm.value)" novalidate>
+          <div class="modal-body">
+
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+            
+              <div class="row">
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Course<strong class="required"> *</strong> </label> 
+                  <select required class="form-select" ngModel name="COURSE_TYPE" data-live-search="true" #COURSE_TYPE="ngModel">
+                    <option value="" disabled>Select Course Type</option>
+                    <option *ngFor="let courstp of showCtTrue" [value]="courstp.ID">{{courstp.DESCRIPTION}}
+                    </option>
+                  </select>
+                  <!-- <input type="text" name="COURSE_TYPE" class="form-control" ngModel required #COURSE_TYPE="ngModel"> -->
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Code<strong class="required"> *</strong> </label> 
+
+                  <input type="text" name="PROGRAMME_CODE" class="form-control" ngModel required #PROGRAMME_CODE="ngModel" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" placeholder="e.g: BSC"> 
+                  <div class="alert alert-danger" *ngIf="PROGRAMME_CODE.touched && PROGRAMME_CODE.invalid">
+                    <div class="" *ngIf="PROGRAMME_CODE.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="" *ngIf="PROGRAMME_CODE.errors?.pattern">
+                      Invalid Input
+                    </div>
+                  </div>                  
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Name<strong class="required"> *</strong> </label>  
+                  <input type="text" name="PROGRAMME_NAME" ngModel required #PROGRAMME_NAME="ngModel" required class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" placeholder="e.g: Bechelor of Science">
+                  <div class="" *ngIf="PROGRAMME_NAME.touched">
+                    <div class="alert alert-danger" *ngIf="PROGRAMME_NAME.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="alert alert-danger" *ngIf="PROGRAMME_NAME.errors?.pattern">
+                      Invalid Input
+                    </div>
+                  </div>
+                </div>                 
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+            <button class="btn btn-primary"  [disabled]="getProgrmForm.invalid || isSubmit" >Submit</button>
+          </div>
+        </form>
+   
+      
+   
+      </div>
+  </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Programme</h5>
+        <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #progrmFormedit="ngForm" (ngSubmit)="progrmFormeditdata(progrmFormedit.value)" novalidate>
+        <div class="modal-body">
+
+          <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+          <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+            Saved Successfully.
+          </div> 
+          
+            <div class="row">              
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Course<strong class="required"> *</strong> </label> 
+                <select required class="form-select" ngModel name="COURSE_TYPE" data-live-search="true" #COURSE_TYPE="ngModel" [(ngModel)]="progmUpdate.COURSE_TYPE">
+                  <option value="" disabled>Select Course Type</option>
+                  <option *ngFor="let courstp of showCtTrue" [value]="courstp.ID">{{courstp.DESCRIPTION}}
+                  </option>
+                </select>
+                
+                <input type="hidden" class="form-control" [(ngModel)]="progmUpdate.ID" name="ID" [value]="progmUpdate.ID">                
+                               
+              </div>
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Code<strong class="required"> *</strong> </label> 
+                <input type="text" class="form-control" name="PROGRAMME_CODE" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" #PROGRAMME_CODE="ngModel" required [(ngModel)]="progmUpdate.PROGRAMME_CODE" [value]="progmUpdate.PROGRAMME_CODE" placeholder="e.g: BSC">                               
+              </div>
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Name<strong class="required"> *</strong> </label> 
+                <input type="text" class="form-control" name="PROGRAMME_NAME" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" #PROGRAMME_NAME="ngModel" required [(ngModel)]="progmUpdate.PROGRAMME_NAME" [value]="progmUpdate.PROGRAMME_NAME" placeholder="e.g: Bechelor of Science">                               
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+         <button class="btn btn-primary"  [disabled]="progrmFormedit.invalid || isSubmit" >Submit</button>
+        </div>
+        </form>
+      </div>
+  </div>
+</div>
+
+
+<!-- status -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+     
+
+      <form #progrmStstusForm="ngForm" (ngSubmit)="progrmStstusFormData()">
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Update Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="progmUpdate.STATUS" name="status" [value]="true"> Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="progmUpdate.STATUS" name="status" [value]="false"> Inactive
+
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" [disabled]="progrmStstusForm.invalid ">Yes</button>
+        </div>
+      </form>
+
+
+      
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
+
+
+

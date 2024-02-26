@@ -1,0 +1,62 @@
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a routerLink="/dashboard" class="logo d-flex align-items-center">
+        <img src="assets/images/logo.jpg" alt="">
+      </a>
+      <i onclick="onSave()" class="fa fa-bars toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item dropdown pe-3">
+          <ng-container *ngIf="ROLE_ID == 1; else restContent">
+            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+              <i class="fa fa-user"></i>
+              <span class="d-md-block dropdown-toggle ps-2">WELCOME {{userName}}</span>
+            </a>
+          </ng-container>
+          <ng-template #restContent>
+            <ng-container *ngIf="ROLE_ID == 3; else studentContent">
+              <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                <i class="fa fa-user"></i>
+                <span class="d-md-block dropdown-toggle ps-2">WELCOME {{facultyNm}}</span>
+              </a>
+            </ng-container>
+            <ng-template #studentContent>
+              <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" *ngFor="let showStd of showStudent">
+                <i class="fa fa-user"></i>
+                <span class="d-md-block dropdown-toggle ps-2">
+                  WELCOME {{showStd.STUDENT_NAME}} ( {{showStd.SEM}})
+                  <!-- Additional condition for students -->
+                  <span *ngIf="showStd.SOME_OTHER_CONDITION"> - Additional Content</span>
+                </span>
+              </a>
+            </ng-template>
+          </ng-template>
+          
+          <!-- <ng-template #studentContent>
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" *ngFor="let showStd of showStudent">
+            <i class="fa fa-user"></i>
+            <span class="d-md-block dropdown-toggle ps-2">WELCOME {{showStd.STUDENT_NAME}} ( Sem{{showStd.CURRENT_SEM}} )</span>
+          </a>
+        </ng-template> -->
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">  
+            <li>
+              <a class="dropdown-item d-flex align-items-center" routerLink="/login" (click)="logout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->

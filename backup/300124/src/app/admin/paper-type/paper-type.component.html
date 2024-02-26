@@ -1,0 +1,236 @@
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Paper Type</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+      <div class="row">
+        <div class="col-xl-12">
+
+            <div class="tblMN table-responsive text-nowrap">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                          <th width="40%">
+                            Type
+                          </th>       
+                          <th>
+                            Description
+                         </th>                                  
+                          <th class="actionTd1">
+                              Action
+                          </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  *ngFor="let showPT of pageOfItems">
+                        <td>{{showPT.PAPER_TYPE}}</td>
+                        <td>{{showPT.DESCRIPTION}}</td>
+                        <td>
+                           
+
+                            <p class="mb-0" *ngIf="showPT.STATUS==true; else elseBlock">
+                              <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showPT,$event)"  data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                              
+                              <a href="#" class="activeBtn{{showPT.STATUS}}" (click)="actvinactv(showPT,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                            </a>
+                            </p>
+                            <ng-template #elseBlock>
+                              <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                              
+                              <a href="#" class="activeBtn{{showPT.STATUS}} ms-0" (click)="actvinactv(showPT,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                              </a>
+
+                            </ng-template>
+                            
+                        </td>
+                      </tr>
+                     
+                    </tbody>
+                  
+                </table>
+            </div>
+            <div class="col-md-6 pull-left">
+              <jw-pagination [items]="showPapertype" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+            </div>
+            <div class="col-md-6 pull-left text-right">
+              <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add</a>
+            </div>
+           
+
+            
+        </div>
+      </div>
+    </section>  
+
+  </main><!-- End #main -->
+
+  <div *ngIf="loading" class="loadingSec">
+    <img src="assets/images/loading-gif.gif" alt="ITC-MBS" class="loading"/>            
+  </div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Paper Type</h5>
+        <button type="button" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #getPapertypeForm="ngForm" (ngSubmit)="getPapertypeFormdata(getPapertypeForm.value)" novalidate>
+          <div class="modal-body">
+
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+            
+              <div class="row">
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Type<strong class="required"> *</strong> </label> 
+                  <input type="text" name="papeR_TYPE" class="form-control" ngModel required #papeR_TYPE="ngModel" pattern="^[^\s].*[^\s]$"> 
+                  <div class="alert alert-danger" *ngIf="papeR_TYPE.touched && papeR_TYPE.invalid">
+                    <div class="" *ngIf="papeR_TYPE.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="" *ngIf="papeR_TYPE.errors?.pattern">
+                      Invalid Input
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Description<strong class="required"> *</strong> </label>  
+                  <input type="text" name="description" ngModel required #description="ngModel" required class="form-control" pattern="^[^\s].*[^\s]$"  >
+                  <div class="" *ngIf="description.touched">
+                    <div class="alert alert-danger" *ngIf="description.errors?.required">
+                      This field is required
+                    </div>
+                    <div class="alert alert-danger" *ngIf="description.errors?.pattern">
+                      Invalid Input
+                    </div>
+                  </div>
+                </div>                 
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+            <button class="btn btn-primary"  [disabled]="getPapertypeForm.invalid || isSubmit" >Submit</button>
+          </div>
+        </form>
+   
+      
+   
+      </div>
+  </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Paper Type</h5>
+        <button type="button" #closeButton2 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #paperTypeFormedit="ngForm" (ngSubmit)="paperTypeFormeditdata(paperTypeFormedit.value)" novalidate>
+        <div class="modal-body">
+
+          <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+          <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+            Saved Successfully.
+          </div> 
+          
+            <div class="row">
+              
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Type<strong class="required"> *</strong> </label> 
+                <input type="text" class="form-control" name="papeR_TYPE" #papeR_TYPE="ngModel" required [(ngModel)]="paperTypeUpdate.PAPER_TYPE"  #paperType="ngModel">
+                <input type="hidden" class="form-control" [(ngModel)]="paperTypeUpdate.ID" name="id" [value]="paperTypeUpdate.ID">                
+                <div class="alert alert-danger" *ngIf="paperType.touched && paperType.invalid">
+                  <div class="" *ngIf="paperType.errors?.required">
+                    This field is required
+                  </div>
+                  
+                </div>                
+              </div>
+
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Description<strong class="required"> *</strong> </label>  
+                <input type="text" class="form-control" [(ngModel)]="paperTypeUpdate.DESCRIPTION" name="description" pattern="^[^\s].*[^\s]$" required  #paperDes="ngModel">
+                <div class="" *ngIf="paperDes.touched">
+                  <div class="alert alert-danger" *ngIf="paperDes.errors?.required">
+                    This field is required
+                  </div>
+                  <div class="alert alert-danger" *ngIf="paperDes.errors?.pattern">
+                    Invalid Input
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+         <button class="btn btn-primary"  [disabled]="paperTypeFormedit.invalid || isSubmit" >Submit</button>
+        </div>
+        </form>
+      </div>
+  </div>
+</div>
+
+<!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" #closeButton3 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+     
+
+      <form #papertypeStstusForm="ngForm" (ngSubmit)="papertypeStstusFormData()">
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Update Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="paperTypeUpdate.STATUS" name="status" [value]="true"> Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="paperTypeUpdate.STATUS" name="status" [value]="false"> Inactive
+
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" [disabled]="papertypeStstusForm.invalid">Yes</button>
+        </div>
+      </form>
+
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

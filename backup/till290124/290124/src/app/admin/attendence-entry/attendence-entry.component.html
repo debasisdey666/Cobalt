@@ -1,0 +1,85 @@
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Attendance  </h1>
+    </div> <!-- End Page Title -->
+    <section class="section mainBodySec">
+      <div class="row">
+
+        <div class="col-sm-4">
+          <h5 class="grayBx"><strong>Date:</strong> {{ classTime_date }}</h5>
+      </div>
+      <div class="col-sm-8">
+          <h5 class="grayBx"><strong>Paper Name:</strong> {{ classTime_paper }}</h5>
+      </div>
+      
+      <form #attendanceForm="ngForm" (ngSubmit)="attendanceFormdata()" novalidate>
+      
+        <div class="col-xl-12">
+          <div class="tblMN table-responsive text-nowrap">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Student (Reg. Number)</th>
+                  <th *ngIf="ROLE_ID == 2">Instructor name</th>
+                  <th>Attendance</th>
+                  <th class="actionTd1" *ngIf="ROLE_ID != 2">Action
+
+                    <!-- <input class="form-check-input" type="checkbox" id="selectall" aria-label="..." (change)="selectAllChanged()" /> -->
+                    <input class="form-check-input" type="checkbox" id="selectall" aria-label="..." [(ngModel)]="selectAll" (change)="selectAllChanged($event)" />
+
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let showAtt of pageOfItems">
+                  <td>
+                    {{ showAtt.STUDENT_NAME }}                
+                  </td>
+                  <td *ngIf="ROLE_ID == 2">{{class_time_INSTRUCTOR_NAME}}</td>
+                  <td>
+                    <p class="mb-0" *ngIf="showAtt.IS_ATTENDANCE == 1; else elseBlock" style="color:#08bf08; text-transform: uppercase; font-weight: bold;">Present</p>
+                    <ng-template #elseBlock>
+                      <ng-container>
+                        <p class="mb-0" *ngIf="showAtt.IS_ATTENDANCE == 0; else elseProceed" style="color:red; text-transform: uppercase; font-weight: bold;">Absent</p>
+                      </ng-container>
+                      <ng-template #elseProceed>
+                        <p  class="mb-0" style="color:#f69f07; text-transform: uppercase; font-weight: bold;">Class Not Taken Yet</p>
+                      </ng-template>                      
+                    </ng-template>
+                  </td>
+                  <td class="text-center" *ngIf="ROLE_ID != 2">
+                  <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]='showAtt.IS_ATTENDANCE === 1'
+                  (change)="onCheckboxChange($event, showAtt)"
+                />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <jw-pagination [items]="showAtted" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+          <button type="button" class="btn btn-primary me-2" (click)="goBack()">Back</button>
+          <button *ngIf="ROLE_ID != 2"  [disabled]="attendanceForm.invalid || isSubmit" type="submit" class="btn btn-primary">Submit</button>
+          
+          
+        </div>
+      </form>
+      
+
+
+      
+    
+      
+      </div>
+    </section>
+  </main><!-- End #main -->
+  <div *ngIf="loading" class="loadingSec">
+    <img src="assets/images/loading-gif.gif" alt="ITC-MBS" class="loading"/>            
+  </div>
+
+  <!-- ----status change---- -->
+
+

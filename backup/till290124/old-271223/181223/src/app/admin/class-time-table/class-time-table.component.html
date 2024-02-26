@@ -1,0 +1,349 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Class Time Table</h1>
+    </div><!-- End Page Title -->
+    <section class="section mainBodySec">
+        <div class="row">
+          <div class="col-xl-12">
+  
+            <div class="tblMN table-responsive text-nowrap">
+              <table class="table table-striped">
+                  <thead>
+                    <tr>
+                        <th>
+                            Paper
+                           </th> 
+                           <th>
+                            Instructor
+                           </th> 
+                      <th>
+                        Class Of Date
+                       </th> 
+                        <th>
+                            Start Timme
+                        </th>  
+                        <th>
+                          End Time
+                        </th>                        
+                                                      
+                        <th class="actionTd1">
+                            Action
+                        </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr  *ngFor="let showClsTim of pageOfItems">
+                      <td>{{showClsTim.PAPER_NAME}}</td>
+                      <td>{{showClsTim.INSTRUCTOR_NAME}}</td>
+                      <td>{{ showClsTim.CLASS_OF_DATE | date:'dd-MM-yyyy' }}</td>
+                      <td>{{showClsTim.START_TIME}}</td>
+                      <td>{{showClsTim.END_TIME}}</td>
+                      <td>
+  
+                          <p class="mb-0" *ngIf="showClsTim.STATUS==true; else elseBlock">
+                            <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showClsTim,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+
+                            <a class="editBtn attedBtn" title="Attendance" (click)="attendBtn(showClsTim,$event)" [routerLink]="['../attendance-entry', showClsTim.ID]"><i class="fa fa-hand-o-up" aria-hidden="true"></i></a>
+
+                            <a href="#" class="activeBtn{{showClsTim.STATUS}}" (click)="actvinactv(showClsTim,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                              <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                              <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                          </a>
+                          </p>
+                          <ng-template #elseBlock>
+                            <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            
+                            <a href="#" class="activeBtn{{showClsTim.STATUS}}" (click)="actvinactv(showClsTim,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                              <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                              <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                            </a>
+  
+                          </ng-template>
+                          
+                      </td>
+                    </tr>
+                   
+                  </tbody>
+              </table>
+          </div>
+          <div class="col-md-6 pull-left">
+            <jw-pagination [items]="showClsTmtbl" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+          </div>
+          <div class="col-md-6 pull-left text-right">
+            <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+          </div>
+          
+          
+          </div>
+        </div>
+    </section>  
+</main>
+
+  <!-- Add Modal -->
+  <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Class Time</h5>
+          <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div> 
+        <form #getClassTimeForm="ngForm" (ngSubmit)="getClassTimeFormdata(getClassTimeForm.value)" novalidate>
+            <div class="modal-body">
+  
+              <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+  
+              <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+                Saved Successfully.
+              </div> 
+              
+                <div class="row">
+                  <div class="col-md-12 mt-3">                    
+                    <label class="form-label">Paper <strong class="required"> *</strong> </label>  
+                    <select required class="form-select" ngModel name="PAPER_ID" data-live-search="true" #PAPER_ID="ngModel">
+                      <option value="" disabled>Select One</option>
+                      <option *ngFor="let paperDropdwn of showPaper" [value]="paperDropdwn.ID">{{paperDropdwn.PAPER_NAME}}
+                      </option>
+                    </select>                     
+                  </div> 
+                  <div class="col-md-12 mt-3">                    
+                    <label class="form-label">Instructor <strong class="required"> *</strong> </label>  
+                    <select required class="form-select" ngModel name="INSTRUCTOR_ID" data-live-search="true" #INSTRUCTOR_ID="ngModel">
+                      <option value="" disabled>Select One</option>
+                      <option *ngFor="let instrucDropdwn of showInstructor" [value]="instrucDropdwn.ID">{{instrucDropdwn.NAME}}
+                      </option>
+                    </select>                     
+                  </div> 
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Class Date<strong class="required"> *</strong> </label> 
+                    <input type="date" name="CLASS_OF_DATE" class="form-control" ngModel required #CLASS_OF_DATE="ngModel"> 
+                    <div class="alert alert-danger" *ngIf="CLASS_OF_DATE.touched && CLASS_OF_DATE.invalid">
+                      <div class="" *ngIf="CLASS_OF_DATE.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="CLASS_OF_DATE.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                  
+                  </div>
+                  <!-- <div class="col-md-12 mt-3">
+                    <label class="form-label">Class Start Time<strong class="required"> *</strong> </label> 
+                    <input type="time" name="START_TIME" class="form-control" ngModel #START_TIME="ngModel" required>
+                    <div class="alert alert-danger" *ngIf="START_TIME.touched && START_TIME.invalid">
+                      <div class="" *ngIf="START_TIME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="START_TIME.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                  
+                  </div>
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Class End Time<strong class="required"> *</strong> </label> 
+                    <input type="time" name="END_TIME" class="form-control" ngModel #END_TIME="ngModel" required [ngModelOptions]="{ updateOn: 'blur' }">
+                    <div class="alert alert-danger" *ngIf="endTimeLessThanStartTime()">
+                        End time must be greater than the start time.
+                    </div>
+                    <div class="alert alert-danger" *ngIf="END_TIME.touched && END_TIME.invalid">
+                      <div class="" *ngIf="END_TIME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="END_TIME.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                  
+                  </div> -->
+
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Start Time<strong class="required"> *</strong> </label> 
+                    <input type="time" name="START_TIME" class="form-control" ngModel #START_TIME="ngModel" required>
+                               
+                    <div class="alert alert-danger" *ngIf="START_TIME.touched && START_TIME.invalid">
+                      <div class="" *ngIf="START_TIME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="START_TIME.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                
+                  </div>
+
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">End Time<strong class="required"> *</strong> </label> 
+                    <input type="time" name="END_TIME" class="form-control" ngModel #END_TIME="ngModel" required>
+                    <div class="alert alert-danger" *ngIf="endTimeLessThanStartTime()"> 
+                        End time must be greater than the start time.
+                    </div>
+                    <div class="alert alert-danger" *ngIf="END_TIME.touched && END_TIME.invalid">
+                      <div class="" *ngIf="END_TIME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="END_TIME.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                
+                  </div>
+
+
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+              <button class="btn btn-primary"  [disabled]="getClassTimeForm.invalid || isSubmit">Submit</button>
+            </div>
+          </form>
+     
+        
+     
+        </div>
+    </div>
+  </div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Chapter</h5>
+          <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div> 
+        <form #classTimeFormedit="ngForm" (ngSubmit)="classTimeFormeditdata(classTimeFormedit.value)" novalidate>
+          <div class="modal-body">
+  
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+  
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Update Successfully.
+            </div> 
+            
+              <div class="row">
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Paper <strong class="required"> *</strong> </label> 
+                  <input type="hidden" class="form-control" [(ngModel)]="classTimUpdate.ID" name="ID" [value]="classTimUpdate.ID">
+                  <select required class="form-select" ngModel name="PAPER_ID" data-live-search="true" #PAPER_ID="ngModel" [(ngModel)]="classTimUpdate.PAPER_ID">
+                    <option value="" disabled>Select One</option>
+                    <option *ngFor="let paperDropdwn of showPaper" [value]="paperDropdwn.ID">{{paperDropdwn.PAPER_NAME}}
+                    </option>
+                  </select>
+                  <div class="" *ngIf="PAPER_ID.touched">
+                    <div class="alert alert-danger" *ngIf="PAPER_ID.errors?.required">
+                      This field is required
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                    <label class="form-label">Instructor <strong class="required"> *</strong> </label> 
+                    <input type="hidden" class="form-control" [(ngModel)]="classTimUpdate.ID" name="ID" [value]="classTimUpdate.ID">
+                    <select required class="form-select" ngModel name="INSTRUCTOR_ID" data-live-search="true" #INSTRUCTOR_ID="ngModel" [(ngModel)]="classTimUpdate.INSTRUCTOR_ID">
+                      <option value="" disabled>Select One</option>
+                      <option *ngFor="let instrucDropdwn of showInstructor" [value]="instrucDropdwn.ID">{{instrucDropdwn.NAME}}
+                      </option>
+                    </select>
+                    <div class="" *ngIf="INSTRUCTOR_ID.touched">
+                      <div class="alert alert-danger" *ngIf="INSTRUCTOR_ID.errors?.required">
+                        This field is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Class Date<strong class="required"> *</strong> </label> 
+                    <input type="date" class="form-control" name="CLASS_OF_DATE" pattern="{1,9}" #CLASS_OF_DATE="ngModel" required [(ngModel)]="classTimUpdate.CLASS_OF_DATE" [value]="classTimUpdate.CLASS_OF_DATE">
+                               
+                    <div class="alert alert-danger" *ngIf="CLASS_OF_DATE.touched && CLASS_OF_DATE.invalid">
+                      <div class="" *ngIf="CLASS_OF_DATE.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="CLASS_OF_DATE.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                
+                  </div>
+
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Start Time<strong class="required"> *</strong> </label> 
+                    <input type="time" class="form-control" name="START_TIME" pattern="{1,9}" #START_TIME="ngModel" required [(ngModel)]="classTimUpdate.START_TIME" [value]="classTimUpdate.START_TIME">
+                               
+                    <div class="alert alert-danger" *ngIf="START_TIME.touched && START_TIME.invalid">
+                      <div class="" *ngIf="START_TIME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="START_TIME.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                
+                  </div>
+
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">End Time<strong class="required"> *</strong> </label> 
+                    <input type="time" class="form-control" name="END_TIME" pattern="{1,9}" #END_TIME="ngModel" required [(ngModel)]="classTimUpdate.END_TIME" [value]="classTimUpdate.END_TIME">
+                    <div class="alert alert-danger" *ngIf="endTimeLessThanStartTime2()"> 
+                        End time must be greater than the start time.
+                    </div>
+                    <div class="alert alert-danger" *ngIf="END_TIME.touched && END_TIME.invalid">
+                      <div class="" *ngIf="END_TIME.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="END_TIME.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>                
+                  </div>
+
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+           <button class="btn btn-primary"  [disabled]="classTimeFormedit.invalid || isSubmit" >Submit</button>
+          </div>
+          </form>
+        </div>
+    </div>
+  </div>
+
+<!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+          <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div>
+       
+  
+        <form #classTimetblStatusForm="ngForm" (ngSubmit)="classTimetblStatusFormData()">
+          <div class="modal-body text-center">
+            <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+              Update Successfully.
+            </div>
+            <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+            <div class="form-group mt-3 statusClass d-none">
+              <label class="btn btn-toggle active">
+                <input type="radio" [(ngModel)]="classTimUpdate.STATUS" name="STATUS" [value]="true"> Active
+              </label>
+              <label class="btn btn-toggle active">
+                <input type="radio" [(ngModel)]="classTimUpdate.STATUS" name="STATUS" [value]="false"> Inactive
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <button class="btn btn-primary" [disabled]="classTimetblStatusForm.invalid">Yes</button>
+          </div>
+        </form>
+  
+  
+        
+      </div>
+    </div>
+  </div>
+
+<app-footer></app-footer>
