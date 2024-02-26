@@ -128,16 +128,6 @@ editAY(formData:any){
         "mode": "I"
       }
     }
-
-    // const headers = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    // });
-
-    // const token = localStorage.getItem("token");
-    // let headers = new HttpHeaders()
-    // .set('Authorization', 'Bearer ' + token)
-    // .set('Content-Type', 'application/json');
-    // return this.http.post(this.url,data,{headers})
     return this.http.post(this.url,data)
   }
 

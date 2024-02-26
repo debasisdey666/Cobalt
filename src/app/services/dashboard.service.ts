@@ -73,7 +73,7 @@ export class DashboardService {
     if (userId !== null) {
       data.append('UPDATEDBY', userId);
     }
-    data.append('MODE', 'V');
+    data.append('MODE', 'F');
 
     return this.http.post<any>(this.url2, data);
 

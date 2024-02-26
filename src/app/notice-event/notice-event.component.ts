@@ -16,6 +16,7 @@ export class NoticeEventComponent implements OnInit {
   
   @ViewChild('closeButton') closeButton!: ElementRef;
   @ViewChild('closeButton2') closeButton2!: ElementRef; 
+  @ViewChild('closeButton3') closeButton3!: ElementRef;
   @ViewChild('getNoticEvenScholrForm') getNoticEvenScholrForm!: NgForm;
   @ViewChild('getNoticEvenScholrFormedit') getNoticEvenScholrFormedit!: NgForm;
 
@@ -31,6 +32,7 @@ export class NoticeEventComponent implements OnInit {
   isSubmit = false;
   addSuccessmessage: boolean = false;
   updateSuccessmessage: boolean = false;
+  errormessage: boolean = false;
   loading: boolean = false;
   fileExists: boolean = false;
   ROLE_ID:any;
@@ -155,6 +157,87 @@ export class NoticeEventComponent implements OnInit {
       this.selectedOptions.push(optionId);
     }
     console.log(this.selectedOptions.join(', ')); // Display selected values with commas in the console
+  }
+
+
+  
+  // active / deactive Data
+
+  noticeUpdate= {
+    ID: "",
+    NEWFLAG:""
+  }
+
+  actvinactv(showNtEv: any, event: Event) {
+    this.noticeUpdate = showNtEv;
+    console.log("showNtEv.ID")
+    console.log(showNtEv.ID)
+    console.log(showNtEv.NEWFLAG)
+  }
+
+  // NoticeFormData() {
+  //   this.loading = true; 
+  //   this.serviceData.statusNotice(this.noticeUpdate).subscribe(
+  //     (resp) => {
+  //       console.log(resp);
+  //       this.loading = false;  
+  //       if (resp.Res.StatusCode == 200 ){
+  //           this.updateSuccessmessage = true;
+  //           setTimeout(() => {
+  //           this.updateSuccessmessage = false;
+  //           this.closeButton3.nativeElement.click();
+  //           }, 1000);
+  //           this.ngOnInit();
+  //       }        
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //       this.updateSuccessmessage = false;
+  //     }
+  //   )
+
+
+  // }
+
+
+
+  NoticeFormData() {
+    this.loading = true;
+    // this.serviceData.statusNotice(data).subscribe((resp: any)=>{
+    //   if (resp.Res.StatusCode == 200 ){
+    //     this.addSuccessmessage=true;  
+    //     this.errormessage=false;  
+    //     this.loading = false; 
+    //   }
+    //   else{  
+    //     this.loading = false; 
+    //     this.errormessage=true;  
+    //   }
+    //   // setTimeout(() => {
+    //   //   this.addSuccessmessage = false;        
+    //   //   this.errormessage=false;  
+    //   //   this.closeButton3.nativeElement.click();
+    //   // }, 1000);
+    //   // this.ngOnInit(); 
+    //   // console.log(data);
+    // })
+    this.serviceData.statusNotice(this.noticeUpdate).subscribe(
+      (resp) => {
+        console.log(resp);
+        this.loading = false;  
+        this.updateSuccessmessage = true;
+        setTimeout(() => {
+          this.updateSuccessmessage = false;
+          this.closeButton3.nativeElement.click();
+        }, 1000);
+        this.ngOnInit();
+      },
+      (err) => {
+        console.log(err);
+        this.updateSuccessmessage = false;
+      }
+    )
+
   }
 
 

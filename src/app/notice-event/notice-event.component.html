@@ -25,9 +25,9 @@
                             Document
                         </th>   
                                                                              
-                        <!-- <th class="actionTd1">
+                        <th class="actionTd1">
                             Action
-                        </th> -->
+                        </th>
                     </tr>
                 </thead>
                   <tbody>
@@ -45,6 +45,24 @@
                       <td> 
                         <!-- <a *ngIf="linkurl + showNtEv.FILEPATH.length > 0" href="{{linkurl}}{{showNtEv.FILEPATH}}" target="_blank">Download</a> -->
                         <a *ngIf="!showNtEv.FILEPATH.endsWith('/')" href="{{linkurl}}{{showNtEv.FILEPATH}}" target="_blank">Download</a>                       
+                      </td>
+
+                      <td class="text-center">
+                        <p class="mb-0" *ngIf="showNtEv.NEWFLAG==true; else elseBlock">
+                         
+                          <a href="#" class="activeBtn{{showNtEv.NEWFLAG}}" (click)="actvinactv(showNtEv,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                            <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                        </a>
+                        </p>
+                        <ng-template #elseBlock>
+                         
+                          <a href="#" class="activeBtn{{showNtEv.NEWFLAG}} ms-0" (click)="actvinactv(showNtEv,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                            <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                            <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                          </a>
+
+                        </ng-template>
                       </td>
                        
                       <!-- <td>
@@ -219,3 +237,47 @@
           </div>
       </div>
     </div>
+
+
+
+<!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" #closeButton3 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+     
+
+      <form #NoticeForm="ngForm" (ngSubmit)="NoticeFormData()">
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Update Successfully.
+          </div>
+          <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+           Somthig went wrong ( Data Not Saved )
+          </div> 
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="noticeUpdate.NEWFLAG" name="NEWFLAG" [value]="true"> Active
+              <input type="text" [(ngModel)]="noticeUpdate.ID" name="ID" [value]="true"> Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="noticeUpdate.NEWFLAG" name="NEWFLAG" [value]="false"> Inactive
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" [disabled]="NoticeForm.invalid">Yes</button>
+        </div>
+      </form>
+
+
+      
+    </div>
+  </div>
+</div>
