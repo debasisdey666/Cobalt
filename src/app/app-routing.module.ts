@@ -98,7 +98,8 @@ const routes: Routes = [
 
   { path: 'library', component: LibraryComponent , canActivate: [AuthGuard] }, 
   { path: 'result', component: ResultComponent , canActivate: [AuthGuard] }, 
-  { path: 'student-history/:ID', component: StudentHistoryComponent , canActivate: [AuthGuard] }, 
+  // { path: 'student-history/:ID', component: StudentHistoryComponent , canActivate: [AuthGuard] }, 
+  { path: 'student-history', component: StudentHistoryComponent , canActivate: [AuthGuard] }, 
   { path: 'notice-event', component: NoticeEventComponent , canActivate: [AuthGuard] }, 
   { path: 'mis', component: MisComponent , canActivate: [AuthGuard] }, 
   { path: 'internship', component: InternshipComponent , canActivate: [AuthGuard] }, 

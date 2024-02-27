@@ -460,8 +460,10 @@
               <td>{{showStuHistry.STUDENT_REGISTRATION}}</td>
               <td>{{showStuHistry.DOB}}</td>
               <td class="text-center">
-                <a class="linkIcon" title="View" [routerLink]="['../student-history', showStuHistry.ID]"><i
-                    class="fa fa-share-square-o" aria-hidden="true"></i></a>
+                <!-- <a class="linkIcon" title="View" [routerLink]="['../student-history', showStuHistry.ID]"><i class="fa fa-share-square-o" aria-hidden="true"></i></a> -->
+                
+                <a class="linkIcon" title="View" (click)="getStudentID(showStuHistry)"><i class="fa fa-share-square-o" aria-hidden="true"></i></a>
+                
                 <!-- <a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                 </a> -->

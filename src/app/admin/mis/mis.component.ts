@@ -100,6 +100,7 @@ export class MisComponent implements OnInit {
       this.selectedMISReport = params['selectedMISReport'] || '0'; // Use default value if parameter is not provided
     });
 
+
   }
 
 
@@ -107,8 +108,6 @@ export class MisComponent implements OnInit {
     this.router.events
     .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe(() => {
-      // Perform actions after route change and page load
-      // This code will be executed after each successful route navigation
       location.reload();
     });
   }
@@ -126,6 +125,10 @@ export class MisComponent implements OnInit {
       this.showStudentH = data;
       this.showStuHistory =  this.showStudentH['Student_Details_Year_Wise'];
 
+      console.log("this.showStuHistory");
+      console.log(this.showStuHistory);
+      
+
 
       if(this.showStuHistory.length > 0){      
         console.log("data");
@@ -139,6 +142,27 @@ export class MisComponent implements OnInit {
 
     })
   }
+
+
+  
+  // getStudentID(showStuHistry: any): void {
+  //   console.log("showStuHistry.ID");   
+  //   console.log(showStuHistry.ID); 
+  //   this.serviceData.student_id = showStuHistry.ID;
+  //   alert(this.serviceData.student_id);
+  //   this.router.navigateByUrl('/student-history');
+  // }
+
+  getStudentID(showStuHistry: any): void {
+    console.log("showStuHistry.ID:", showStuHistry.ID);   
+    console.log(showStuHistry.ID); 
+    localStorage.setItem('stid', showStuHistry.ID);
+    // this.serviceData.student_id = showStuHistry.ID;
+    // console.log("student_id after assignment:", this.serviceData.student_id); // Log the value after assignment
+    this.router.navigateByUrl('/student-history');
+  }
+
+
 
 
   searchMisFees(formData: any) {

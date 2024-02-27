@@ -1,0 +1,628 @@
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>MIS</h1>
+  </div><!-- End Page Title -->
+
+  <section class="section mainBodySec">
+    <div class="row">
+      <div class="col-sm-2 pe-0 mb-2">
+        <label class="form-label">MIS Report</label>
+        <select required class="form-select" [(ngModel)]="selectedMISReport" name="misReport" id="misReport">
+          <option value="0">Select MIS Report</option>
+          <option value="1">FEES COLLECTION</option>
+          <option value="2">STUDENT COUNT</option>
+          <option value="3">FACULTY COUNT</option>
+          <option value="4">STUDENT HISTORY</option>
+          <option value="5">FEES DEFAULTER</option>
+          <option value="6">LIBRARY DEFAULTER</option>
+          <option value="7">STUDENT ATTENDANCE</option>
+          <!-- <option value="8">FACULTY ATTENDANCE</option> -->
+        </select>
+      </div>
+
+      
+
+      <!-- FEES COLLECTION -->
+
+      <div class="col-sm-12" *ngIf="selectedMISReport == '1'">
+        <form #searchMisFe="ngForm" (ngSubmit)="searchMisFees(searchMisFe.value)" novalidate>
+          <div class="row mb-2">
+            <div class="col-sm-2 pe-0" *ngIf="selectedMISReport == '1'">
+              <label class="form-label">Branch</label>
+              <select class="form-select" ngModel name="brancH_ID" data-live-search="true" #brancH_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                  {{branchDropdwn.BRANCH_NAME}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-2 pe-0" *ngIf="selectedMISReport == '1'">
+              <label class="form-label">Academic Year</label>
+              <select class="form-select" ngModel name="aY_ID" data-live-search="true" #aY_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let AcademicYearDropdwn of showAcademicYearTrue" [value]="AcademicYearDropdwn.ID">
+                  {{AcademicYearDropdwn.AY}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-2 pe-0" *ngIf="selectedMISReport == '1'">
+              <label class="form-label">Semester</label>
+              <select class="form-select" ngModel name="seM_ID" data-live-search="true" #seM_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let semDropdwn of showSem" [value]="semDropdwn.ID">
+                  {{semDropdwn.SEM}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">From Date <strong class="required"> *</strong></label>
+              <input required type="date" name="fmdate" class="form-control" [(ngModel)]="fmdate" #fmdateInput="ngModel"
+                required (change)="validateDateRange()">
+
+              <div *ngIf="fmdateInput.invalid && fmdateInput.touched">
+                <!-- <div *ngIf="fmdateInput.errors?.required">From Date is required</div> -->
+              </div>
+            </div>
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">To Date <strong class="required"> *</strong></label>
+              <input required type="date" name="todate" class="form-control" [(ngModel)]="todate" #todateInput="ngModel"
+                required (change)="validateDateRange()">
+              <div *ngIf="todateInput.invalid && todateInput.touched">
+                <!-- <div *ngIf="todateInput.errors?.required">To Date is required</div> -->
+                <div *ngIf="toDateInvalid && (todateInput.dirty || todateInput.touched)">
+                  To Date must be after From Date
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '1'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4"
+                [disabled]="!searchMisFe.form.valid || buttonDisabled">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+
+      <!-- STUDENT COUNT -->
+
+      <div class="col-sm-9" *ngIf="selectedMISReport == '2'">
+        <form #searchMisStuCnt="ngForm" (ngSubmit)="searchMisStuCount(searchMisStuCnt.value)" novalidate>
+          <div class="row mb-2">
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '2'">
+              <label class="form-label">Branch</label>
+              <select required class="form-select" ngModel name="brancH_ID" data-live-search="true"
+                #brancH_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                  {{branchDropdwn.BRANCH_NAME}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '2'">
+              <label class="form-label">Academic Year</label>
+              <select required class="form-select" ngModel name="aY_ID" data-live-search="true" #aY_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let AcademicYearDropdwn of showAcademicYearTrue" [value]="AcademicYearDropdwn.ID">
+                  {{AcademicYearDropdwn.AY}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '2'">
+              <label class="form-label">Semester</label>
+              <select required class="form-select" ngModel name="seM_ID" data-live-search="true" #seM_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let semDropdwn of showSem" [value]="semDropdwn.ID">
+                  {{semDropdwn.SEM}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 pe-0 mt-1" *ngIf="selectedMISReport == '2'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4">Search</button>
+
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+
+      <!-- FACULTY COUNT -->
+
+      <div class="col-sm-9" *ngIf="selectedMISReport == '3'">
+        <form #searchMisFacultyCnt="ngForm" (ngSubmit)="searchMisFacultyConut(searchMisFacultyCnt.value)" novalidate>
+          <div class="row mb-2">
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '3'">
+              <label class="form-label">Branch</label>
+              <select required class="form-select" ngModel name="brancH_ID" data-live-search="true"
+                #brancH_ID="ngModel">
+                <option value="0">Select One</option>
+                <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                  {{branchDropdwn.BRANCH_NAME}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 pe-0 mt-1" *ngIf="selectedMISReport == '3'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4">Search</button>
+
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+
+
+      <!-- STUDENT HISTORY -->
+
+      <div class="col-sm-10" *ngIf="selectedMISReport == '4'">
+        <form #searchMisInp="ngForm" (ngSubmit)="searchMisInput(searchMisInp.value)" novalidate>
+          <div class="row mb-4">
+
+
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '4'">
+              <label class="form-label">Branch</label>
+              <select required class="form-select" ngModel name="brancH_ID" data-live-search="true"
+                #brancH_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                  {{branchDropdwn.BRANCH_NAME}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '4'">
+              <label class="form-label">Academic Year</label>
+              <select required class="form-select" ngModel name="aY_ID" data-live-search="true" #aY_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let AcademicYearDropdwn of showAcademicYearTrue" [value]="AcademicYearDropdwn.ID">
+                  {{AcademicYearDropdwn.AY}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '4'">
+              <label class="form-label">Semester</label>
+              <select required class="form-select" ngModel name="seM_ID" data-live-search="true" #seM_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let semDropdwn of showSem" [value]="semDropdwn.ID">
+                  {{semDropdwn.SEM}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 pe-0 mt-1" *ngIf="selectedMISReport == '4'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+
+      
+      <!-- FEES DEFAULTER -->
+      
+      <div class="col-sm-9" *ngIf="selectedMISReport == '5'">
+        <form #searchFeesDef="ngForm" (ngSubmit)="searchFeesDeaflt(searchFeesDef.value)" novalidate>
+          <div class="row mb-2">
+            <!-- <div class="col-sm-3 pe-0">
+        <label class="form-label">From Date</label>
+        <input required type="date" name="fmdate" class="form-control" [(ngModel)]="fmdate" #fmdateInput="ngModel" required (change)="validateDateRange()">
+        
+        <div *ngIf="fmdateInput.invalid && fmdateInput.touched">
+         
+        </div>
+      </div> -->
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">To Date <strong class="required"> *</strong></label>
+              <input required type="date" name="todate" class="form-control" [(ngModel)]="todate" #todateInput="ngModel"
+                required (change)="validateDateRange()">
+              <div *ngIf="todateInput.invalid && todateInput.touched">
+                <!-- <div *ngIf="todateInput.errors?.required">To Date is required</div> -->
+                <div *ngIf="toDateInvalid && (todateInput.dirty || todateInput.touched)">
+                  To Date must be after From Date
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '5'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4"
+                [disabled]="!searchFeesDef.form.valid || buttonDisabled">Search </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+
+      <!-- LIBRARY DEFAULTER -->
+
+      <div class="col-sm-9" *ngIf="selectedMISReport == '6'">
+        <form #searchLabraryDef="ngForm" (ngSubmit)="searchLabraryDeaflt(searchLabraryDef.value)" novalidate>
+          <div class="row mb-2">
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">From Date <strong class="required"> *</strong></label>
+              <input required type="date" name="fmdate" class="form-control" [(ngModel)]="fmdate" [max]="maxDate"
+                #fmdateInput="ngModel" required (change)="validateDateRange()">
+
+              <div *ngIf="fmdateInput.invalid && fmdateInput.touched">
+                <!-- <div *ngIf="fmdateInput.errors?.required">From Date is required</div> -->
+              </div>
+            </div>
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">To Date <strong class="required"> *</strong></label>
+              <input required type="date" name="todate" class="form-control" [max]="maxDate" [(ngModel)]="todate"
+                #todateInput="ngModel" required (change)="validateDateRange()">
+              <div *ngIf="todateInput.invalid && todateInput.touched">
+                <!-- <div *ngIf="todateInput.errors?.required">To Date is required</div> -->
+                <div *ngIf="toDateInvalid && (todateInput.dirty || todateInput.touched)">
+                  To Date must be after From Date
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '6'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4"
+                [disabled]="!searchLabraryDef.form.valid || buttonDisabled">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+
+      <!-- Student Attendance -->
+
+      <div class="col-sm-10" *ngIf="selectedMISReport == '7'">
+        <form #searchStudentattnDef="ngForm" (ngSubmit)="searchStudentAttnDeaflt(searchStudentattnDef.value)" novalidate >
+          <div class="row mb-2">            
+
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">Paper </label>                   
+                <select required class="form-select" ngModel name="papeR_ID" data-live-search="true"
+                    #papeR_ID="ngModel">
+                    <option value="" disabled>Select One</option>
+                    <option *ngFor="let paperDropdwn of showPaper" [value]="paperDropdwn.ID">
+                        {{paperDropdwn.PAPER_NAME}}
+                    </option>
+                </select>                        
+            </div>
+
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">From Date</label>
+              <input required type="date" name="fmdate" class="form-control" [(ngModel)]="fmdate" [max]="maxDate" #fmdateInput="ngModel" required (change)="validateDateRange()">
+              
+              <div *ngIf="fmdateInput.invalid && fmdateInput.touched">
+                <!-- <div *ngIf="fmdateInput.errors?.required">From Date is required</div> -->
+              </div>
+            </div>
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">To Date</label>
+              <input required type="date" name="todate" class="form-control" [max]="maxDate" [(ngModel)]="todate" #todateInput="ngModel" required (change)="validateDateRange()">
+              <div *ngIf="todateInput.invalid && todateInput.touched">
+                <!-- <div *ngIf="todateInput.errors?.required">To Date is required</div> -->
+                <div *ngIf="toDateInvalid && (todateInput.dirty || todateInput.touched)">
+                  To Date must be after From Date
+                </div>
+              </div>
+            </div>
+          
+              <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '7'">     
+                <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4" [disabled]="!searchStudentattnDef.form.valid || buttonDisabled">Search</button>
+              </div> 
+            </div>          
+          </form>
+      </div>
+
+
+
+      <!-- FEES COLLECTION -->
+
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '1'">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Payment Date</th>
+              <th>Student Name</th>
+              <th>Student Reg No.</th>
+              <th>Semester</th>
+              <th>Branch</th>
+              <th class="text-end">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let showStuFe of showStuFeesall">
+              <td>{{showStuFe.PAYMENT_DATE|date}}</td>
+              <td>{{showStuFe.STUDENT_NAME}}</td>
+              <td>{{showStuFe.STUDENT_REGISTRATION}}</td>
+              <td>{{showStuFe.SEM}}</td>
+              <td>{{showStuFe.BRANCH_NAME}}</td>
+              <td class="text-end">{{showStuFe.AMOUNT}}</td>
+
+            </tr>
+            <tr>
+
+            </tr>
+
+
+          </tbody>
+
+        </table>
+      </div>
+
+
+
+
+      <!-- STUDENT COUNT -->
+
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '2'">
+        <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+        <table class="table table-striped mb-2">
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Registration No.</th>
+              <th>Registration Year</th>
+              <th>Branch </th>
+              <th>SEM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let showStudentCont of pageOfItems2">
+              <td>{{showStudentCont.STUDENT_NAME}}</td>
+              <td>{{showStudentCont.STUDENT_REGISTRATION}}</td>
+              <td>{{showStudentCont.REGISTRATION_YEAR}}</td>
+              <td>{{showStudentCont.BRANCH_NAME}}</td>
+              <td>{{showStudentCont.SEM}}</td>
+
+            </tr>
+            <tr *ngIf="showStucntAll.length > 0">
+              <td colspan="5"> <strong>Total Student Count: {{ showStucntAll.length }} </strong> </td>
+            </tr>
+
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '2'">
+        <jw-pagination [items]="showStucntAll" [pageSize]="pageSize"
+          (changePage)="onChangePage2($event)"></jw-pagination>
+      </div>
+
+
+      <!-- FACULTY COUNT -->
+
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '3'">
+        <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+        <table class="table table-striped mb-2">
+          <thead>
+            <tr>
+              <th>Faculty Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Branch </th>
+              <th>Paper</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let showFaculCont of pageOfItems3">
+              <td>{{showFaculCont.INSTRUCTOR_NAME}}</td>
+              <td>{{showFaculCont.EMAIL}}</td>
+              <td>{{showFaculCont.PH_NUMBER}}</td>
+              <td>{{showFaculCont.BRANCH_NAME}}</td>
+              <td class="long-text-cell">{{showFaculCont.PAPER_NAMES}}</td>
+            </tr>
+            <tr *ngIf="showFaculAll.length > 0">
+              <td colspan="5"> <strong>Total Faculty Count: {{ showFaculAll.length }} </strong> </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '3'">
+        <jw-pagination [items]="showFaculAll" [pageSize]="pageSize"
+          (changePage)="onChangePage3($event)"></jw-pagination>
+      </div>
+
+
+
+      <!-- STUDENT HISTORY -->
+
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '4'">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone No.</th>
+              <th>Registration No.</th>
+              <th>Date Of Birth</th>
+              <th class="actionTd1">
+                View Details
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let showStuHistry of pageOfItems">
+              <td>{{showStuHistry.STUDENT_NAME}}</td>
+              <td>{{showStuHistry.EMAIL}}</td>
+              <td>{{showStuHistry.PH_NUMBER}}</td>
+              <td>{{showStuHistry.STUDENT_REGISTRATION}}</td>
+              <td>{{showStuHistry.DOB}}</td>
+              <td class="text-center">
+                <a class="linkIcon" title="View" [routerLink]="['../student-history', showStuHistry.ID]"><i
+                    class="fa fa-share-square-o" aria-hidden="true"></i></a>
+                <!-- <a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                </a> -->
+              </td>
+            </tr>
+            <tr>
+
+            </tr>
+
+
+          </tbody>
+
+        </table>
+      </div>
+      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '4'">
+        <jw-pagination [items]="showStuHistory" [pageSize]="pageSize"
+          (changePage)="onChangePage($event)"></jw-pagination>
+      </div>      
+
+
+
+
+      <!-- FEES DEFAULTER -->
+
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '5'">
+        <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+        <table class="table table-striped mb-2 long-text-cell">
+          <thead>
+            <tr>
+              <th>Branch Name</th>
+              <th>Academic Year</th>
+              <th>SEM</th>
+              <th>Payment For</th>
+              <th>Payble Amount </th>
+              <th>Due Date </th>
+              <th>Reg No. </th>
+              <th>Student </th>
+              <th>Current SEM </th>
+              <th>Paid </th>
+              <th class="text-end">Due </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let showFeesDf of pageOfItems5">
+              <td>{{showFeesDf.BRANCH_NAME}}</td>
+              <td>{{showFeesDf.AY}}</td>
+              <td>{{showFeesDf.SEM}}</td>
+              <td>{{showFeesDf.PAYMENT_TYPE_NAME}}</td>
+              <td>{{showFeesDf.PAYABLE_AMOUNT}}</td>
+              <td>{{showFeesDf.DUE_DATE}}</td>
+              <td>{{showFeesDf.STUDENT_REGISTRATION}}</td>
+              <td>{{showFeesDf.STUDENT_NAME}}</td>
+              <td>{{showFeesDf.STUDENT_CURRENT_SEM}}</td>
+              <td>{{showFeesDf.TOTAL_AMOUNT_PAID}}</td>
+              <td class="text-end">{{showFeesDf.TOTAL_DUE_AMOUNT}}</td>
+            </tr>
+            <!-- <tr *ngIf="showFaculAll.length > 0" >
+          <td colspan="5"> <strong>Total Student Count: {{ showFaculAll.length }} </strong>  </td> 
+        </tr> -->
+
+
+          </tbody>
+
+        </table>
+
+      </div>
+      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '5'">
+        <jw-pagination [items]="showFeesDf" [pageSize]="pageSize" (changePage)="onChangePage5($event)"></jw-pagination>
+      </div>
+
+
+      <!-- LIDRARY DEFAULTER -->
+
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '6'">
+        <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+        <table class="table table-striped mb-2">
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Registration No.</th>
+              <th>Current SEM</th>
+              <th>Book Name</th>
+              <th>Issued Date </th>
+              <th>Due Date </th>
+              <th>Return Date </th>
+              <th class="text-end">Fine Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let showLdf of pageOfItems4">
+              <td>{{showLdf.STUDENT_NAME}}</td>
+              <td>{{showLdf.STUDENT_REG}}</td>
+              <td>{{showLdf.CURRENT_SEM}}</td>
+              <td>{{showLdf.BOOK_NAME}}</td>
+              <td>{{showLdf.ISSUED_DATE}}</td>
+              <td>{{showLdf.DUE_DATE}}</td>
+              <td>{{showLdf.RETURN_DATE}}</td>
+              <td class="text-end">{{showLdf.FINE_AMOUNT}}</td>
+            </tr>
+            <!-- <tr *ngIf="showFaculAll.length > 0" >
+          <td colspan="5"> <strong>Total Student Count: {{ showFaculAll.length }} </strong>  </td> 
+        </tr> -->
+
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '6'">
+        <jw-pagination [items]="showLibraryDf" [pageSize]="pageSize"
+          (changePage)="onChangePage4($event)"></jw-pagination>
+      </div>
+
+
+
+      <!-- Student Attendance -->
+
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '7'">
+        <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+        <table class="table table-striped mb-2 long-text-cell">
+            <thead>
+              <tr>                        
+                  <th>STUDENT NAME</th> 
+                  <th>INSTRUCTOR NAME</th> 
+                  <th>PAPER NAME</th> 
+                  <th class="text-center">ATTENDANCE STATUS</th> 
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let showstu of pageOfItems6">
+                <td>{{showstu.STUDENT_NAME}}</td>
+                <td>{{showstu.INSTRUCTOR_NAME}}</td>
+                <td>{{showstu.PAPER_NAME}}</td> 
+                <td class="text-center">
+                  <p [ngClass]="{ 'text-danger': showstu.ATTENDANCE_STATUS === 'ABSENT', 'text-success': showstu.ATTENDANCE_STATUS === 'PRESENT' }"> <strong>{{ showstu.ATTENDANCE_STATUS }}</strong>  </p>
+
+                </td>
+              </tr>
+              <!-- <tr *ngIf="showFaculAll.length > 0" >
+                <td colspan="5"> <strong>Total Student Count: {{ showFaculAll.length }} </strong>  </td> 
+              </tr> -->
+
+            
+            </tbody>
+          
+        </table>
+        
+      </div>
+      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '7'">
+        <jw-pagination [items]="showstudntDf" [pageSize]="pageSize" (changePage)="onChangePage6($event)"></jw-pagination>
+      </div>
+
+
+
+      <!-- <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+        Data not found
+      </div> -->
+
+    </div>
+  </section>
+
+</main><!-- End #main -->

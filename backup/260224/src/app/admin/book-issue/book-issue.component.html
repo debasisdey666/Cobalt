@@ -1,0 +1,255 @@
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Book Issued</h1>
+    </div><!-- End Page Title -->
+    
+    <section class="section mainBodySec profile">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- <form #searchBkIssue="ngForm" (ngSubmit)="searchBkIssueAll(searchBkIssue.value)" novalidate >
+                    <div class="row mb-4">
+                      <div class="col-sm-3 pe-0">
+                        <label class="form-label">Stdent Reg No.</label>
+                        <input required type="text" name="studenT_REG" class="form-control" [(ngModel)]="studenT_REG" #studenT_REG="ngModel" required>
+                    </div>
+                    <div class="col-sm-3 pe-0 mt-1">     
+                        <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4" [disabled]=" !searchBkIssue.form.valid || buttonDisabled">Search</button>
+                    </div>
+                    </div>              
+                  </form> -->
+
+                  <form #searchBkIssue="ngForm" (ngSubmit)="searchBkIssueAll(searchBkIssue.value)" novalidate >
+                    <div class="row mb-4">
+                        <div class="col-sm-3 pe-0">
+                            <label class="form-label">Stdent Reg No.</label>
+                            <input required type="text" name="studenT_REG" class="form-control" [(ngModel)]="studenT_REG" #studentRegVar="ngModel" required>
+                        </div>
+                        <div class="col-sm-3 pe-0">
+                            <label class="form-label">Book ID</label>
+                            <!-- <input required type="text" name="booK_ID" class="form-control" [(ngModel)]="booK_ID" #bookIdVar="ngModel" required> -->
+                            <select required class="form-select" ngModel name="booK_ID" data-live-search="true"
+                                #booK_ID="ngModel">
+                                <option value="" selected>Select One</option>                                  
+                                    <option *ngFor="let book of showBookMaster" [value]="book.ID">
+                                        {{ book.BOOK_NAME }}
+                                    </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3 pe-0 mt-1">
+                            <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4">Search</button>
+                        </div>    
+                    </div>
+                  </form>
+
+            </div>
+            <div class="col-xl-12">
+                <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Issued Date</th> 
+                              <th>Book Name</th>       
+                              <!-- <th>Book ID</th>  -->
+                              <th>ISBN</th> 
+                              <th>Student Reg No.</th>      
+                               <!-- <th>Issued By</th>                               -->
+                              <!-- <th>Return By</th>                 -->
+                                                         
+                              <th>Due Date</th>                            
+                              <th>Retrn Date</th>                            
+                              <th>SEM</th>                            
+                              <th>Fine Amount</th>                            
+                              <!-- <th>Return</th>                             -->
+                              <th class="actionTd1">Action</th>
+                          </tr>
+                        </thead>
+    
+                        <tbody>
+                          <tr  *ngFor="let showBM of pageOfItems">
+                            <td>{{showBM.ISSUED_DATE | date:'dd-MM-yyyy'}}</td>
+                            <td>{{showBM.BOOK_NAME}}</td>
+                            <!-- <td>{{showBM.BOOK_ID}}</td> -->
+                            <td>{{showBM.ISBN}}</td>
+                            <td>{{showBM.STUDENT_REG}}</td>
+                            <!-- <td>{{showBM.ISSUED_BY}}</td> -->
+                            <!-- <td>{{showBM.RETURN_BY}}</td> -->
+                            
+                            <td>{{showBM.DUE_DATE | date:'dd-MM-yyyy'}}</td>
+                            <td>{{showBM.RETURN_DATE | date:'dd-MM-yyyy'}}</td>
+                            <td>{{showBM.CURRENT_SEM}}</td>
+                            <td class="text-center"> <strong> {{showBM.FINE_AMOUNT}}</strong> </td>
+                            <!-- <td>
+                                
+                                <p *ngIf="{{showBM.SUBMIT_STATUS}}">Complete</p>
+                                <p>Pending</p>
+                            </td> -->
+                            <td>
+                                <a class="btn btn-primary btn-sm" title="Edit" *ngIf="showBM.SUBMIT_STATUS === false " data-bs-toggle="modal" (click)="editBtn(showBM, $event)" data-bs-target="#returnModal">
+                                    Return
+                                </a>
+                                <a class="btn btn-sm disabled" title="Edit" *ngIf="showBM.SUBMIT_STATUS === true" data-bs-toggle="modal">
+                                    Return
+                                </a>
+                            </td>
+                          </tr>
+                         
+                        </tbody>
+                    </table>
+                    <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+                        Data not found
+                      </div> 
+                </div>
+                <div class="col-md-6 pull-left">
+                  <jw-pagination [items]="showBookIssueAll" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+                </div>
+                <div class="col-md-6 pull-left text-right">
+                    <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<div *ngIf="loading" class="loadingSec">
+  <img src="assets/images/loading-gif.gif" alt="image" class="loading"/>            
+</div>
+
+<!-- --return Model-- -->
+
+<div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="returnModal" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Return</h5>
+          <button type="button" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div> 
+        
+        <form #editreturnBookIs="ngForm" (ngSubmit)="editreturnBookIssued(editreturnBookIs.value)" novalidate>
+            <div class="modal-body">
+    
+              <!-- <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small> -->
+    
+              <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+                Return Successfull.
+              </div>   
+              <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+                Data Not Saved (Duplicate Data Not Allowed)
+              </div>         
+                <div class="row">
+                  
+                    <input type="hidden" class="form-control" [(ngModel)]="returnBkupdate.ID" name="ID" [value]="returnBkupdate.ID">
+                  
+                  <div class="col-md-12 mt-3 text-center">
+                    <div *ngIf="isDueDateGreaterThanToday(); else defaultFineAmount">
+                        <span class="statusTitle m-auto mb-2 text-center align-center"> <strong>Due Date is Exceed (Fine Amount is required)</strong>  </span>
+                       <input type="number" name="FINE_AMOUNT" class="form-control mt-2" ngModel required #FINE_AMOUNT="ngModel">
+                    </div>
+                    <ng-template #defaultFineAmount>
+                      <span class="statusTitle m-auto mb-2 text-center align-center"> <strong>Due Date is valid, procced return</strong>  </span>
+                        <input type="hidden" required name="FINE_AMOUNT" class="form-control" [(ngModel)]="returnBkupdate.FINE_AMOUNT" #FINE_AMOUNT="ngModel">
+                    </ng-template>
+                </div>
+                 
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+             <button class="btn btn-primary"   [disabled]="editreturnBookIs.invalid || isSubmit" >Return</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Issued Book</h5>
+        <button type="button" #closeButton2 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #addbookIssueForm="ngForm" (ngSubmit)="addbookIssueFormdata(addbookIssueForm.value)" novalidate>
+          <div class="modal-body">
+
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+            <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+              Data Not Saved 
+            </div> 
+            
+              <div class="row">
+
+
+                <div class="col-md-12 mt-3">
+                    <label class="form-label">Book ID</label>
+
+                    <select required class="form-select" [(ngModel)]="selectedBookId" (change)="onBookSelectionChange()" name="booK_ID" data-live-search="true" #booK_ID="ngModel">
+                      <option value="" disabled selected>Select One</option>                                  
+                      <option *ngFor="let book of showBookMaster" [value]="book.ID">
+                        {{ book.BOOK_NAME }}
+                      </option>
+                    </select>
+
+                    <p class="totalCopies" *ngIf="selectedBookId">Total COPIES : {{selectedBookDetails.COPIES}}</p>
+                    <p class="totalStock" *ngIf="selectedBookId">Total Stock :  {{selectedBookDetails.Stock_Quantity}}</p>
+                    
+                    
+                    <div class="alert alert-danger" *ngIf="booK_ID.touched && booK_ID.invalid">
+                      <div class="" *ngIf="booK_ID.errors?.required">
+                        This field is required
+                       </div>
+                    </div>  
+
+                </div>
+                <!-- <div class="col-md-12 mt-3">
+                  <label class="form-label">Student Reg No.<strong class="required"> *</strong> </label>  
+                  <input type="text" name="studenT_REG" ngModel required class="form-control">
+                  <div class="" *ngIf="studenT_REG.touched && studenT_REG.invalid">
+                    <div class="alert alert-danger" *ngIf="studenT_REG.errors?.required">
+                      This field is required
+                    </div>                   
+                  </div>
+                </div> -->
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Student Reg No.<strong class="required"> *</strong> </label>  
+                  <input type="text" name="studenT_REG" ngModel required #studenTREG="ngModel" class="form-control">
+                  <!-- <div class="" *ngIf="studenTREG.touched && studenTREG.invalid">
+                      <div class="alert alert-danger" *ngIf="studenTREG.errors?.required">
+                          This field is required
+                      </div>  
+                      <div class="alert alert-danger" *ngIf="studenTREG.errors?.pattern">
+                          Please enter a valid student registration number in the format 'xxxx-xxxx'.
+                      </div>                 
+                  </div> -->
+              </div>
+                
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Due Date<strong class="required"> *</strong> </label>  
+                  <input type="date" name="duE_DATE" ngModel required #duEDATE="ngModel" [max]="maxDate" class="form-control">
+                  <!-- <div class="" *ngIf="duE_DATE.touched && duE_DATE.invalid">
+                    <div class="alert alert-danger" *ngIf="duE_DATE.errors?.required">
+                      This field is required
+                    </div>
+                  </div> -->
+                </div>       
+              </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" (click)="resetFormValue(addbookIssueForm)" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+                <button class="btn btn-primary" [disabled]="addbookIssueForm.invalid || isSubmit" >Submit</button>
+              </div>
+            
+      </form>
+      </div>
+  </div>
+</div>
+
+
+

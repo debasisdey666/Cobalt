@@ -7,6 +7,7 @@ import { saveAs } from 'file-saver';
 import { jsPDF } from 'jspdf';
 import Options from "jspdf"
 import html2canvas from 'html2canvas';
+import { getFromLocalStorage } from '../../environments/local-storage-util';
 
 @Component({
   selector: 'app-student-history',
@@ -18,6 +19,7 @@ export class StudentHistoryComponent implements OnInit {
   showStudentDetails:any;
   showStudetail:any;
   linkurl: string =environment.baseUrl;
+  ROLE_ID: any;
 
   constructor(
     private serviceData: MisService,
@@ -25,18 +27,49 @@ export class StudentHistoryComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    const studentID = +this.route.snapshot.params['ID'];
-    
-    this.serviceData.showStudDetails(studentID).subscribe((data) => {
-      this.showStudentDetails = data;
-      this.showStudetail = this.showStudentDetails['Student_History'];
-      console.log("this.showStudetail");
-      console.log(studentID);
-      console.log("this.showStudetail");
-      console.log(this.showStudetail);
-    })
-    
-  }
+
+    this.ROLE_ID = getFromLocalStorage('ROLE_ID');
+
+    if(this.ROLE_ID == 2){
+      const studntidString = getFromLocalStorage('studenId'); // Retrieve data from local storage
+      if (studntidString) {
+        const studntid = parseInt(studntidString, 10); // Parse the string to an integer
+        console.log("studntid" + studntid);
+        this.serviceData.showStudDetails(studntid).subscribe((data) => {
+          this.showStudentDetails = data;
+          this.showStudetail = this.showStudentDetails['Student_History'];
+        });
+      } else {
+        console.log('No data found in local storage for key "stid"');
+      }  
+    }
+    else{
+      const studntidString = getFromLocalStorage('stid'); // Retrieve data from local storage
+      if (studntidString) {
+        const studntid = parseInt(studntidString, 10); // Parse the string to an integer
+        console.log("studntid" + studntid);
+        this.serviceData.showStudDetails(studntid).subscribe((data) => {
+          this.showStudentDetails = data;
+          this.showStudetail = this.showStudentDetails['Student_History'];
+        });
+      } else {
+        console.log('No data found in local storage for key "stid"');
+      }  
+    }
+
+        
+
+      // const studntid = getFromLocalStorage('stid');
+      //   if (studntid !== null) {
+      //     console.log("studntid" + studntid);
+      //     this.serviceData.showStudDetails(studntid).subscribe((data) => {
+      //       this.showStudentDetails = data;
+      //       this.showStudetail = this.showStudentDetails['Student_History'];
+      //     });
+      //   } else {
+      //     console.log("studntid is null. Unable to proceed.");
+      //   }
+    }
 
 
   // downloadExcel() {
