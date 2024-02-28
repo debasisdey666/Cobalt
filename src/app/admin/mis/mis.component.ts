@@ -50,6 +50,19 @@ export class MisComponent implements OnInit {
   showPaperTrue:any;
   showPaper:any;
   showstudntDf:any;
+  showBtn: boolean = false;
+
+  // Names
+  feesCollect: string = "Fees Collection";
+  stuCount: string = "Student Count";
+  facultyCount: string = "Faculty Count";
+  feesDefaulter: string = "Fees Defaulter";
+  libraryDefaulter: string = "Library Defaulter";
+  studentAttendace: string = "Student Attendance";
+
+
+
+
 
   maxDate: string = '';
 
@@ -175,6 +188,7 @@ export class MisComponent implements OnInit {
       this.showStudentFees = data;
       this.showStuFeesall =  this.showStudentFees['Fees_Collection_Details'];
       console.log(this.showStuFeesall);
+      this.showBtn = true;
 
 
       if(this.showStuFeesall.length > 0){      
@@ -198,6 +212,7 @@ export class MisComponent implements OnInit {
     this.serviceData.showStudentCnt(formData).subscribe((data) => {    
 
       this.showStudentcountAll = data;
+      this.showBtn = true;
       this.showStucntAll =  this.showStudentcountAll['STUDENT_COUNT'];
       console.log("student count");
       console.log(this.showStucntAll);
@@ -225,6 +240,8 @@ export class MisComponent implements OnInit {
     this.serviceData.showFacultyCnt(formData).subscribe((data) => {    
 
       this.showStudentcountAll = data;
+      debugger
+      this.showBtn = true;
       this.showFaculAll =  this.showStudentcountAll['INSTRUCTOR_COUNT'];
       console.log("Faculty count");
       console.log(this.showFaculAll);
@@ -253,6 +270,7 @@ export class MisComponent implements OnInit {
     this.serviceData.showLibraryDefaulter(formData).subscribe((data) => {    
 
       this.showLibraryDfAll = data;
+      this.showBtn = true;
       this.showLibraryDf =  this.showLibraryDfAll['LIBRARY_DEFAULTER'];
       console.log("Library Defaulter");
       console.log(this.showLibraryDf);
@@ -279,6 +297,7 @@ export class MisComponent implements OnInit {
     this.serviceData.showFeesDefaulter(formData).subscribe((data) => {    
 
       this.showFeesDfAll = data;
+      this.showBtn = true;
       this.showFeesDf =  this.showFeesDfAll['FEES_DEFAULTER'];
       console.log("Fees Defaulter");
       console.log(this.showFeesDf);
@@ -309,6 +328,7 @@ export class MisComponent implements OnInit {
   this.serviceData.showStudentDefaulter(formData).subscribe((data) => {    
 
     this.showstudntDf = data;
+    this.showBtn = true;
     this.showstudntDf =  this.showstudntDf['ATTENDANCE_FILTER_ADMIN'];
     console.log("Student Attendance");
     console.log(this.showstudntDf);
@@ -429,5 +449,14 @@ export class MisComponent implements OnInit {
     //   }
     // }
 
-
+    changeFlag(){
+      debugger
+      if(this.showStudentFees != null || this.showStudentcountAll != null || this.showFeesDfAll != null || this.showLibraryDfAll != null || this.showstudntDf != null)
+      {
+        this.showBtn = true;
+      }
+      else{
+        this.showBtn = false;
+      }
+    }
 }

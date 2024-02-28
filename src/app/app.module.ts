@@ -69,7 +69,8 @@ import { MisComponent } from './admin/mis/mis.component';
 import { InternshipComponent } from './candidate/internship/internship.component';
 import { MentorshipComponent } from './candidate/mentorship/mentorship.component';
 import { BookIssueComponent } from './admin/book-issue/book-issue.component';
-import { BookmasterComponent } from './bookmaster/bookmaster.component'
+import { BookmasterComponent } from './bookmaster/bookmaster.component';
+import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.component'
 
 
 @NgModule({
@@ -123,6 +124,7 @@ import { BookmasterComponent } from './bookmaster/bookmaster.component'
     MentorshipComponent,
     BookIssueComponent,
     BookmasterComponent,
+    DownloadToExcelComponent,
     // PieChartComponent,
     
   ],

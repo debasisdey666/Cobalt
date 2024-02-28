@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-sm-2 pe-0 mb-2">
         <label class="form-label">MIS Report</label>
-        <select required class="form-select" [(ngModel)]="selectedMISReport" name="misReport" id="misReport">
+        <select required class="form-select" [(ngModel)]="selectedMISReport" (change)="changeFlag()" name="misReport" id="misReport">
           <option value="0">Select MIS Report</option>
           <option value="1">FEES COLLECTION</option>
           <option value="2">STUDENT COUNT</option>
@@ -320,11 +320,11 @@
           </form>
       </div>
 
-
+      <!-- Tables  -->
 
       <!-- FEES COLLECTION -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '1'">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '1'" id="content">
         <table class="table table-striped">
           <thead>
             <tr>
@@ -354,6 +354,9 @@
           </tbody>
 
         </table>
+        <div *ngIf="showBtn" class="btn-alignment">
+          <app-download-to-excel [excelName]="feesCollect"></app-download-to-excel>
+        </div>
       </div>
 
 
@@ -361,7 +364,7 @@
 
       <!-- STUDENT COUNT -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '2'">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '2'" id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2">
           <thead>
@@ -390,6 +393,9 @@
           </tbody>
 
         </table>
+        <div *ngIf="showBtn" class="btn-alignment">
+          <app-download-to-excel [excelName]="stuCount"></app-download-to-excel>
+        </div>
 
       </div>
 
@@ -401,7 +407,7 @@
 
       <!-- FACULTY COUNT -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '3'">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '3'" id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2">
           <thead>
@@ -426,6 +432,10 @@
             </tr>
           </tbody>
         </table>
+
+        <div *ngIf="showBtn" class="btn-alignment">
+          <app-download-to-excel [excelName]="facultyCount"></app-download-to-excel>
+        </div>
 
       </div>
 
@@ -488,7 +498,7 @@
 
       <!-- FEES DEFAULTER -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '5'">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '5'"  id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2 long-text-cell">
           <thead>
@@ -528,6 +538,9 @@
           </tbody>
 
         </table>
+        <div *ngIf="showBtn" class="btn-alignment">
+          <app-download-to-excel [excelName]="feesDefaulter"></app-download-to-excel>
+        </div>
 
       </div>
       <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '5'">
@@ -537,7 +550,7 @@
 
       <!-- LIDRARY DEFAULTER -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '6'">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '6'"  id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2">
           <thead>
@@ -571,7 +584,9 @@
           </tbody>
 
         </table>
-
+        <div *ngIf="showBtn" class="btn-alignment">
+          <app-download-to-excel [excelName]="libraryDefaulter"></app-download-to-excel>
+        </div>
       </div>
 
       <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '6'">
@@ -583,7 +598,7 @@
 
       <!-- Student Attendance -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '7'">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '7'"  id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2 long-text-cell">
             <thead>
@@ -612,7 +627,9 @@
             </tbody>
           
         </table>
-        
+        <div *ngIf="showBtn" class="btn-alignment">
+          <app-download-to-excel [excelName]="studentAttendace"></app-download-to-excel>
+        </div>
       </div>
       <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '7'">
         <jw-pagination [items]="showstudntDf" [pageSize]="pageSize" (changePage)="onChangePage6($event)"></jw-pagination>
