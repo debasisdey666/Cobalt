@@ -1,0 +1,15 @@
+
+
+<ng-container *ngIf="shouldShowNavigation()">
+    <app-header></app-header>
+    <app-sidebar></app-sidebar>
+  </ng-container>
+
+<router-outlet></router-outlet>
+
+<ng-container *ngIf="shouldShowNavigation()">
+    <app-footer></app-footer>
+  </ng-container>
+
+
+

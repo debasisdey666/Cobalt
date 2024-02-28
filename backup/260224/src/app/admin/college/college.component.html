@@ -1,0 +1,291 @@
+
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>College</h1>
+  </div><!-- End Page Title -->
+
+  <section class="section mainBodySec">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="tblMN table-responsive text-nowrap">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>
+                  College Code
+                </th>
+                <th>
+                  College Name
+                </th>
+                
+                <th>
+                  University Name
+                </th>
+                <th class="actionTd1">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let showColg of pageOfItems">
+                <td>{{showColg.COLLEGE_CODE}}</td>
+                <td>{{showColg.COLLEGE_NAME}}</td>                
+                <td>{{showColg.UNIVERSITY_NAME}}</td>
+                <td>
+                  <p class="mb-0" *ngIf="showColg.STATUS==true; else elseBlock">
+                    <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showColg,$event)"
+                      data-bs-target="#editModal">
+                      <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="activeBtntrue" data-bs-toggle="modal" data-bs-target="#statusModal"
+                      (click)="actvinactv(showColg,$event)">
+                      <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                  <ng-template #elseBlock>
+                    <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil"
+                        aria-hidden="true"></i></a>
+
+                    <a href="#" class="activeBtn{{showColg.STATUS}} ms-0" (click)="actvinactv(showColg,$event)"
+                      data-bs-toggle="modal" data-bs-target="#statusModal">
+                      <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                      <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                    </a>
+
+                  </ng-template>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6 pull-left">
+          <jw-pagination [items]="showCollegeType" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination> 
+          </div>
+          <div class="col-md-6 pull-left text-right">
+            <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+          </div>
+      </div>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+
+<div *ngIf="loading" class="loadingSec">
+  <img src="assets/images/loading-gif.gif" alt="ITC-MBS" class="loading"/>            
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add College</h5>
+        <button type="button" class="btn-cls" #closeButton data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #colgAddForm="ngForm" (ngSubmit)="getColgFormdata(colgAddForm.value)" novalidate>
+          <div class="modal-body">
+
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+            <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+              Data Not Saved (Duplicate Data Not Allowed)
+            </div> 
+            
+              <div class="row">
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">University Name<strong class="required"> *</strong> </label> 
+
+                  <select class="form-select" ngModel name="UNIVERSITY_ID" data-live-search="true" required
+                   #UNIVERSITY_ID="ngModel">
+                   <option value="">-- Select One --</option>
+                    <option *ngFor="let univ of showUniversity" [value]="univ.ID">
+                      {{univ.UNIVERSITY_NAME}}
+                    </option>
+                  </select>
+
+                  <div class="alert alert-danger" *ngIf="UNIVERSITY_ID.touched && UNIVERSITY_ID.invalid">
+                    <div class="" *ngIf="UNIVERSITY_ID.errors?.required">
+                      This Field is required
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">College Code<strong class="required"> *</strong> </label> 
+                  <!-- <input type="text" name="COLLEGE_CODE" class="form-control" pattern="^[^\s].*[^\s]$" ngModel required #COLLEGE_CODE="ngModel" >  -->
+                  <input type="text" name="COLLEGE_CODE" class="form-control" pattern="^\S.*\S$" ngModel required #COLLEGE_CODE="ngModel" > 
+                  
+                  
+                  <div class="" *ngIf="COLLEGE_CODE.touched">
+                    <div class="alert alert-danger" *ngIf="COLLEGE_CODE.errors?.required">
+                      This Field is required
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">College Name<strong class="required"> *</strong> </label>  
+                  <!-- <input type="text" name="COLLEGE_NAME" ngModel required #COLLEGE_NAME="ngModel" pattern="^[^\s].*[^\s]$" required class="form-control"> -->
+                  <input type="text" name="COLLEGE_NAME" ngModel required #COLLEGE_NAME="ngModel" pattern="^\S.*\S$" required class="form-control">
+                 
+                  <div class="" *ngIf="COLLEGE_NAME.touched">
+                    <div class="alert alert-danger" *ngIf="COLLEGE_NAME.errors?.required">
+                      This Field is required
+                    </div>
+                  </div>
+                </div>                 
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+            <button class="btn btn-primary"  [disabled]="colgAddForm.invalid || isSubmit" >Submit</button>
+          </div>
+        </form>
+   
+      </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit College</h5>
+        <button type="button" class="btn-cls" #closeButton2 data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #collegeTypeFormedit="ngForm" (ngSubmit)="collegeTypeFormeditdata(collegeTypeFormedit.value)" novalidate>
+        <div class="modal-body">
+
+          <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+          <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+            Update Successfully.
+          </div> 
+          <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+            Data Not Saved (Duplicate Data Not Allowed)
+          </div> 
+          
+            <div class="row">
+              <div class="col-md-12 mt-3">
+                <label class="form-label">University Name<strong class="required"> *</strong> </label> 
+                <input type="hidden" name="ID" #ID="ngModel" [(ngModel)]="collegetypeUpdate.ID" [value]="collegetypeUpdate.ID"> 
+               
+
+                <select class="form-select" ngModel name="UNIVERSITY_ID" data-live-search="true"
+                   #UNIVERSITY_ID="ngModel" [value]="collegetypeUpdate.UNIVERSITY_ID">
+                   <option value="" disabled>-- Select One --</option>
+                    <option *ngFor="let univ of showUniversity" [value]="univ.ID">
+                      {{univ.UNIVERSITY_NAME}}
+                    </option>
+                  </select>
+                  <input type="hidden" name="UNIVERSITY_ID" #ID="ngModel" [(ngModel)]="collegetypeUpdate.UNIVERSITY_ID" [value]="collegetypeUpdate.UNIVERSITY_ID"> 
+                
+              </div>
+
+              <!-- <div class="col-md-12 mt-3">
+                <label class="form-label">College Code<strong class="required"> *</strong> </label> 
+                <input type="text" class="form-control" pattern="^[^\s].*[^\s]$" required [(ngModel)]="collegetypeUpdate.COLLEGE_CODE" name="COLLEGE_CODE" #COLLEGE_CODE="ngModel">
+               
+                <div class="" *ngIf="COLLEGE_CODE.touched && COLLEGE_CODE.invalid">
+                  <div class="alert alert-danger" *ngIf="COLLEGE_CODE.errors?.required">
+                    Field is required
+                  </div>
+                  <div class="alert alert-danger" *ngIf="COLLEGE_CODE.errors?.pattern">
+                    Invalid Entry
+                  </div>  
+                </div>        
+              </div> -->
+
+              <div class="col-md-12 mt-3">
+                <label class="form-label">College Code<strong class="required"> *</strong> </label> 
+                <input type="text" class="form-control" pattern="^[^\s].*[^\s]$" required [(ngModel)]="collegetypeUpdate.COLLEGE_CODE" name="COLLEGE_CODE" #collegetypeCode="ngModel">
+                <div class="" *ngIf="collegetypeCode.touched && collegetypeCode.invalid">
+                    <div class="alert alert-danger" *ngIf="collegetypeCode.errors?.required">
+                        Field is required
+                    </div>
+                    <div class="alert alert-danger" *ngIf="collegetypeCode.errors?.pattern">
+                        Invalid Entry
+                    </div>  
+                </div>        
+            </div>
+            
+
+              <div class="col-md-12 mt-3">
+                <label class="form-label">College Name<strong class="required"> *</strong> </label>  
+                <input type="text" class="form-control" pattern="^[^\s].*[^\s]$" required [(ngModel)]="collegetypeUpdate.COLLEGE_NAME" name="COLLEGE_NAME" #collegeName="ngModel">
+                <!-- <div class="" *ngIf="COLLEGE_NAME.touched">
+                  <div class="alert alert-danger" *ngIf="COLLEGE_NAME.errors?.required">
+                    College Name is required
+                  </div>
+                </div> -->
+                <div class="" *ngIf="collegeName.touched && collegeName.invalid">
+                  <div class="alert alert-danger" *ngIf="collegeName.errors?.required">
+                      Field is required
+                  </div>
+                  <div class="alert alert-danger" *ngIf="collegeName.errors?.pattern">
+                      Invalid Entry
+                  </div>  
+              </div>    
+              </div>
+             
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+          <button class="btn btn-primary" [disabled]="collegeTypeFormedit.invalid || isSubmit">Submit</button>
+        </div>
+        </form>
+      </div>
+  </div>
+</div>
+
+
+<!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" #closeButton3 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+     
+
+      <form #collegetypeForm="ngForm" (ngSubmit)="collegetypeFormData()">
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Update Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="collegetypeUpdate.STATUS" name="STATUS" [value]="true"> Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="collegetypeUpdate.STATUS" name="STATUS" [value]="false"> Inactive
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" [disabled]="collegetypeForm.invalid">Yes</button>
+        </div>
+      </form>
+
+
+      
+    </div>
+  </div>
+</div>
+
+

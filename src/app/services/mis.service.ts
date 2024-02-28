@@ -16,9 +16,19 @@ export class MisService {
   url5=environment.baseUrl+"api/MIS/instructorcount";
   url6=environment.baseUrl+"api/MIS/feesdefaulter";
   url7=environment.baseUrl+"api/Filter_ClassTimetable";
-  
 
-  constructor(private http: HttpClient) { }
+  student_id: any;
+
+  constructor(private http: HttpClient) {
+    
+  }
+
+  // setStudentId(id: any): void {
+  //   this.student_id = id;
+  // }
+
+
+
 
   showStudentHistory(formData:any){
     const userId = getFromLocalStorage('userId');
@@ -57,7 +67,10 @@ export class MisService {
     return this.http.post(this.url,data)
   }
 
+ 
+ 
   showStudDetails(studentID: number) {
+
     var data = {
       "studenT_ID": studentID,
       "reporT_TYPE": 1,
