@@ -71,6 +71,7 @@ import { MentorshipComponent } from './candidate/mentorship/mentorship.component
 import { BookIssueComponent } from './admin/book-issue/book-issue.component';
 import { BookmasterComponent } from './bookmaster/bookmaster.component';
 import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.component'
+import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
 
 
 @NgModule({
@@ -125,6 +126,7 @@ import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.
     BookIssueComponent,
     BookmasterComponent,
     DownloadToExcelComponent,
+    LibraryClearanceComponent
     // PieChartComponent,
     
   ],

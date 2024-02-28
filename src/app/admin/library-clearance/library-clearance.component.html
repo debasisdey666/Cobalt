@@ -1,0 +1,95 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>library clearance</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+        <div class="row">
+            <div class="col-sm-12">
+                <form #searchMisInp="ngForm" (ngSubmit)="searchMisInput(searchMisInp.value)" novalidate>
+                  <div class="row mb-4">
+            
+            
+                    <div class="col-sm-3 pe-0">
+                      <label class="form-label">Branch</label>
+                      <select required class="form-select" ngModel name="brancH_ID" data-live-search="true"
+                        #brancH_ID="ngModel">
+                        <option value="">Select One</option>
+                        <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                          {{branchDropdwn.BRANCH_NAME}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-sm-3 pe-0">
+                      <label class="form-label">Academic Year</label>
+                      <select required class="form-select" ngModel name="aY_ID" data-live-search="true" #aY_ID="ngModel">
+                        <option value="">Select One</option>
+                        <option *ngFor="let AcademicYearDropdwn of showAcademicYearTrue" [value]="AcademicYearDropdwn.ID">
+                          {{AcademicYearDropdwn.AY}}
+                        </option>
+                      </select>
+                    </div>
+            
+                    <div class="col-sm-3 pe-0">
+                      <label class="form-label">Semester</label>
+                      <select required class="form-select" ngModel name="seM_ID" data-live-search="true" #seM_ID="ngModel">
+                        <option value="">Select One</option>
+                        <option *ngFor="let semDropdwn of showSem" [value]="semDropdwn.ID">
+                          {{semDropdwn.SEM}}
+                        </option>
+                      </select>
+                    </div>
+            
+                    <div class="col-sm-3 pe-0 mt-1">
+                      <button type="submit" #searchFiter class="btn btn-primary px-5 py-3 me-1 mt-4">Search</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            
+            
+            
+              <div class="tblMN table-responsive text-nowrap mt-2 mb-2">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                        <th>Registration No.</th>
+                      <th>Name</th>
+                      <th>Phone No.</th>
+                      <th class="text-center">Clearance Status</th>
+                      <th class="actionTd1">
+                        Select All <input type="checkbox" (change)="selectAll($event)" class="form-check-input"> 
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let showStuHistry of pageOfItems">
+                     <td>{{showStuHistry.STUDENT_REGISTRATION}}</td>
+                      <td>{{showStuHistry.STUDENT_NAME}}</td>
+                      <td>{{showStuHistry.PH_NUMBER}}</td>
+                      <td class="text-center">Clear</td>
+                      <td class="text-center">
+                        <input type="checkbox" [(ngModel)]="showStuHistry.selected" [checked] = "checkField" class="form-check-input"> 
+                      </td>
+                    </tr>
+                    <tr>
+            
+                    </tr>
+            
+            
+                  </tbody>
+            
+                </table>
+              </div>
+              <div class="col-md-6 pull-left">
+                <jw-pagination [items]="showStuHistory" [pageSize]="pageSize"
+                  (changePage)="onChangePage($event)"></jw-pagination>
+              </div>  
+        </div>
+    </section>
+
+ 
+
+
+  </main>

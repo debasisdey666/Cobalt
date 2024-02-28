@@ -47,6 +47,7 @@ import { InternshipComponent } from './candidate/internship/internship.component
 import { MentorshipComponent } from './candidate/mentorship/mentorship.component';
 import { BookIssueComponent } from './admin/book-issue/book-issue.component';
 import { BookmasterComponent } from './bookmaster/bookmaster.component';
+import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
 
 
 const routes: Routes = [
@@ -107,6 +108,7 @@ const routes: Routes = [
 
   { path: 'book-issue', component: BookIssueComponent , canActivate: [AuthGuard] }, 
   { path: 'bookmaster', component: BookmasterComponent , canActivate: [AuthGuard] }, 
+  { path: 'library-clearance', component: LibraryClearanceComponent , canActivate: [AuthGuard] }, 
 
   
   // { path: '**', component: LoginComponent },
