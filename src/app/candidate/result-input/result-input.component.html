@@ -1,0 +1,29 @@
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Result Input</h1>
+    </div><!-- End Page Title -->
+    <section class="section mainBodySec">
+        <div class="row">
+            <div class="row" *ngFor="let studentInp of showRsltInpAll">
+
+                <div class="col-md-4 mb-2">
+                    <p> <strong> Name : </strong> {{studentInp.BRANCH_NAME}}</p>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <p> <strong>Sem :</strong> {{studentInp.SEM}}</p>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <p> <strong>SGPA :</strong> {{studentInp.SGPA}}</p>
+                </div>
+    
+                <div class="col-md-4 mb-2">
+                    <p> <strong> YGPA : </strong> {{studentInp.YGPA}}</p>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <p> <strong>DGPA :</strong> {{studentInp.DGPA}}</p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+</main>

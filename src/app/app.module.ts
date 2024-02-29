@@ -72,6 +72,7 @@ import { BookIssueComponent } from './admin/book-issue/book-issue.component';
 import { BookmasterComponent } from './bookmaster/bookmaster.component';
 import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.component'
 import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
+import { ResultInputComponent } from './candidate/result-input/result-input.component';
 
 
 @NgModule({
@@ -126,7 +127,8 @@ import { LibraryClearanceComponent } from './admin/library-clearance/library-cle
     BookIssueComponent,
     BookmasterComponent,
     DownloadToExcelComponent,
-    LibraryClearanceComponent
+    LibraryClearanceComponent,
+    ResultInputComponent
     // PieChartComponent,
     
   ],
