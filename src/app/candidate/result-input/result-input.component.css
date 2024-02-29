@@ -1,0 +1,13 @@
+.rounded-input {
+    margin-left: 20px;
+    margin-right: 900px /* Adjust the width as needed */
+  }
+
+.text-format{
+    display: flex;
+    justify-content: center;
+    text-decoration: solid;
+    text-transform: capitalize;
+    font-weight: bold;
+    color: green;
+}

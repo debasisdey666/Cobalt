@@ -13,15 +13,27 @@ export class ResultInputService {
 
   constructor(private http: HttpClient) { }
 
-  showResultInput() {    
+  showResultInput(id:any,student_id: any) {    
     const data = {
-      "id": 0,
+      "id": id,
       "sgpa": 0,
       "ygpa": 0,
       "dgpa": 0,
       "updatedby": "string",
-      "studenT_ID": 7,
+      "studenT_ID": student_id,
       "mode": "V"
+    };
+    return this.http.post(this.url, data);
+  }
+  updateStudentResult(id: any, sgpa: any, ygpa: any, dgpa: any, student_id: any) {    
+    const data = {
+      "id": id,
+      "sgpa": sgpa,
+      "ygpa": ygpa,
+      "dgpa": dgpa,
+      "updatedby": "string",
+      "studenT_ID": student_id,
+      "mode": "U"
     };
     return this.http.post(this.url, data);
   }
