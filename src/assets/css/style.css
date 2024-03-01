@@ -1938,13 +1938,17 @@ table tr td .clgprogNestedTable:last-child{
 .cardDetail{
   text-align: justify;
 }
+.successTrue,
 .attPresent{
   color: #08bf08;
   font-weight:bold;
+  text-transform: uppercase;
 }
+.successFalse,
 .atAabsent{
   color: #ff0000;
   font-weight:bold;
+  text-transform: uppercase;
 }
 .attNotTaken{
   color: #f69f07;

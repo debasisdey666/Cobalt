@@ -16,6 +16,7 @@ export class MisService {
   url5=environment.baseUrl+"api/MIS/instructorcount";
   url6=environment.baseUrl+"api/MIS/feesdefaulter";
   url7=environment.baseUrl+"api/Filter_ClassTimetable";
+  url8=environment.baseUrl+"api/StudentAttendanceReport/StudentAttendanceReport";
 
   student_id: any;
 
@@ -244,6 +245,26 @@ export class MisService {
     }
     return this.http.post(this.url7,data)
   }
+
+
+   // Student Attendance new
+
+
+ showStudentAttnw(formData:any){
+    const userId = getFromLocalStorage('userId');
+    var data=   
+    {
+      "useR_ID": userId,
+      "reporT_TYPE": 9,
+      "branch_id": formData.brancH_ID,
+      "aY_ID": formData.aY_ID,
+      "seM_ID": formData.seM_ID,
+      "clasS_OF_DATE_START": formData.fmdate,
+      "clasS_OF_DATE_END": formData.todate,
+    }
+    return this.http.post(this.url8,data)
+  }
+
 
 
 }

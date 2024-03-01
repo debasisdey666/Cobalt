@@ -50,6 +50,10 @@ export class MisComponent implements OnInit {
   showPaperTrue:any;
   showPaper:any;
   showstudntDf:any;
+  showAttdncNw:any;
+  swStuatNwRow:any;
+  swStuatNw:any;
+  swStuatNwCol:any;
   showBtn: boolean = false;
 
   // Names
@@ -85,6 +89,11 @@ export class MisComponent implements OnInit {
     // }
   }
 
+
+  getObjectKeys(obj: any): string[] {
+    return Object.keys(obj);
+  }
+
   ngOnInit(): void {
 
     this.serviceData5.showPaperTrue().subscribe((data) => {
@@ -108,6 +117,11 @@ export class MisComponent implements OnInit {
       this.showSem = this.showSemesterTrue['Data'];
       //console.log(this.showSem);
     })
+
+
+    
+
+
 
     this.route.queryParams.subscribe(params => {
       this.selectedMISReport = params['selectedMISReport'] || '0'; // Use default value if parameter is not provided
@@ -322,24 +336,35 @@ export class MisComponent implements OnInit {
  searchStudentAttnDeaflt(formData: any) {
 
   this.errorMessage2 = false;  
-  this.showstudntDf =[];
+  this.swStuatNwRow =[];
+  this.swStuatNwCol =[];
   console.log('Form submitted!');
 
-  this.serviceData.showStudentDefaulter(formData).subscribe((data) => {    
+  // this.serviceData.showStudentAttnw(formData).subscribe((data) => { 
+  //   this.showstudntDf = data;
+  //   this.showBtn = true;
+  //   this.showstudntDf =  this.showstudntDf['ATTENDANCE_FILTER_ADMIN'];
+  //   console.log("Student Attendance");
+  //   console.log(this.showstudntDf);
 
-    this.showstudntDf = data;
-    this.showBtn = true;
-    this.showstudntDf =  this.showstudntDf['ATTENDANCE_FILTER_ADMIN'];
-    console.log("Student Attendance");
-    console.log(this.showstudntDf);
+  this.serviceData.showStudentAttnw(formData).subscribe((data) => {
+    this.showAttdncNw = data;
+    this.swStuatNwCol = this.showAttdncNw['columns'];
+    this.swStuatNwRow = this.showAttdncNw['rows'];
+    console.log("Attendance Report 1");
+    console.log(this.swStuatNwCol);
+    console.log(this.swStuatNwRow);
+    console.log("Attendance Report 2");
 
 
-    if(this.showstudntDf.length > 0){      
+
+
+    if(this.swStuatNwRow.length > 0){      
       console.log("data");
       this.errorMessage2 = false;  
     }
     else{
-      this.showFeesDf =[];
+      this.swStuatNwRow =[];
       console.log("no data");
       this.errorMessage2 = true;  
     }
@@ -450,7 +475,6 @@ export class MisComponent implements OnInit {
     // }
 
     changeFlag(){
-      debugger
       if(this.showStudentFees != null || this.showStudentcountAll != null || this.showFeesDfAll != null || this.showLibraryDfAll != null || this.showstudntDf != null)
       {
         this.showBtn = true;

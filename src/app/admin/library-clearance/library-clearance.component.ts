@@ -22,7 +22,8 @@ export class LibraryClearanceComponent implements OnInit {
   updateSuccessmessage: boolean = false;
   errorMessage: boolean = false;
   errorMessage2: boolean = false;
-  showStuHistory:any;
+  // showStuHistory:any;
+  showStuHistory: any[] = [];
   showStudentH:any;
   showFeesDf:any;
   showFeesDfAll:any;
@@ -37,6 +38,9 @@ export class LibraryClearanceComponent implements OnInit {
   showStudentcountAll:any;
   showSem:any;
   checkField: boolean = false;
+  selectAll: boolean = false;
+  addSuccessmessage: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private serviceData:LibraryClearanceService,
@@ -49,7 +53,7 @@ export class LibraryClearanceComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.serviceData5.showPaperTrue().subscribe((data) => {
+       this.serviceData5.showPaperTrue().subscribe((data) => {
       this.showPaperTrue = data;
       this.showPaper = this.showPaperTrue['Data'];
       //console.log(this.showSem);
@@ -73,29 +77,22 @@ export class LibraryClearanceComponent implements OnInit {
 
    
   
-    this.serviceData.showStudentHisView().subscribe((data) => {
-      this.showStudentH = data;
-      this.showStuHistory =  this.showStudentH['Student_Details_Year_Wise'];
-      if(this.showStuHistory.length > 0){      
-        console.log("data");
-        this.errorMessage = false;  
-      }
-      else{
-        this.showStuHistory =[];
-        console.log("no data");
-        this.errorMessage = true;  
-      }  
-    })
+    // this.serviceData.showStudentHisView().subscribe((data) => {
+    //   this.showStudentH = data;
+    //   this.showStuHistory =  this.showStudentH['Student_Details_Year_Wise'];
+    //   if(this.showStuHistory.length > 0){      
+    //     console.log("data");
+    //     this.errorMessage = false;  
+    //   }
+    //   else{
+    //     this.showStuHistory =[];
+    //     console.log("no data");
+    //     this.errorMessage = true;  
+    //   }  
+    // })
   }
 
-  selectAll(event: any) {
-    const checked = event.target.checked;
-    // !this.checkField
-     this.showStuHistory.forEach((item: any) => item.selected = checked);
-    // console.log("checked" + checked);
-    this.cdr.detectChanges();
-  }
-
+ 
 
   // Pagination
 
@@ -119,8 +116,9 @@ export class LibraryClearanceComponent implements OnInit {
     this.showStudentH = data;
     this.showStuHistory =  this.showStudentH['Student_Details_Year_Wise'];
 
-    console.log("this.showStuHistory");
+    console.log("student History for library clearance");
     console.log(this.showStuHistory);
+    console.log(this.showStuHistory[1].LIBRARY_CLEAR_STAUS);
     
 
 
@@ -136,8 +134,75 @@ export class LibraryClearanceComponent implements OnInit {
 
   })
 }
-  
 
+selectAllChanged(event: any) {
+  console.log('Select All changed:', event.target.checked);
+
+  if (this.showStuHistory) {
+    this.showStuHistory.forEach((item: { LIBRARY_CLEAR_STAUS: any; }) => {
+      if (item) {
+        item.LIBRARY_CLEAR_STAUS = event.target.checked ? 1 : 0;
+      }
+    });
+
+    // Manually trigger change detection
+    this.cdr.detectChanges();
+  }
+}
+
+
+
+onCheckboxChange(event: any, showStuHistry: any) {
+  showStuHistry.LIBRARY_CLEAR_STAUS = event.target.checked ? 1 : 0;
+
+  console.log("librarY_CLEAR_STATUS" + showStuHistry.LIBRARY_CLEAR_STAUS);
+  console.log("ID" + showStuHistry.ID);
+
+  const allChecked = this.pageOfItems?.every(item => item?.librarY_CLEAR_STATUS) ?? false; // Use false as the default value
+  const selectAllCheckbox = document.getElementById('selectall') as HTMLInputElement;
+
+  // Check if the element is found before accessing its properties
+  if (selectAllCheckbox) {
+    selectAllCheckbox.checked = allChecked;
+  }
+}
+
+
+
+libraryCLerFormdata() { 
+  const requestData = {
+    "studenT_ID": 0,  
+  
+  "libraryclearancedetail": this.showStuHistory.map((item: any) => ({
+      "id": item.ID,
+      "librarY_CLEAR_STATUS": item.LIBRARY_CLEAR_STAUS
+    })),
+    "addedby": "1",   
+    "updatedby": "1",
+    "mode": "A"   
+  };
+
+  this.loading = true;
+  
+  // Make the API call
+  this.serviceData.submitStudentLibrary(requestData).subscribe(
+    (response: any) => {
+      this.addSuccessmessage = true;
+      if (response.updatedData) {
+        this.pageOfItems = response.updatedData;
+      }      
+      this.loading = false;
+      setTimeout(() => {
+        this.addSuccessmessage = false;
+         window.location.reload();
+      }, 1000);
+      console.log('API Response:', response);
+    },
+    (error:any) => {
+      console.error('API Error:', error);
+    }
+  );
+}
 
 
 }
