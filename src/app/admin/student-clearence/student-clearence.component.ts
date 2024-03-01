@@ -24,7 +24,6 @@ export class StudentClearenceComponent implements OnInit {
   }
 
   saveFormData(){
-    debugger
     if(this.formData.regNumber != ''){
       this.registrationNumber = parseInt(this.formData.regNumber);
       this.moreInfo = true;

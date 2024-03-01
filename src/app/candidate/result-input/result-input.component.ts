@@ -89,7 +89,6 @@ export class ResultInputComponent implements OnInit {
   }
 
   updateData(){
-    debugger
     if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
       alert("working")
     //   this.serviceData.updateStudentResult(this.updateId,this.sgpa,this.ygpa,this.dgpa,this.student_id).subscribe((data: any) => {
