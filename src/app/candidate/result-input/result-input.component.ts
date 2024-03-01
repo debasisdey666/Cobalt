@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ResultInputService } from 'src/app/services/result-input.service';
 
 @Component({
@@ -28,6 +29,7 @@ export class ResultInputComponent implements OnInit {
 
   constructor(
     private serviceData:ResultInputService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -91,7 +93,8 @@ export class ResultInputComponent implements OnInit {
       this.serviceData.updateStudentResult(this.updateId,this.sgpa,this.ygpa,this.dgpa,this.student_id).subscribe((data: any) => {
       this.updatedData = data;
       console.log(this.updatedData)
-    alert("submitted successfully");
+      alert("submitted successfully");
+      this.router.navigateByUrl("/dashboard");
     })
       
     }

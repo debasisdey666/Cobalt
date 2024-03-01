@@ -12,19 +12,19 @@
                     <p> <strong>Sem :</strong> {{studentInp.SEM}}</p>
                 </div>
                 <form #marksForm="ngForm" (ngSubmit)="saveFormData()">
-                    <div class="input-group mb-3">
+                    <div class="mb-3 col-4 float-start px-2">
                         <label><strong>SGPA: </strong></label>
-                        <input type="text" name="sgpaData" class="form-control rounded-input"
+                        <input type="text" name="sgpaData" class="form-control py-2"
                             [(ngModel)]="formData.sgpaDataInput" required>
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="mb-3 col-4 float-start px-2">
                         <label><strong>YGPA: </strong></label>
-                        <input type="text" name="ygpaData" class="form-control rounded-input"
+                        <input type="text" name="ygpaData" class="form-control py-2"
                             [(ngModel)]="formData.ygpaDataInput" required>
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="mb-3 col-4 float-start px-2">
                         <label><strong>DGPA: </strong></label>
-                        <input type="text" name="dgpaData" class="form-control rounded-input"
+                        <input type="text" name="dgpaData" class="form-control py-2"
                             [(ngModel)]="formData.dgpaDataInput" required>
                     </div>
                     <!-- Button toggle -->
