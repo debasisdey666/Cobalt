@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StudentClearenceService } from 'src/app/services/student-clearence.service';
 
 @Component({
   selector: 'app-student-clearence',
@@ -17,16 +18,21 @@ export class StudentClearenceComponent implements OnInit {
   libraryChecked: boolean = false
   isButtonEnabled: boolean = true;
   moreInfo: boolean = false;
+  clearenceData: any[] = [];
 
-  constructor() { }
+  constructor(private clearenceService: StudentClearenceService) { }
 
   ngOnInit(): void {
   }
 
   saveFormData(){
     if(this.formData.regNumber != ''){
-      this.registrationNumber = parseInt(this.formData.regNumber);
-      this.moreInfo = true;
+      this.registrationNumber = this.formData.regNumber;
+      // calling the api
+      this.clearenceService.showClearence(this.registrationNumber).subscribe((data: any) => {
+        this.clearenceData = data;
+        this.moreInfo = true;
+      })
     }
   }
 
