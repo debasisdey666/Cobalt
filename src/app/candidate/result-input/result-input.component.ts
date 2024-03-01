@@ -89,13 +89,15 @@ export class ResultInputComponent implements OnInit {
   }
 
   updateData(){
+    debugger
     if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
-      this.serviceData.updateStudentResult(this.updateId,this.sgpa,this.ygpa,this.dgpa,this.student_id).subscribe((data: any) => {
-      this.updatedData = data;
-      console.log(this.updatedData)
-      alert("submitted successfully");
-      this.router.navigateByUrl("/dashboard");
-    })
+      alert("working")
+    //   this.serviceData.updateStudentResult(this.updateId,this.sgpa,this.ygpa,this.dgpa,this.student_id).subscribe((data: any) => {
+    //   this.updatedData = data;
+    //   console.log(this.updatedData)
+    //   alert("submitted successfully");
+    //   this.router.navigateByUrl("/dashboard");
+    // })
       
     }
     

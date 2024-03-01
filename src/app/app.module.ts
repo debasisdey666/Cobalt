@@ -73,6 +73,7 @@ import { BookmasterComponent } from './bookmaster/bookmaster.component';
 import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.component'
 import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
 import { ResultInputComponent } from './candidate/result-input/result-input.component';
+import { StudentClearenceComponent } from './admin/student-clearence/student-clearence.component';
 
 
 @NgModule({
@@ -128,7 +129,8 @@ import { ResultInputComponent } from './candidate/result-input/result-input.comp
     BookmasterComponent,
     DownloadToExcelComponent,
     LibraryClearanceComponent,
-    ResultInputComponent
+    ResultInputComponent,
+    StudentClearenceComponent
     // PieChartComponent,
     
   ],

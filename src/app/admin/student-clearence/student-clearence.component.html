@@ -1,0 +1,47 @@
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Student Clearence</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+        <div class="row">
+            <div class="col-xl-12">
+                <form #clearenceForm="ngForm" (ngSubmit)="saveFormData()" class="pb-2 col-md-7 d-inline-block">
+                    <label class="fw-bold d-block float-start w-auto">Student Registration:</label>
+
+                    <input type="text" name="registrationData" class="form-control ps-3 py-2 d-block float-start w-50 mx-2" [(ngModel)]="formData.regNumber" />
+                    <button type="submit" class="btn btn-primary me-2 d-block float-start">Submit</button>
+                </form>
+                <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th width="40%">
+                                    Fees
+                                </th>
+                                <th width="45%">
+                                    Paper
+                                </th>
+                                <th>
+                                    Library
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- TODO  -->
+                        </tbody>
+                    </table>
+                    <div class="checkbox-container" *ngIf="moreInfo">
+                        <label for="fees"><input type="checkbox" id="fees" [(ngModel)]="feesChecked" (change)="onCheckboxChange(1)" /></label>
+                        <label for="paper"><input type="checkbox" id="paper" [(ngModel)]="paperChecked" (change)="onCheckboxChange(2)" /></label>
+                        <label for="library"><input type="checkbox" id="library" [(ngModel)]="libraryChecked" (change)="onCheckboxChange(3)" /></label>
+                    </div>
+                </div>
+                <div class="align" *ngIf="moreInfo">
+                    <button type="submit" class="btn btn-primary me-2" [disabled]="isButtonEnabled">Submit</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

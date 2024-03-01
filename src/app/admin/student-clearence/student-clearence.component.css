@@ -1,0 +1,11 @@
+.align{
+    text-align: center;
+}
+
+.checkbox-container {
+    display: flex; /* Use flexbox */
+  }
+  
+  .checkbox-container label {
+    margin-right: 45%; 
+  }

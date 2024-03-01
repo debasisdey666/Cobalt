@@ -49,6 +49,7 @@ import { BookIssueComponent } from './admin/book-issue/book-issue.component';
 import { BookmasterComponent } from './bookmaster/bookmaster.component';
 import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
 import { ResultInputComponent } from './candidate/result-input/result-input.component';
+import { StudentClearenceComponent } from './admin/student-clearence/student-clearence.component';
 
 
 const routes: Routes = [
@@ -111,6 +112,7 @@ const routes: Routes = [
   { path: 'bookmaster', component: BookmasterComponent , canActivate: [AuthGuard] }, 
   { path: 'library-clearance', component: LibraryClearanceComponent , canActivate: [AuthGuard] }, 
   { path: 'result-input', component: ResultInputComponent , canActivate: [AuthGuard] }, 
+  { path: 'student-clearence', component: StudentClearenceComponent, canActivate: [AuthGuard]}
 
   
   // { path: '**', component: LoginComponent },
