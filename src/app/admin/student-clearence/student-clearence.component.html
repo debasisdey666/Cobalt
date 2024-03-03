@@ -29,7 +29,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- TODO  -->
+                            <tr *ngFor="let data of clearenceData">
+                               <td>{{data.FEES_CLEARANCE}}</td> 
+                               <td>{{data.RESULT_CLEARANCE}}</td> 
+                               <td>{{data.LIBRARY_CLEARANCE}}</td> 
+                            </tr>
                         </tbody>
                     </table>
                     <div class="checkbox-container" *ngIf="moreInfo">

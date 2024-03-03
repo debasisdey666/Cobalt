@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class StudentClearenceService {
 
-  url=environment.baseUrl+"/api/AllClearance";
+  url=environment.baseUrl+"api/AllClearance";
 
   constructor(private http: HttpClient) { }
 

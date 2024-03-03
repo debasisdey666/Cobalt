@@ -18,7 +18,8 @@ export class StudentClearenceComponent implements OnInit {
   libraryChecked: boolean = false
   isButtonEnabled: boolean = true;
   moreInfo: boolean = false;
-  clearenceData: any[] = [];
+  clearenceDataResponse: any;
+  clearenceData: any
 
   constructor(private clearenceService: StudentClearenceService) { }
 
@@ -29,8 +30,9 @@ export class StudentClearenceComponent implements OnInit {
     if(this.formData.regNumber != ''){
       this.registrationNumber = this.formData.regNumber;
       // calling the api
-      this.clearenceService.showClearence(this.registrationNumber).subscribe((data: any) => {
-        this.clearenceData = data;
+      this.clearenceService.showClearence(this.registrationNumber).subscribe((res: any) => {
+        this.clearenceDataResponse = res;
+        this.clearenceData = this.clearenceDataResponse['Data'];
         this.moreInfo = true;
       })
     }
