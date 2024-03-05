@@ -672,24 +672,27 @@
      <!-- Student Attendance New-->
 
             <div class="tblMN table-responsive text-nowrap mt-2" id="content" *ngIf="selectedMISReport == '7'">
-              <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
-              <table class="table table-striped mb-2 long-text-cell">
-                  <thead>
-                    <tr>        
-                      <ng-container *ngFor="let showColumn of swStuatNwCol">
-                          <th >{{showColumn}}</th>
-                      </ng-container>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let showRow of swStuatNwRow">
-                      <ng-container *ngFor="let key of getObjectKeys(showRow)">
-                        <td>{{ showRow[key] }}</td>
-                      </ng-container>
-                    </tr>
-                  </tbody>
-                
-              </table>
+              <div *ngIf="showTable">
+                <!-- <input type="text" name="form-control search field" placeholder="search here" [(ngModel)]="searchText" style="float: right"> -->
+                <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+                <table class="table table-striped mb-2 long-text-cell" id="abc" datatable [dtOptions]="dtOptions">
+                    <!-- <thead>
+                      <tr>        
+                        <ng-container *ngFor="let showColumn of swStuatNwCol">
+                            <th >{{showColumn}}</th>
+                        </ng-container>
+                      </tr>
+                    </thead> -->
+                    <tbody>
+                      <tr *ngFor="let showRow of swStuatNwRow">
+                        <ng-container *ngFor="let key of getObjectKeys(showRow)">
+                          <td>{{ showRow[key] }}</td>
+                        </ng-container>
+                      </tr>
+                    </tbody>
+                  
+                </table>
+              </div>
             </div>
      
 

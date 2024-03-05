@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MisService } from '../../services/mis.service';
 import { environment } from '../../../environments/environment';
 import { BranchService } from 'src/app/services/branch.service';
@@ -10,6 +10,9 @@ import { filter } from 'rxjs/operators';
 import * as xlsx from 'xlsx';
 import { saveAs } from 'file-saver';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { DataTableDirective } from 'angular-datatables';
+// import DataTable from 'datatables.net-dt';
 
 
 @Component({
@@ -25,36 +28,43 @@ export class MisComponent implements OnInit {
   toDateInvalid: boolean = false; // Flag to indicate if the To Date is invalid
   addSuccessmessage: boolean = false; // Flag to indicate if the To Date is invalid
   buttonDisabled: boolean = false;
-  showStudentH:any;
-  showStuHistory:any;
-  showBranchData:any;
-  showBranch:any;
-  showACData:any;
-  showAcademicYearTrue:any;
-  showSemesterTrue:any;
-  showStudentcountAll:any;
-  showFaculAll:any;
-  showSem:any;
-  showStuFeesall:any;
-  showStucntAll:any;
-  showFacountAll:any;
-  showStudentFees:any;
-  showLibraryDf:any;
-  showLibraryDfAll:any;
-  linkurl: string =environment.baseUrl;
+  showStudentH: any;
+  showStuHistory: any;
+  showBranchData: any;
+  showBranch: any;
+  showACData: any;
+  showAcademicYearTrue: any;
+  showSemesterTrue: any;
+  showStudentcountAll: any;
+  showFaculAll: any;
+  showSem: any;
+  showStuFeesall: any;
+  showStucntAll: any;
+  showFacountAll: any;
+  showStudentFees: any;
+  showLibraryDf: any;
+  showLibraryDfAll: any;
+  linkurl: string = environment.baseUrl;
   updateSuccessmessage: boolean = false;
   errorMessage: boolean = false;
   errorMessage2: boolean = false;
-  showFeesDf:any;
-  showFeesDfAll:any;
-  showPaperTrue:any;
-  showPaper:any;
-  showstudntDf:any;
-  showAttdncNw:any;
-  swStuatNwRow:any;
-  swStuatNw:any;
-  swStuatNwCol:any;
+  showFeesDf: any;
+  showFeesDfAll: any;
+  showPaperTrue: any;
+  showPaper: any;
+  showstudntDf: any;
+  showAttdncNw: any;
+  swStuatNwRow: any;
+  swStuatNw: any;
+  swStuatNwCol: any;
   showBtn: boolean = false;
+  showTable: boolean = false;
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement?: DataTableDirective;
+  dtTrigger: Subject<any> = new Subject<any>();
+  dtOptions: DataTables.Settings = {};
+  searchText: string = "";
+
 
   // Names
   feesCollect: string = "Fees Collection";
@@ -71,19 +81,19 @@ export class MisComponent implements OnInit {
   maxDate: string = '';
 
   constructor(
-    private serviceData:MisService,
+    private serviceData: MisService,
     private serviceData2: BranchService,
     private serviceData3: AcademicYearService,
     private serviceData4: SemesterService,
     private serviceData5: PaperService,
     private router: Router,
     private route: ActivatedRoute
-  ) { 
+  ) {
     this.setMaxDate();
 
     // const currentYear = new Date().getFullYear();
     // const startYear = currentYear - 4;
-    
+
     // for (let year = startYear; year <= currentYear; year++) {
     //   this.availableYears.push(year);
     // }
@@ -118,25 +128,34 @@ export class MisComponent implements OnInit {
       //console.log(this.showSem);
     })
 
-
-    
-
-
-
     this.route.queryParams.subscribe(params => {
       this.selectedMISReport = params['selectedMISReport'] || '0'; // Use default value if parameter is not provided
     });
 
+    // let table = new DataTable('#myTable');
+    // this.dtOptions = {
+    //   columns: [{
+    //     title: 'ID',
+    //     data: 'id'
+    //   }, {
+    //     title: 'First name',
+    //     data: 'firstName'
+    //   }, {
+    //     title: 'Last name',
+    //     data: 'lastName'
+    //   }]
+    // };
 
   }
 
 
   ngAfterViewInit(): void {
     this.router.events
-    .pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe(() => {
-      location.reload();
-    });
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        location.reload();
+      });
+    this.dtTrigger.next();
   }
 
 
@@ -144,34 +163,34 @@ export class MisComponent implements OnInit {
   // Method to handle form submission
   searchMisInput(formData: any) {
 
-    this.errorMessage = false;  
-    this.showStuHistory =[];
+    this.errorMessage = false;
+    this.showStuHistory = [];
     console.log('Form submitted!');
-    this.serviceData.showStudentHistory(formData).subscribe((data) => {    
+    this.serviceData.showStudentHistory(formData).subscribe((data) => {
 
       this.showStudentH = data;
-      this.showStuHistory =  this.showStudentH['Student_Details_Year_Wise'];
+      this.showStuHistory = this.showStudentH['Student_Details_Year_Wise'];
 
       console.log("this.showStuHistory");
       console.log(this.showStuHistory);
-      
 
 
-      if(this.showStuHistory.length > 0){      
+
+      if (this.showStuHistory.length > 0) {
         console.log("data");
-        this.errorMessage = false;  
+        this.errorMessage = false;
       }
-      else{
-        this.showStuHistory =[];
+      else {
+        this.showStuHistory = [];
         console.log("no data");
-        this.errorMessage = true;  
+        this.errorMessage = true;
       }
 
     })
   }
 
 
-  
+
   // getStudentID(showStuHistry: any): void {
   //   console.log("showStuHistry.ID");   
   //   console.log(showStuHistry.ID); 
@@ -181,8 +200,8 @@ export class MisComponent implements OnInit {
   // }
 
   getStudentID(showStuHistry: any): void {
-    console.log("showStuHistry.ID:", showStuHistry.ID);   
-    console.log(showStuHistry.ID); 
+    console.log("showStuHistry.ID:", showStuHistry.ID);
+    console.log(showStuHistry.ID);
     localStorage.setItem('stid', showStuHistry.ID);
     // this.serviceData.student_id = showStuHistry.ID;
     // console.log("student_id after assignment:", this.serviceData.student_id); // Log the value after assignment
@@ -194,25 +213,25 @@ export class MisComponent implements OnInit {
 
   searchMisFees(formData: any) {
 
-    this.errorMessage = false;  
-    this.showStuFeesall =[];
+    this.errorMessage = false;
+    this.showStuFeesall = [];
     console.log('Form submitted!');
-    this.serviceData.showStudentFeesDetails(formData).subscribe((data) => {    
+    this.serviceData.showStudentFeesDetails(formData).subscribe((data) => {
 
       this.showStudentFees = data;
-      this.showStuFeesall =  this.showStudentFees['Fees_Collection_Details'];
+      this.showStuFeesall = this.showStudentFees['Fees_Collection_Details'];
       console.log(this.showStuFeesall);
       this.showBtn = true;
 
 
-      if(this.showStuFeesall.length > 0){      
+      if (this.showStuFeesall.length > 0) {
         console.log("data");
-        this.errorMessage = false;  
+        this.errorMessage = false;
       }
-      else{
-        this.showStuFeesall =[];
+      else {
+        this.showStuFeesall = [];
         console.log("no data");
-        this.errorMessage = true;  
+        this.errorMessage = true;
       }
 
     })
@@ -220,55 +239,54 @@ export class MisComponent implements OnInit {
 
   searchMisStuCount(formData: any) {
 
-    this.errorMessage = false;  
-    this.showStucntAll =[];
+    this.errorMessage = false;
+    this.showStucntAll = [];
     console.log('Form submitted!');
-    this.serviceData.showStudentCnt(formData).subscribe((data) => {    
+    this.serviceData.showStudentCnt(formData).subscribe((data) => {
 
       this.showStudentcountAll = data;
       this.showBtn = true;
-      this.showStucntAll =  this.showStudentcountAll['STUDENT_COUNT'];
+      this.showStucntAll = this.showStudentcountAll['STUDENT_COUNT'];
       console.log("student count");
       console.log(this.showStucntAll);
 
 
-      if(this.showStucntAll.length > 0){      
+      if (this.showStucntAll.length > 0) {
         console.log("data");
-        this.errorMessage = false;  
+        this.errorMessage = false;
       }
-      else{
-        this.showStucntAll =[];
+      else {
+        this.showStucntAll = [];
         console.log("no data");
-        this.errorMessage = true;  
+        this.errorMessage = true;
       }
 
     })
   }
 
 
- searchMisFacultyConut(formData: any) {
+  searchMisFacultyConut(formData: any) {
 
-    this.errorMessage = false;  
-    this.showFaculAll =[];
+    this.errorMessage = false;
+    this.showFaculAll = [];
     console.log('Form submitted!');
-    this.serviceData.showFacultyCnt(formData).subscribe((data) => {    
+    this.serviceData.showFacultyCnt(formData).subscribe((data) => {
 
       this.showStudentcountAll = data;
-      debugger
       this.showBtn = true;
-      this.showFaculAll =  this.showStudentcountAll['INSTRUCTOR_COUNT'];
+      this.showFaculAll = this.showStudentcountAll['INSTRUCTOR_COUNT'];
       console.log("Faculty count");
       console.log(this.showFaculAll);
 
 
-      if(this.showStucntAll.length > 0){      
+      if (this.showStucntAll.length > 0) {
         console.log("data");
-        this.errorMessage = false;  
+        this.errorMessage = false;
       }
-      else{
-        this.showStucntAll =[];
+      else {
+        this.showStucntAll = [];
         console.log("no data");
-        this.errorMessage = true;  
+        this.errorMessage = true;
       }
 
     })
@@ -278,26 +296,26 @@ export class MisComponent implements OnInit {
 
   searchLabraryDeaflt(formData: any) {
 
-    this.errorMessage = false;  
-    this.showLibraryDf =[];
+    this.errorMessage = false;
+    this.showLibraryDf = [];
     console.log('Form submitted!');
-    this.serviceData.showLibraryDefaulter(formData).subscribe((data) => {    
+    this.serviceData.showLibraryDefaulter(formData).subscribe((data) => {
 
       this.showLibraryDfAll = data;
       this.showBtn = true;
-      this.showLibraryDf =  this.showLibraryDfAll['LIBRARY_DEFAULTER'];
+      this.showLibraryDf = this.showLibraryDfAll['LIBRARY_DEFAULTER'];
       console.log("Library Defaulter");
       console.log(this.showLibraryDf);
 
 
-      if(this.showLibraryDf.length > 0){      
+      if (this.showLibraryDf.length > 0) {
         console.log("data");
-        this.errorMessage = false;  
+        this.errorMessage = false;
       }
-      else{
-        this.showLibraryDf =[];
+      else {
+        this.showLibraryDf = [];
         console.log("no data");
-        this.errorMessage = true;  
+        this.errorMessage = true;
       }
 
     })
@@ -305,182 +323,223 @@ export class MisComponent implements OnInit {
 
   searchFeesDeaflt(formData: any) {
 
-    this.errorMessage = false;  
-    this.showFeesDf =[];
+    this.errorMessage = false;
+    this.showFeesDf = [];
     console.log('Form submitted!');
-    this.serviceData.showFeesDefaulter(formData).subscribe((data) => {    
+    this.serviceData.showFeesDefaulter(formData).subscribe((data) => {
 
       this.showFeesDfAll = data;
       this.showBtn = true;
-      this.showFeesDf =  this.showFeesDfAll['FEES_DEFAULTER'];
+      this.showFeesDf = this.showFeesDfAll['FEES_DEFAULTER'];
       console.log("Fees Defaulter");
       console.log(this.showFeesDf);
 
 
-      if(this.showFeesDf.length > 0){      
+      if (this.showFeesDf.length > 0) {
         console.log("data");
-        this.errorMessage = false;  
+        this.errorMessage = false;
       }
-      else{
-        this.showFeesDf =[];
+      else {
+        this.showFeesDf = [];
         console.log("no data");
-        this.errorMessage = true;  
+        this.errorMessage = true;
       }
 
     })
   }
 
 
- // Student Attendance
+  // Student Attendance
 
- searchStudentAttnDeaflt(formData: any) {
+  searchStudentAttnDeaflt(formData: any) {
 
-  this.errorMessage2 = false;  
-  this.swStuatNwRow =[];
-  this.swStuatNwCol =[];
-  console.log('Form submitted!');
+    this.errorMessage2 = false;
+    this.swStuatNwRow = [];
+    this.swStuatNwCol = [];
+    console.log('Form submitted!');
 
-  // this.serviceData.showStudentAttnw(formData).subscribe((data) => { 
-  //   this.showstudntDf = data;
-  //   this.showBtn = true;
-  //   this.showstudntDf =  this.showstudntDf['ATTENDANCE_FILTER_ADMIN'];
-  //   console.log("Student Attendance");
-  //   console.log(this.showstudntDf);
+    // this.serviceData.showStudentAttnw(formData).subscribe((data) => { 
+    //   this.showstudntDf = data;
+    //   this.showBtn = true;
+    //   this.showstudntDf =  this.showstudntDf['ATTENDANCE_FILTER_ADMIN'];
+    //   console.log("Student Attendance");
+    //   console.log(this.showstudntDf);
 
-  this.serviceData.showStudentAttnw(formData).subscribe((data) => {
-    this.showAttdncNw = data;
-    this.swStuatNwCol = this.showAttdncNw['columns'];
-    this.swStuatNwRow = this.showAttdncNw['rows'];
-    console.log("Attendance Report 1");
-    console.log(this.swStuatNwCol);
-    console.log(this.swStuatNwRow);
-    console.log("Attendance Report 2");
+    this.serviceData.showStudentAttnw(formData).subscribe((data) => {
+      this.showTable = false;
+      this.showTable = true;
+      this.showAttdncNw = data;
+      this.swStuatNwCol = this.showAttdncNw['columns'];
+      const arrayOfObjects = this.swStuatNwCol.map((item: any) => ({ title: item, data: item + "1" }));
+
+      this.dtOptions = {
+        destroy: true,
+        columns: arrayOfObjects,
+        pagingType: 'full_numbers'
+      };
+      this.dtOptions = {
+        columns: arrayOfObjects,
+        pagingType: 'full_numbers'
+      };
+      // this.rerender();
+      
+
+      // this.updateDiv();
+
+      this.swStuatNwRow = this.showAttdncNw['rows'];
+      console.log("Attendance Report 1");
+      console.log(this.swStuatNwCol);
+      console.log(this.swStuatNwRow);
+      console.log("Attendance Report 2");
+
+
+      // this.rerender();
+      console.log(arrayOfObjects);
 
 
 
 
-    if(this.swStuatNwRow.length > 0){      
-      console.log("data");
-      this.errorMessage2 = false;  
-    }
-    else{
-      this.swStuatNwRow =[];
-      console.log("no data");
-      this.errorMessage2 = true;  
-    }
+      if (this.swStuatNwRow.length > 0) {
+        console.log("data");
+        this.errorMessage2 = false;
+      }
+      else {
+        this.swStuatNwRow = [];
+        console.log("no data");
+        this.errorMessage2 = true;
+      }
 
-  })
-}
+    })
+  }
 
-   
-    validateDateRange() {
-      if (this.fmdate && this.todate) {
-        const fromDate = new Date(this.fmdate);
-        const toDate = new Date(this.todate);
-        this.toDateInvalid = toDate.getTime() < fromDate.getTime();
-        if (this.toDateInvalid) {
-          alert("To date must be greater than from date");
-          this.buttonDisabled = true; // Disable the button
-        } else {
-          this.buttonDisabled = false; // Enable the button
-        }
+
+  validateDateRange() {
+    if (this.fmdate && this.todate) {
+      const fromDate = new Date(this.fmdate);
+      const toDate = new Date(this.todate);
+      this.toDateInvalid = toDate.getTime() < fromDate.getTime();
+      if (this.toDateInvalid) {
+        alert("To date must be greater than from date");
+        this.buttonDisabled = true; // Disable the button
+      } else {
+        this.buttonDisabled = false; // Enable the button
       }
     }
+  }
 
 
 
-    // Pagination
+  // Pagination
 
-    pageSize =20;
-    items = [];
-    pageOfItems: Array<any> | undefined;
-  
-    onChangePage(pageOfItems: Array<any>) {
-      this.pageOfItems = pageOfItems;
+  pageSize = 20;
+  items = [];
+  pageOfItems: Array<any> | undefined;
+
+  onChangePage(pageOfItems: Array<any>) {
+    this.pageOfItems = pageOfItems;
+  }
+
+  pageOfItems2: Array<any> | undefined;
+
+  onChangePage2(pageOfItems2: Array<any>) {
+    this.pageOfItems2 = pageOfItems2;
+  }
+
+
+  pageOfItems3: Array<any> | undefined;
+
+  onChangePage3(pageOfItems3: Array<any>) {
+    this.pageOfItems3 = pageOfItems3;
+  }
+
+  pageOfItems4: Array<any> | undefined;
+
+  onChangePage4(pageOfItems4: Array<any>) {
+    this.pageOfItems4 = pageOfItems4;
+  }
+
+  pageOfItems5: Array<any> | undefined;
+
+  onChangePage5(pageOfItems5: Array<any>) {
+    this.pageOfItems5 = pageOfItems5;
+  }
+
+  pageOfItems6: Array<any> | undefined;
+
+  onChangePage6(pageOfItems6: Array<any>) {
+    this.pageOfItems6 = pageOfItems6;
+  }
+
+
+
+  setMaxDate(): void {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month: number | string = today.getMonth() + 1;
+    let day: number | string = today.getDate();
+
+    // Ensure month and day have two digits
+    month = month < 10 ? `0${month}` : month;
+    day = day < 10 ? `0${day}` : day;
+
+    this.maxDate = `${year}-${month}-${day}`;
+  }
+
+
+
+
+
+
+
+  // filteredItems: any[] = [];
+
+  // exportToExcel(): void {
+  //   console.log('Exporting to Excel...');
+  //   console.log('Filtered Items:', this.filteredItems);
+
+  //   if (this.filteredItems.length > 0) {
+  //     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredItems);
+  //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+  //     try {
+  //       // Save the Excel file
+  //       XLSX.writeFile(wb, 'student-data.xlsx');
+  //       console.log('Excel file saved successfully.');
+  //     } catch (error) {
+  //       console.error('Error saving Excel file:', error);
+  //     }
+  //   } else {
+  //     console.warn('Filtered Items array is empty. No data to export.');
+  //   }
+  // }
+
+  changeFlag() {
+    if (this.showStudentFees != null || this.showStudentcountAll != null || this.showFeesDfAll != null || this.showLibraryDfAll != null || this.showstudntDf != null) {
+      this.showBtn = true;
     }
-
-    pageOfItems2: Array<any> | undefined;
-  
-    onChangePage2(pageOfItems2: Array<any>) {
-      this.pageOfItems2 = pageOfItems2;
+    else {
+      this.showBtn = false;
     }
+  }
+  rerender(): void {
+    this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
 
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
 
-    pageOfItems3: Array<any> | undefined;
-  
-    onChangePage3(pageOfItems3: Array<any>) {
-      this.pageOfItems3 = pageOfItems3;
-    }
-
-    pageOfItems4: Array<any> | undefined;
-  
-    onChangePage4(pageOfItems4: Array<any>) {
-      this.pageOfItems4 = pageOfItems4;
-    }
-
-    pageOfItems5: Array<any> | undefined;
-  
-    onChangePage5(pageOfItems5: Array<any>) {
-      this.pageOfItems5 = pageOfItems5;
-    }
-
-    pageOfItems6: Array<any> | undefined;
-  
-    onChangePage6(pageOfItems6: Array<any>) {
-      this.pageOfItems6 = pageOfItems6;
-    }
-    
-
-
-    setMaxDate(): void {
-      const today = new Date();
-      const year = today.getFullYear();
-      let month: number | string = today.getMonth() + 1;
-      let day: number | string = today.getDate();
-  
-      // Ensure month and day have two digits
-      month = month < 10 ? `0${month}` : month;
-      day = day < 10 ? `0${day}` : day;
-  
-      this.maxDate = `${year}-${month}-${day}`;
-    }
-
-
-
- 
-
-
-
-   // filteredItems: any[] = [];
-
-    // exportToExcel(): void {
-    //   console.log('Exporting to Excel...');
-    //   console.log('Filtered Items:', this.filteredItems);
-    
-    //   if (this.filteredItems.length > 0) {
-    //     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredItems);
-    //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    
-    //     try {
-    //       // Save the Excel file
-    //       XLSX.writeFile(wb, 'student-data.xlsx');
-    //       console.log('Excel file saved successfully.');
-    //     } catch (error) {
-    //       console.error('Error saving Excel file:', error);
-    //     }
-    //   } else {
-    //     console.warn('Filtered Items array is empty. No data to export.');
-    //   }
-    // }
-
-    changeFlag(){
-      if(this.showStudentFees != null || this.showStudentcountAll != null || this.showFeesDfAll != null || this.showLibraryDfAll != null || this.showstudntDf != null)
-      {
-        this.showBtn = true;
-      }
-      else{
-        this.showBtn = false;
-      }
-    }
+  updateDiv() {
+    alert("i am in");
+    $("#abc").load(window.location.href + " #abc");
+    this.showTable = true;
+    this.dtTrigger.next();
+  }
 }

@@ -20,6 +20,14 @@ export class MisService {
 
   student_id: any;
 
+  //variables for datatables
+  branch: any;
+  academicYear: any;
+  fromDate: any;
+  toDate: any;
+  ayId: any;
+  semId: any;
+
   constructor(private http: HttpClient) {
     
   }

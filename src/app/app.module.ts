@@ -74,6 +74,8 @@ import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.
 import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
 import { ResultInputComponent } from './candidate/result-input/result-input.component';
 import { StudentClearenceComponent } from './admin/student-clearence/student-clearence.component';
+import { DataTablesModule } from 'angular-datatables';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
 
 
 @NgModule({
@@ -130,7 +132,8 @@ import { StudentClearenceComponent } from './admin/student-clearence/student-cle
     DownloadToExcelComponent,
     LibraryClearanceComponent,
     ResultInputComponent,
-    StudentClearenceComponent
+    StudentClearenceComponent,
+    SearchFilterPipe
     // PieChartComponent,
     
   ],
@@ -142,7 +145,8 @@ import { StudentClearenceComponent } from './admin/student-clearence/student-cle
     JwPaginationModule,
     NgxPaginationModule,
     FullCalendarModule, // register FullCalendar with your app
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    DataTablesModule
     
   ],
   providers: [
