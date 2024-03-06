@@ -72,8 +72,8 @@ const routes: Routes = [
   { path: 'scrutiny', component: ScrutinyComponent, canActivate: [AuthGuard] },
   { path: 'fees', component: FeesComponent, canActivate: [AuthGuard] },
 
-  { path: 'university', component: UniversityComponent , canActivate: [AuthGuard] },
-  { path: 'college', component: CollegeComponent , canActivate: [AuthGuard] },
+  { path: 'university', component: UniversityComponent , canActivate: [AuthGuard], data: { routeReuse: false } },
+  { path: 'college', component: CollegeComponent , canActivate: [AuthGuard], data: { routeReuse: false } },
   { path: 'academic-year', component: AcademicYearComponent , canActivate: [AuthGuard] },
   { path: 'semester', component: SemesterComponent , canActivate: [AuthGuard] },
   { path: 'paper-type', component: PaperTypeComponent , canActivate: [AuthGuard] },

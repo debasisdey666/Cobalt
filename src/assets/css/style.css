@@ -2069,4 +2069,13 @@ table tr td .clgprogNestedTable:last-child{
   padding: 14px!important;
   border-radius: 50px!important;
 }
-
+/*=========== 07032024 ===============*/
+.Nwtbl .ngx-pagination-range{
+  position: absolute;
+  left: 10px;
+  top: 0;
+}
+.Nwtbl .ngx-icon-arrow-down
+{
+  display: none;
+}

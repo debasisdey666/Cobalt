@@ -10,8 +10,7 @@ import { filter } from 'rxjs/operators';
 import * as xlsx from 'xlsx';
 import { saveAs } from 'file-saver';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { DataTableDirective } from 'angular-datatables';
+import { APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table';
 // import DataTable from 'datatables.net-dt';
 
 
@@ -21,6 +20,8 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrls: ['./mis.component.css']
 })
 export class MisComponent implements OnInit {
+
+  @ViewChild('table') table!: APIDefinition;
 
   selectedMISReport: string = '0'; // Default value for the select
   fmdate: string = ''; // Property to bind to the From Date input
@@ -59,11 +60,26 @@ export class MisComponent implements OnInit {
   swStuatNwCol: any;
   showBtn: boolean = false;
   showTable: boolean = false;
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement?: DataTableDirective;
-  dtTrigger: Subject<any> = new Subject<any>();
-  dtOptions: DataTables.Settings = {};
   searchText: string = "";
+  public configuration!: Config;
+  public columns!: Columns[];
+
+
+  public data = [{
+    phone: '+1 (934) 551-2224',
+    age: 20,
+    address: { street: 'North street', number: 12 },
+    company: 'ZILLANET',
+    name: 'Valentine Webb',
+    isActive: false,
+  }, {
+    phone: '+1 (948) 460-3627',
+    age: 31,
+    address: { street: 'South street', number: 12 },
+    company: 'KNOWLYSIS',
+    name: 'Heidi Duncan',
+    isActive: true,
+  }];
 
 
   // Names
@@ -146,17 +162,28 @@ export class MisComponent implements OnInit {
     //   }]
     // };
 
+    this.configuration = { ...DefaultConfig };
+    this.configuration.searchEnabled = false;
+    
+    // ... etc.
+    this.columns = [
+      { key: 'phone', title: 'Phone' },
+      { key: 'age', title: 'Age' },
+      { key: 'company', title: 'Company' },
+      { key: 'name', title: 'Name' },
+      { key: 'isActive', title: 'STATUS' },
+    ];
   }
 
 
-  ngAfterViewInit(): void {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        location.reload();
-      });
-    this.dtTrigger.next();
-  }
+  // ngAfterViewInit(): void {
+  //   this.router.events
+  //     .pipe(filter(event => event instanceof NavigationEnd))
+  //     .subscribe(() => {
+  //       location.reload();
+  //     });
+  //   this.dtTrigger.next();
+  // }
 
 
 
@@ -366,27 +393,30 @@ export class MisComponent implements OnInit {
     //   console.log(this.showstudntDf);
 
     this.serviceData.showStudentAttnw(formData).subscribe((data) => {
-      this.showTable = false;
-      this.showTable = true;
       this.showAttdncNw = data;
       this.swStuatNwCol = this.showAttdncNw['columns'];
-      const arrayOfObjects = this.swStuatNwCol.map((item: any) => ({ title: item, data: item + "1" }));
+      const arrayOfObjects = this.swStuatNwCol.map((item: any) => ({ key: item, title: item }));
+      
+      this.columns = arrayOfObjects;
+      this.showTable = false;
+      this.showTable = true;
 
-      this.dtOptions = {
-        destroy: true,
-        columns: arrayOfObjects,
-        pagingType: 'full_numbers'
-      };
-      this.dtOptions = {
-        columns: arrayOfObjects,
-        pagingType: 'full_numbers'
-      };
+      // this.dtOptions = {
+      //   destroy: true,
+      //   columns: arrayOfObjects,
+      //   pagingType: 'full_numbers'
+      // };
+      // this.dtOptions = {
+      //   columns: arrayOfObjects,
+      //   pagingType: 'full_numbers'
+      // };
       // this.rerender();
       
 
       // this.updateDiv();
 
       this.swStuatNwRow = this.showAttdncNw['rows'];
+      this.data = this.swStuatNwRow;
       console.log("Attendance Report 1");
       console.log(this.swStuatNwCol);
       console.log(this.swStuatNwRow);
@@ -521,25 +551,5 @@ export class MisComponent implements OnInit {
     else {
       this.showBtn = false;
     }
-  }
-  rerender(): void {
-    this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  updateDiv() {
-    alert("i am in");
-    $("#abc").load(window.location.href + " #abc");
-    this.showTable = true;
-    this.dtTrigger.next();
   }
 }

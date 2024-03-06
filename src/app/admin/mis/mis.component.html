@@ -8,7 +8,8 @@
     <div class="row">
       <div class="col-sm-2 pe-0 mb-2">
         <label class="form-label">MIS Report</label>
-        <select required class="form-select" [(ngModel)]="selectedMISReport" (change)="changeFlag()" name="misReport" id="misReport">
+        <select required class="form-select" [(ngModel)]="selectedMISReport" (change)="changeFlag()" name="misReport"
+          id="misReport">
           <option value="0">Select MIS Report</option>
           <option value="1">FEES COLLECTION</option>
           <option value="2">STUDENT COUNT</option>
@@ -21,7 +22,7 @@
         </select>
       </div>
 
-      
+
 
       <!-- FEES COLLECTION -->
 
@@ -205,9 +206,9 @@
 
 
 
-      
+
       <!-- FEES DEFAULTER -->
-      
+
       <div class="col-sm-9" *ngIf="selectedMISReport == '5'">
         <form #searchFeesDef="ngForm" (ngSubmit)="searchFeesDeaflt(searchFeesDef.value)" novalidate>
           <div class="row mb-2">
@@ -280,8 +281,9 @@
       <!-- Student Attendance -->
 
       <div class="col-sm-12" *ngIf="selectedMISReport == '7'">
-        <form #searchStudentattnDef="ngForm" (ngSubmit)="searchStudentAttnDeaflt(searchStudentattnDef.value)" novalidate >
-          <div class="row mb-2">            
+        <form #searchStudentattnDef="ngForm" (ngSubmit)="searchStudentAttnDeaflt(searchStudentattnDef.value)"
+          novalidate>
+          <div class="row mb-2">
 
             <!-- <div class="col-sm-3 pe-0">
               <label class="form-label">Paper </label>                   
@@ -324,15 +326,17 @@
 
             <div class="col-sm-2 pe-0">
               <label class="form-label">From Date</label>
-              <input required type="date" name="fmdate" class="form-control" [(ngModel)]="fmdate" [max]="maxDate" #fmdateInput="ngModel" required (change)="validateDateRange()">
-              
+              <input required type="date" name="fmdate" class="form-control" [(ngModel)]="fmdate" [max]="maxDate"
+                #fmdateInput="ngModel" required (change)="validateDateRange()">
+
               <div *ngIf="fmdateInput.invalid && fmdateInput.touched">
                 <!-- <div *ngIf="fmdateInput.errors?.required">From Date is required</div> -->
               </div>
             </div>
             <div class="col-sm-2 pe-0">
               <label class="form-label">To Date</label>
-              <input required type="date" name="todate" class="form-control" [max]="maxDate" [(ngModel)]="todate" #todateInput="ngModel" required (change)="validateDateRange()">
+              <input required type="date" name="todate" class="form-control" [max]="maxDate" [(ngModel)]="todate"
+                #todateInput="ngModel" required (change)="validateDateRange()">
               <div *ngIf="todateInput.invalid && todateInput.touched">
                 <!-- <div *ngIf="todateInput.errors?.required">To Date is required</div> -->
                 <div *ngIf="toDateInvalid && (todateInput.dirty || todateInput.touched)">
@@ -340,12 +344,13 @@
                 </div>
               </div>
             </div>
-          
-              <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '7'">     
-                <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4" [disabled]="!searchStudentattnDef.form.valid || buttonDisabled">Search</button>
-              </div> 
-            </div>          
-          </form>
+
+            <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '7'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4"
+                [disabled]="!searchStudentattnDef.form.valid || buttonDisabled">Search</button>
+            </div>
+          </div>
+        </form>
       </div>
 
       <!-- Tables  -->
@@ -431,11 +436,11 @@
           <app-download-to-excel [excelName]="stuCount"></app-download-to-excel>
         </div>
 
-        
+
 
       </div>
 
-    
+
 
 
       <!-- FACULTY COUNT -->
@@ -504,9 +509,10 @@
               <td>{{showStuHistry.DOB}}</td>
               <td class="text-center">
                 <!-- <a class="linkIcon" title="View" [routerLink]="['../student-history', showStuHistry.ID]"><i class="fa fa-share-square-o" aria-hidden="true"></i></a> -->
-                
-                <a class="linkIcon" title="View" (click)="getStudentID(showStuHistry)"><i class="fa fa-share-square-o" aria-hidden="true"></i></a>
-                
+
+                <a class="linkIcon" title="View" (click)="getStudentID(showStuHistry)"><i class="fa fa-share-square-o"
+                    aria-hidden="true"></i></a>
+
                 <!-- <a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                 </a> -->
@@ -524,14 +530,14 @@
       <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '4'">
         <jw-pagination [items]="showStuHistory" [pageSize]="pageSize"
           (changePage)="onChangePage($event)"></jw-pagination>
-      </div>      
+      </div>
 
 
 
 
       <!-- FEES DEFAULTER -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '5'"  id="content">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '5'" id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2 long-text-cell">
           <thead>
@@ -572,19 +578,20 @@
 
         </table>
         <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '5'">
-          <jw-pagination [items]="showFeesDf" [pageSize]="pageSize" (changePage)="onChangePage5($event)"></jw-pagination>
+          <jw-pagination [items]="showFeesDf" [pageSize]="pageSize"
+            (changePage)="onChangePage5($event)"></jw-pagination>
         </div>
         <div *ngIf="showBtn && selectedMISReport == '5'" class="btn-alignment">
           <app-download-to-excel [excelName]="feesDefaulter"></app-download-to-excel>
         </div>
 
       </div>
-      
+
 
 
       <!-- LIDRARY DEFAULTER -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '6'"  id="content">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '6'" id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2">
           <thead>
@@ -618,11 +625,11 @@
           </tbody>
 
         </table>
-        
-      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '6'">
-        <jw-pagination [items]="showLibraryDf" [pageSize]="pageSize"
-          (changePage)="onChangePage4($event)"></jw-pagination>
-      </div>
+
+        <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '6'">
+          <jw-pagination [items]="showLibraryDf" [pageSize]="pageSize"
+            (changePage)="onChangePage4($event)"></jw-pagination>
+        </div>
         <div *ngIf="showBtn && selectedMISReport == '6'" class="btn-alignment">
           <app-download-to-excel [excelName]="libraryDefaulter"></app-download-to-excel>
         </div>
@@ -669,21 +676,21 @@
       </div> -->
 
 
-     <!-- Student Attendance New-->
+      <!-- Student Attendance New-->
 
-            <div class="tblMN table-responsive text-nowrap mt-2" id="content" *ngIf="selectedMISReport == '7'">
-              <div *ngIf="showTable">
-                <!-- <input type="text" name="form-control search field" placeholder="search here" [(ngModel)]="searchText" style="float: right"> -->
-                <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
-                <table class="table table-striped mb-2 long-text-cell" id="abc" datatable [dtOptions]="dtOptions">
-                    <!-- <thead>
+      <div class="tblMN table-responsive text-nowrap mt-2 position-relative Nwtbl pt-5" id="content" *ngIf="selectedMISReport == '7'">
+        <div *ngIf="showTable">
+          <!-- <input type="text" name="form-control search field" placeholder="search here" [(ngModel)]="searchText" style="float: right"> -->
+          <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+          <!-- <table class="table table-striped mb-2 long-text-cell" id="abc" datatable [dtOptions]="dtOptions"> -->
+          <!-- <thead>
                       <tr>        
                         <ng-container *ngFor="let showColumn of swStuatNwCol">
                             <th >{{showColumn}}</th>
                         </ng-container>
                       </tr>
                     </thead> -->
-                    <tbody>
+          <!-- <tbody>
                       <tr *ngFor="let showRow of swStuatNwRow">
                         <ng-container *ngFor="let key of getObjectKeys(showRow)">
                           <td>{{ showRow[key] }}</td>
@@ -691,10 +698,12 @@
                       </tr>
                     </tbody>
                   
-                </table>
-              </div>
-            </div>
-     
+                </table> -->
+          <ngx-table [configuration]="configuration" [data]="data" [columns]="columns">
+          </ngx-table>
+        </div>
+      </div>
+
 
 
 

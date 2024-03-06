@@ -1,15 +1,16 @@
 
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, DoCheck, AfterViewChecked, OnDestroy, OnChanges } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { CollegeService } from '../../services/college.service';
 import { UniversityService } from '../../services/university.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-college',
   templateUrl: './college.component.html',
   styleUrls: ['./college.component.css']
 })
-export class CollegeComponent implements OnInit {
+export class CollegeComponent implements OnInit, OnDestroy {
 
   @ViewChild('closeButton') closeButton!: ElementRef;
   @ViewChild('closeButton2') closeButton2!: ElementRef;
@@ -32,9 +33,11 @@ export class CollegeComponent implements OnInit {
   updateSuccessmessage:boolean=false;
   errormessage:boolean=false;
   loading: boolean = false;
+  private subscription!: Subscription;
 
   ngOnInit(): void {
-    this.serviceData.showCollegeType().subscribe((data) => {
+    console.log("I am in")
+    this.subscription = this.serviceData.showCollegeType().subscribe((data) => {
       this.showCTData = data;
       this.showCollegeType =  this.showCTData['Data'];      
     })
@@ -44,6 +47,13 @@ export class CollegeComponent implements OnInit {
       this.showUniversity =  this.showUnivData['Data'];
     })
 
+  }
+
+  ngOnChanges(): void{
+    this.serviceData.showCollegeType().subscribe((data) => {
+      this.showCTData = data;
+      this.showCollegeType =  this.showCTData['Data'];      
+    })
   }
 
      // Pagination
@@ -153,5 +163,12 @@ export class CollegeComponent implements OnInit {
     )
 
 
+  }
+
+  ngOnDestroy(): void {
+    console.log("I am in")
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

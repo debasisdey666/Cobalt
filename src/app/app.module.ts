@@ -74,8 +74,9 @@ import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.
 import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
 import { ResultInputComponent } from './candidate/result-input/result-input.component';
 import { StudentClearenceComponent } from './admin/student-clearence/student-clearence.component';
-import { DataTablesModule } from 'angular-datatables';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { TableModule } from 'ngx-easy-table';
+import { NoRouteReuseStrategy } from './RouterReuseStrategy/custom-reload-RouterReuseStrategy';
 
 
 @NgModule({
@@ -146,7 +147,7 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     NgxPaginationModule,
     FullCalendarModule, // register FullCalendar with your app
     RouterModule.forRoot([]),
-    DataTablesModule
+    TableModule
     
   ],
   providers: [
@@ -163,6 +164,10 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     { 
       provide: RouteReuseStrategy, 
       useClass: CustomReuseStrategy },
+    { 
+      provide: RouteReuseStrategy, 
+      useClass: NoRouteReuseStrategy 
+    },
   ],
   bootstrap: [AppComponent]
 })
