@@ -2075,7 +2075,14 @@ table tr td .clgprogNestedTable:last-child{
   left: 10px;
   top: 0;
 }
-.Nwtbl .ngx-icon-arrow-down
+.Nwtbl th .ngx-icon-arrow-down,
+.Nwtbl th .ngx-icon-arrow-up
 {
   display: none;
+}
+.Nwtbl .ngx-icon
+{
+  width: 20px;
+  font-size: 11px;
+  vertical-align: inherit;
 }
