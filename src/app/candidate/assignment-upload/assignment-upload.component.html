@@ -43,19 +43,14 @@
                       <td> 
                         <a href="{{linkurl}}{{showAsgnUpld.ASSIGNMENT_DOCUMENT}}" target="_blank">Download</a>
                       </td>
-                      
-                     
                       <td>{{ showAsgnUpld.STUDENT_REMARKS }}</td>
                       <td>{{ showAsgnUpld.INSTRUCTOR_REMARKS }}</td>
                       <td>
-  
-                            <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showAsgnUpld,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                            
-                           
+                          <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showAsgnUpld,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          <!-- <a class="activeBtnfalse" *ngIf="cutoffdateWithId === formattedDate" title="Delete" data-bs-toggle="modal" (click)="deleteBtn(showAsgnUpld,$event)" data-bs-target="#deleteModal"><i title="Deactive" class="fa fa-times" aria-hidden="true"></i></a> -->
+                          <a class="activeBtnfalse" *ngIf="formattedcutofDate > formattedDate && ROLE_ID == 2" title="Delete" data-bs-toggle="modal" (click)="deleteBtn(showAsgnUpld,$event)" data-bs-target="#deleteModal"><i title="Deactive" class="fa fa-times" aria-hidden="true"></i></a>
                           
-                       
-                          
-                      </td>
+                        </td>
                     </tr>                   
                   </tbody>
               </table>
@@ -82,132 +77,165 @@
   <img src="assets/images/loading-gif.gif" alt="Image" class="loading"/>            
 </div>
 
-    <!-- Add Modal -->
-    <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add Assignment</h5>
-              <button type="reset" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
-            </div> 
-            <form #getAssignmntUploadForm="ngForm" (ngSubmit)="getAssignmntUploadFormdata(getAssignmntUploadForm.value)" novalidate enctype="multipart/form-data">
-                <div class="modal-body">
-      
-                  <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
-      
-                  <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
-                    Saved Successfully.
-                  </div> 
-    
-                  
-                  <div class="col-md-12 mt-3">
-                    <label class="form-label">Upload Assignment<strong class="required"> *</strong> </label>  
-                    <input type="file" #fileInput class="form-control" (change)="onFileSelected($event)">
-                  </div>
-                  
-                    <div class="col-md-12 mt-3">
-                        <label class="form-label">STUDENT REMARKS<strong class="required"> *</strong> </label> 
-                        <input type="text" name="STUDENT_REMARKS" class="form-control" ngModel required #STUDENT_REMARKS="ngModel"> 
-                        <div class="alert alert-danger" *ngIf="STUDENT_REMARKS.touched && STUDENT_REMARKS.invalid">
-                          <div class="" *ngIf="STUDENT_REMARKS.errors?.required">
-                            This field is required
-                          </div>
-                          <div class="" *ngIf="STUDENT_REMARKS.errors?.pattern">
-                            Invalid input
-                          </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-3" *ngIf="ROLE_ID == 3">
-                        <label class="form-label">INSTRUCTOR REMARKS </label> 
-                        <input type="text" name="INSTRUCTOR_REMARKS" class="form-control" ngModel #INSTRUCTOR_REMARKS="ngModel"> 
-                        <!-- <div class="alert alert-danger" *ngIf="INSTRUCTOR_REMARKS.touched && INSTRUCTOR_REMARKS.invalid">
-                          <div class="" *ngIf="INSTRUCTOR_REMARKS.errors?.required">
-                            This field is required
-                          </div>
-                          <div class="" *ngIf="INSTRUCTOR_REMARKS.errors?.pattern">
-                            Invalid input
-                          </div>
-                        </div> -->
-                    </div>
-                  
-                    
-                </div>
-                <div class="modal-footer">
-                  <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
-                  <button class="btn btn-primary"  [disabled]="getAssignmntUploadForm.invalid || isSubmit" >Submit</button>
-                </div>
-              </form>
-         
-            
-         
-            </div>
-        </div>
-      </div>
-
-
-         <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Update Uploaded Assignment</h5>
-            <button type="reset" class="btn-cls" #closeButton2  data-bs-dismiss="modal" aria-label="Close">x</button>
-          </div> 
-          <form #editAssignmntUploadForm="ngForm" (ngSubmit)="editAssignmntUploadFormdata(editAssignmntUploadForm.value)" novalidate enctype="multipart/form-data">
-              <div class="modal-body">
-    
-                <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
-    
-                <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
-                  Saved Successfully.
-                </div> 
+<!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Assignment</h5>
+          <button type="reset" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div> 
+        <form #getAssignmntUploadForm="ngForm" (ngSubmit)="getAssignmntUploadFormdata(getAssignmntUploadForm.value)" novalidate enctype="multipart/form-data">
+            <div class="modal-body">
   
+              <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+  
+              <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+                Saved Successfully.
+              </div> 
 
+              
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Upload Assignment<strong class="required"> *</strong> </label>  
+                <input type="file" #fileInput class="form-control" (change)="onFileSelected($event)">
+              </div>
+              
                 <div class="col-md-12 mt-3">
-                  <label class="form-label">Upload Assignment<strong class="required"> *</strong> </label>  
-                  <input type="file" #fileInput class="form-control mb-2" (change)="onFileSelected($event)" [(ngModel)]="assignmentUplodUpdate.ASSIGNMENT_DOCUMENT">     
-                  <a href="{{linkurl}}{{assignmentUplodUpdate.ASSIGNMENT_DOCUMENT}}" class="mt-2" target="_blank" download>View Uploaded Assignment</a>
+                    <label class="form-label">STUDENT REMARKS<strong class="required"> *</strong> </label> 
+                    <input type="text" name="STUDENT_REMARKS" class="form-control" ngModel required #STUDENT_REMARKS="ngModel"> 
+                    <div class="alert alert-danger" *ngIf="STUDENT_REMARKS.touched && STUDENT_REMARKS.invalid">
+                      <div class="" *ngIf="STUDENT_REMARKS.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="STUDENT_REMARKS.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div>
                 </div>
+                <div class="col-md-12 mt-3" *ngIf="ROLE_ID == 3">
+                    <label class="form-label">INSTRUCTOR REMARKS </label> 
+                    <input type="text" name="INSTRUCTOR_REMARKS" class="form-control" ngModel #INSTRUCTOR_REMARKS="ngModel"> 
+                    <!-- <div class="alert alert-danger" *ngIf="INSTRUCTOR_REMARKS.touched && INSTRUCTOR_REMARKS.invalid">
+                      <div class="" *ngIf="INSTRUCTOR_REMARKS.errors?.required">
+                        This field is required
+                      </div>
+                      <div class="" *ngIf="INSTRUCTOR_REMARKS.errors?.pattern">
+                        Invalid input
+                      </div>
+                    </div> -->
+                </div>
+              
                 
-                  <div class="col-md-12 mt-3">
-                      <label class="form-label">STUDENT REMARKS<strong class="required"> *</strong> </label> 
-                      <!-- <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="assignmentUplodUpdate.STUDENT_REMARKS" required [value]="assignmentUplodUpdate.STUDENT_REMARKS"> -->
-
-                      <input type="hidden" class="form-control" name="ID" #STUDENT_REMARKS="ngModel" [(ngModel)]="assignmentUplodUpdate.ID" >  
-                      <input type="text" [readonly]="ROLE_ID == 3" class="form-control" name="STUDENT_REMARKS" #studentRemarks="ngModel" required [(ngModel)]="assignmentUplodUpdate.STUDENT_REMARKS"> 
-                      <!-- <input type="hidden" class="form-control" name="STUDENT_REMARKS" #studentRemarks="ngModel" required [(ngModel)]="assignmentUplodUpdate.STUDENT_REMARKS">  -->
-                      
-                      <div class="alert alert-danger" *ngIf="studentRemarks.touched && studentRemarks.invalid">
-                        <div class="" *ngIf="studentRemarks.errors?.required">
-                          This field is required
-                        </div>
-                      </div>
-                  </div>
-                  <div class="col-md-12 mt-3">
-                      <label class="form-label">INSTRUCTOR REMARKS<strong class="required"> *</strong> </label> 
-                      <!-- <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" required [(ngModel)]="assignmentUplodUpdate.INSTRUCTOR_REMARKS" [value]="assignmentUplodUpdate.INSTRUCTOR_REMARKS">  -->
-                      <input type="text" [readonly]="ROLE_ID == 2" class="form-control" name="INSTRUCTOR_REMARKS" #insRemarks="ngModel" required [(ngModel)]="assignmentUplodUpdate.INSTRUCTOR_REMARKS"> 
-                      <!-- <label class="form-label" *ngIf="ROLE_ID == 2">INSTRUCTOR REMARKS<strong class="required"> *</strong> </label>  -->
-                      
-                      <div class="alert alert-danger" *ngIf="insRemarks.touched && insRemarks.invalid">
-                        <div class="" *ngIf="insRemarks.errors?.required">
-                          This field is required
-                        </div>
-                      </div>
-
-                  </div>
-              </div>
-              <div class="modal-footer">
-                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
-                <button *ngIf="ROLE_ID != 1" class="btn btn-primary"  [disabled]="editAssignmntUploadForm.invalid || isSubmit" >Submit</button>
-              </div>
-            </form>
-       
-          
-       
-          </div>
-      </div>
+            </div>
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+              <button class="btn btn-primary"  [disabled]="getAssignmntUploadForm.invalid || isSubmit" >Submit</button>
+            </div>
+          </form>
+      
+        
+      
+        </div>
     </div>
+  </div>
+
+
+      <!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Uploaded Assignment</h5>
+        <button type="reset" class="btn-cls" #closeButton2  data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #editAssignmntUploadForm="ngForm" (ngSubmit)="editAssignmntUploadFormdata(editAssignmntUploadForm.value)" novalidate enctype="multipart/form-data">
+          <div class="modal-body">
+
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Upload Assignment<strong class="required"> *</strong> </label>  
+              <input type="file" #fileInput class="form-control mb-2" (change)="onFileSelected($event)" [(ngModel)]="assignmentUplodUpdate.ASSIGNMENT_DOCUMENT">     
+              <a href="{{linkurl}}{{assignmentUplodUpdate.ASSIGNMENT_DOCUMENT}}" class="mt-2" target="_blank" download>View Uploaded Assignment</a>
+            </div>
+            
+              <div class="col-md-12 mt-3">
+                  <label class="form-label">STUDENT REMARKS<strong class="required"> *</strong> </label> 
+                  <!-- <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="assignmentUplodUpdate.STUDENT_REMARKS" required [value]="assignmentUplodUpdate.STUDENT_REMARKS"> -->
+
+                  <input type="hidden" class="form-control" name="ID" #STUDENT_REMARKS="ngModel" [(ngModel)]="assignmentUplodUpdate.ID" >  
+                  <input type="text" [readonly]="ROLE_ID == 3" class="form-control" name="STUDENT_REMARKS" #studentRemarks="ngModel" required [(ngModel)]="assignmentUplodUpdate.STUDENT_REMARKS"> 
+                  <!-- <input type="hidden" class="form-control" name="STUDENT_REMARKS" #studentRemarks="ngModel" required [(ngModel)]="assignmentUplodUpdate.STUDENT_REMARKS">  -->
+                  
+                  <div class="alert alert-danger" *ngIf="studentRemarks.touched && studentRemarks.invalid">
+                    <div class="" *ngIf="studentRemarks.errors?.required">
+                      This field is required
+                    </div>
+                  </div>
+              </div>
+              <div class="col-md-12 mt-3">
+                  <label class="form-label">INSTRUCTOR REMARKS<strong class="required"> *</strong> </label> 
+                  <!-- <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" required [(ngModel)]="assignmentUplodUpdate.INSTRUCTOR_REMARKS" [value]="assignmentUplodUpdate.INSTRUCTOR_REMARKS">  -->
+                  <input type="text" [readonly]="ROLE_ID == 2" class="form-control" name="INSTRUCTOR_REMARKS" #insRemarks="ngModel" [(ngModel)]="assignmentUplodUpdate.INSTRUCTOR_REMARKS"> 
+                  <!-- <label class="form-label" *ngIf="ROLE_ID == 2">INSTRUCTOR REMARKS<strong class="required"> *</strong> </label>  -->
+                  
+                  <div class="alert alert-danger" *ngIf="insRemarks.touched && insRemarks.invalid">
+                    <div class="" *ngIf="insRemarks.errors?.required">
+                      This field is required
+                    </div>
+                  </div>
+
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+            <button *ngIf="ROLE_ID != 1" class="btn btn-primary"  [disabled]="editAssignmntUploadForm.invalid || isSubmit" >Submit</button>
+          </div>
+        </form>
+    
+      
+    
+      </div>
+  </div>
+</div>
+
+
+<!-- ----Delete---- -->
+
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" #closeButton4 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+     
+
+
+      <form #deleteAssignForm="ngForm" (ngSubmit)="deleteAssignFormData(deleteAssignForm.value)">
+        
+        <!-- <button type="submit">Submit</button> -->
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Delete Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to delete this Assignment ?</span>
+          <input type="hidden" name="ID" [(ngModel)]="assignmentDelete.ID" >
+         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" type="submit" [disabled]="deleteAssignForm.invalid">Yes</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
 
 
 

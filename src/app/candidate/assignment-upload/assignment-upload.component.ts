@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AssignmentUploadService } from 'src/app/services/assignment-upload.service';
+import { AssignmentService } from 'src/app/services/assignment.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { getFromLocalStorage } from '../../../environments/local-storage-util';
@@ -18,8 +19,10 @@ export class AssignmentUploadComponent implements OnInit {
   @ViewChild('closeButton') closeButton!: ElementRef;
   @ViewChild('closeButton2') closeButton2!: ElementRef;
   @ViewChild('closeButton3') closeButton3!: ElementRef;
+  @ViewChild('closeButton4') closeButton4!: ElementRef;
   @ViewChild('getAssignmntUploadForm') getAssignmntUploadForm!: NgForm;
   @ViewChild('editLedgerForm') editLedgerForm!: NgForm;
+  @ViewChild('deleteAssignForm') deleteAssignForm!: NgForm;
   
   @ViewChild('editAssignmntUploadForm') editAssignmntUploadForm!: NgForm;
 
@@ -27,6 +30,7 @@ export class AssignmentUploadComponent implements OnInit {
 
   constructor(
     private serviceData: AssignmentUploadService,
+    private serviceData2: AssignmentService,
     private route: ActivatedRoute,    
     private http:HttpClient,
     private cd: ChangeDetectorRef
@@ -42,14 +46,17 @@ export class AssignmentUploadComponent implements OnInit {
   showAssignmentUpld:any;
   showAsUpld:any;
   ROLE_ID:any;
+  cutofdateWithId:any;
 
   linkurl: string =environment.baseUrl;
   isSubmit = false;
   addSuccessmessage: boolean = false;
   updateSuccessmessage: boolean = false;
   loading: boolean = false;
+  formattedDate: any;
+  formattedcutofDate: any;
 
-  ngOnInit() {    
+  ngOnInit() {   
     this.route.params.subscribe(params => {
       const ASSIGNMENT_ID = params['ASSIGNMENT_ID'];
       console.log('ASSIGNMENT_ID:', ASSIGNMENT_ID);
@@ -60,6 +67,18 @@ export class AssignmentUploadComponent implements OnInit {
         });      
     });
     this.ROLE_ID= getFromLocalStorage('ROLE_ID');
+
+    this.cutofdateWithId= getFromLocalStorage('cutofdateWithId');
+
+    const today = new Date();
+    const cutOffDate = new Date(this.cutofdateWithId);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+    this.formattedDate = today.toLocaleString('en-US', options);
+    this.formattedcutofDate = cutOffDate.toLocaleString('en-US', options);
+    console.log(this.formattedDate);
+    console.log("cutOffDate" + this.formattedcutofDate);
+
+    
   }
 
   // Pagination
@@ -71,6 +90,9 @@ export class AssignmentUploadComponent implements OnInit {
   onChangePage(pageOfItems: Array<any>) {
     this.pageOfItems = pageOfItems;
   }
+
+
+
 
 
 // edit Data
@@ -121,6 +143,7 @@ editBtn(showAsgnUpld: any, event: Event) {
     }
 
     // data.append('STUDENT_ID', STUDENT_ID_val.toString());
+    
     if (studentId !== null) {
       data.append('STUDENT_ID', studentId);
     }
@@ -259,6 +282,84 @@ editBtn(showAsgnUpld: any, event: Event) {
     });
   }
   
+
+
+    // delete Data
+
+    assignmentDelete = {
+      ID:"",
+    }
+  
+    deleteBtn(showAsgnUpld: any, event: Event) {
+      this.assignmentDelete = showAsgnUpld;
+      console.log("this.assignmentDelete.ID");
+      console.log(this.assignmentDelete.ID);
+      
+    }
+
+    formData = {
+      ID: '',
+    };
+  
+  
+    deleteAssignmentUpload(formData: any) {
+      const userId = getFromLocalStorage('userId');
+      const studentId = getFromLocalStorage('studentId');
+  
+      const data = new FormData();
+      
+      data.append('ID', formData.ID);
+      data.append('ASSIGNMENT_ID',"0");
+       data.append('STUDENT_ID', "0");
+       data.append('STUDENT_ID', "0");
+        data.append('ASSIGNMENT_DOCUMENT', "0");
+  
+      data.append('INSTRUCTOR_ID',"0");
+      data.append('STATUS', 'true');
+      data.append('STUDENT_REMARKS', "0");
+      data.append('INSTRUCTOR_REMARKS', "0");
+      if (userId !== null) {
+        data.append('ADDEDBY', userId);
+      }
+      if (userId !== null) {
+        data.append('UPDATEDBY', userId);
+      }
+      data.append('MODE', 'D');
+  
+  
+     // Send a POST request with the FormData
+     return this.http.post<any>(this.url, data);
+     }
+    
+  
+      deleteAssignFormData(data: any) {
+        // this.isSubmit = true;
+        this.loading = true;
+        this.deleteAssignmentUpload(data).subscribe((result) => {
+          this.loading = false;
+            this.updateSuccessmessage = true;
+          setTimeout(() => {
+            this.updateSuccessmessage = false;
+            this.closeButton4.nativeElement.click();
+            this.deleteAssignForm.resetForm();
+          }, 1000);
+          console.log(data);
+          
+          this.ngOnInit();
+        });
+      }
+
+    
+  // formData = {
+  //   firstName: '',
+  //   lastName: ''
+  // };
+
+  // deleteAssignFormData(formValue: any) {
+  //   console.log('Form Value:', formValue);
+  // }
+
+
 
 
 

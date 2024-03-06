@@ -45,7 +45,7 @@
                   <tbody>
                     <tr  *ngFor="let showAsgn of pageOfItems">
                       <!-- <td>{{showAsgn.PAPER_NAME}}</td> -->
-                      <td>  <a [routerLink]="['../assignment-upload', showAsgn.ID]">{{ showAsgn.PAPER_NAME }}</a> </td>
+                      <td>  <a [routerLink]="['../assignment-upload', showAsgn.ID]"  (click)="onLinkClick(showAsgn.ID)">{{ showAsgn.PAPER_NAME }}</a> </td>
                       <td> 
                         {{showAsgn.ASSIGNMENT_DETAILS}}
                       </td>

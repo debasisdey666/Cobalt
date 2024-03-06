@@ -48,6 +48,7 @@ export class MisComponent implements OnInit {
   linkurl: string = environment.baseUrl;
   updateSuccessmessage: boolean = false;
   errorMessage: boolean = false;
+  errorMessage3: boolean = false;
   errorMessage2: boolean = false;
   showFeesDf: any;
   showFeesDfAll: any;
@@ -58,6 +59,10 @@ export class MisComponent implements OnInit {
   swStuatNwRow: any;
   swStuatNw: any;
   swStuatNwCol: any;
+  showRankAll: any;
+  showRankSgpa: any;
+  showRankYgpa: any;
+  showRankDgpa: any;
   showBtn: boolean = false;
   showTable: boolean = false;
   searchText: string = "";
@@ -89,6 +94,7 @@ export class MisComponent implements OnInit {
   feesDefaulter: string = "Fees Defaulter";
   libraryDefaulter: string = "Library Defaulter";
   studentAttendace: string = "Student Attendance";
+  rank: string = "RANK";
 
 
 
@@ -185,9 +191,8 @@ export class MisComponent implements OnInit {
   //   this.dtTrigger.next();
   // }
 
+  // Student History
 
-
-  // Method to handle form submission
   searchMisInput(formData: any) {
 
     this.errorMessage = false;
@@ -230,39 +235,39 @@ export class MisComponent implements OnInit {
     console.log("showStuHistry.ID:", showStuHistry.ID);
     console.log(showStuHistry.ID);
     localStorage.setItem('stid', showStuHistry.ID);
-    // this.serviceData.student_id = showStuHistry.ID;
-    // console.log("student_id after assignment:", this.serviceData.student_id); // Log the value after assignment
     this.router.navigateByUrl('/student-history');
   }
 
 
-
+  // Fees Collection
 
   searchMisFees(formData: any) {
 
-    this.errorMessage = false;
+    this.errorMessage2 = false;
     this.showStuFeesall = [];
+    this.showBtn = false;
     console.log('Form submitted!');
     this.serviceData.showStudentFeesDetails(formData).subscribe((data) => {
 
-      this.showStudentFees = data;
-      this.showStuFeesall = this.showStudentFees['Fees_Collection_Details'];
-      console.log(this.showStuFeesall);
-      this.showBtn = true;
-
-
-      if (this.showStuFeesall.length > 0) {
-        console.log("data");
-        this.errorMessage = false;
+      
+      if(data == null){
+        this.showBtn = false;
+        this.errorMessage2 = true;
       }
-      else {
-        this.showStuFeesall = [];
-        console.log("no data");
-        this.errorMessage = true;
+      else{
+        this.showStudentFees = data;
+        this.showStuFeesall = this.showStudentFees['Fees_Collection_Details'];
+        console.log(this.showStuFeesall);
+        this.showBtn = true;
+        this.errorMessage2 = false;
       }
+      
 
     })
   }
+
+
+  // Student Count
 
   searchMisStuCount(formData: any) {
 
@@ -288,9 +293,17 @@ export class MisComponent implements OnInit {
         this.errorMessage = true;
       }
 
+      
+    },
+    (error) => {
+      // If an error occurs
+      console.error("An error occurred:", error);
+      this.showBtn = false; // Hide the button
     })
   }
 
+
+  // Faculty Count
 
   searchMisFacultyConut(formData: any) {
 
@@ -321,6 +334,8 @@ export class MisComponent implements OnInit {
 
 
 
+  // Library Defaulter
+
   searchLabraryDeaflt(formData: any) {
 
     this.errorMessage = false;
@@ -347,6 +362,8 @@ export class MisComponent implements OnInit {
 
     })
   }
+
+  // Fees Defaulter
 
   searchFeesDeaflt(formData: any) {
 
@@ -421,25 +438,14 @@ export class MisComponent implements OnInit {
       console.log(this.swStuatNwCol);
       console.log(this.swStuatNwRow);
       console.log("Attendance Report 2");
-
-
-      // this.rerender();
-      console.log(arrayOfObjects);
-
-
-
-
-      if (this.swStuatNwRow.length > 0) {
-        console.log("data");
-        this.errorMessage2 = false;
-      }
-      else {
-        this.swStuatNwRow = [];
-        console.log("no data");
-        this.errorMessage2 = true;
-      }
-
-    })
+    },
+    (error) => {
+      // If an error occurs
+      console.error("An error occurred:", error);
+      this.errorMessage2 = true;
+      this.showBtn = false; // Hide the button
+    }
+    )
   }
 
 
@@ -455,6 +461,50 @@ export class MisComponent implements OnInit {
         this.buttonDisabled = false; // Enable the button
       }
     }
+  }
+
+
+  // Rank
+
+  reportType:any
+  reportTypeValue:any
+
+
+  onReportTypeChange(value: string) {
+    this.reportType = value
+    console.log("Selected Report Type: ", value);
+     
+  }
+
+
+  searchMisRankData(formData: any) {
+    this.errorMessage2 = false;
+    this.showBtn = false;
+    this.showRankSgpa = [];
+    this.showRankYgpa = [];
+    this.showRankDgpa = [];
+    this.reportTypeValue = this.reportType;
+    console.log('Form submitted!');
+    this.serviceData.showRank(formData).subscribe((data) => {
+
+      if(data == null){
+        this.showBtn = false;
+        this.errorMessage2 = true;
+      }
+      else{
+        this.showRankAll = data;
+        this.showRankSgpa = this.showRankAll['Student_SGPA_RANKING'];
+        this.showRankYgpa = this.showRankAll['Student_YGPA_RANKING'];
+        this.showRankDgpa = this.showRankAll['Student_DGPA_RANKING'];
+        this.showBtn = true;
+        this.errorMessage2 = false;
+        console.log("RankAll");
+        console.log(this.showRankAll);
+      }
+
+      
+
+    })
   }
 
 
@@ -515,41 +565,17 @@ export class MisComponent implements OnInit {
     this.maxDate = `${year}-${month}-${day}`;
   }
 
-
-
-
-
-
-
-  // filteredItems: any[] = [];
-
-  // exportToExcel(): void {
-  //   console.log('Exporting to Excel...');
-  //   console.log('Filtered Items:', this.filteredItems);
-
-  //   if (this.filteredItems.length > 0) {
-  //     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredItems);
-  //     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-  //     try {
-  //       // Save the Excel file
-  //       XLSX.writeFile(wb, 'student-data.xlsx');
-  //       console.log('Excel file saved successfully.');
-  //     } catch (error) {
-  //       console.error('Error saving Excel file:', error);
-  //     }
-  //   } else {
-  //     console.warn('Filtered Items array is empty. No data to export.');
-  //   }
-  // }
-
   changeFlag() {
     if (this.showStudentFees != null || this.showStudentcountAll != null || this.showFeesDfAll != null || this.showLibraryDfAll != null || this.showstudntDf != null) {
-      this.showBtn = true;
+      this.showBtn = false;
+      this.errorMessage2 = false
     }
     else {
       this.showBtn = false;
+      this.errorMessage2 = false
     }
   }
+
+
+
 }

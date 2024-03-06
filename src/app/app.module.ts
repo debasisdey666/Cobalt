@@ -77,6 +77,9 @@ import { StudentClearenceComponent } from './admin/student-clearence/student-cle
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { TableModule } from 'ngx-easy-table';
 import { NoRouteReuseStrategy } from './RouterReuseStrategy/custom-reload-RouterReuseStrategy';
+import { UserComponent } from './admin/user/user.component';
+import { RoleComponent } from './admin/role/role.component';
+import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
 
 
 @NgModule({
@@ -134,7 +137,10 @@ import { NoRouteReuseStrategy } from './RouterReuseStrategy/custom-reload-Router
     LibraryClearanceComponent,
     ResultInputComponent,
     StudentClearenceComponent,
-    SearchFilterPipe
+    SearchFilterPipe,
+    UserComponent,
+    RoleComponent,
+    RoleMenuPermissionComponent
     // PieChartComponent,
     
   ],

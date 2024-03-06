@@ -68,8 +68,8 @@ searchFilters: { [key: string]: string } = {};
     this.serviceData.showAssignment().subscribe((data) => {
       this.showAssignment = data;
       this.showAsigmnt = this.showAssignment['Data'];
-      console.log("this.showAsigmnt");
-      console.log(this.showAsigmnt);
+      // console.log("this.showAsigmnt");
+      // console.log(this.showAsigmnt);
       this.updateFilteredItems(); 
     });
     this.serviceData2.showPaper().subscribe((data) => {
@@ -94,7 +94,25 @@ searchFilters: { [key: string]: string } = {};
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-   // Pagination
+
+  cutofdateWithId:any;
+
+  onLinkClick(assignmentId: any) {
+    // Make your API call here
+    this.serviceData.showAssignmentwithID(assignmentId).subscribe((data) => {
+      this.showAssignment = data;
+      this.showAsigmnt = this.showAssignment['Data'];
+      this.cutofdateWithId = this.showAsigmnt[0].CUTOFF_DATE;
+      console.log("this.showAsigmnt a click");
+      console.log(this.cutofdateWithId);
+      localStorage.setItem('cutofdateWithId', this.cutofdateWithId);
+      this.updateFilteredItems();       
+    });
+   
+   }
+    
+
+  // Pagination
   
   //  pageSize =5;
   //  items = [];

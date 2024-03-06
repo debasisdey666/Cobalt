@@ -50,6 +50,9 @@ import { BookmasterComponent } from './bookmaster/bookmaster.component';
 import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
 import { ResultInputComponent } from './candidate/result-input/result-input.component';
 import { StudentClearenceComponent } from './admin/student-clearence/student-clearence.component';
+import { UserComponent } from './admin/user/user.component';
+import { RoleComponent } from './admin/role/role.component';
+import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
 
 
 const routes: Routes = [
@@ -112,7 +115,11 @@ const routes: Routes = [
   { path: 'bookmaster', component: BookmasterComponent , canActivate: [AuthGuard] }, 
   { path: 'library-clearance', component: LibraryClearanceComponent , canActivate: [AuthGuard] }, 
   { path: 'result-input', component: ResultInputComponent , canActivate: [AuthGuard] }, 
-  { path: 'student-clearence', component: StudentClearenceComponent, canActivate: [AuthGuard]}
+  { path: 'student-clearence', component: StudentClearenceComponent, canActivate: [AuthGuard]},
+
+  { path: 'user', component: UserComponent, canActivate: [AuthGuard]},
+  { path: 'role', component: RoleComponent, canActivate: [AuthGuard]},
+  { path: 'role-menu-permission', component: RoleMenuPermissionComponent, canActivate: [AuthGuard]},
 
   
   // { path: '**', component: LoginComponent },

@@ -17,6 +17,7 @@ export class MisService {
   url6=environment.baseUrl+"api/MIS/feesdefaulter";
   url7=environment.baseUrl+"api/Filter_ClassTimetable";
   url8=environment.baseUrl+"api/StudentAttendanceReport/StudentAttendanceReport";
+  url9=environment.baseUrl+"api/LibraryClearance/ViewLibraryClearance";
 
   student_id: any;
 
@@ -273,6 +274,20 @@ export class MisService {
     return this.http.post(this.url8,data)
   }
 
+// RANK
 
+showRank(formData:any){
+  const userId = getFromLocalStorage('userId');
+  
+  var data=
+  {
+    "studenT_ID": 0,
+    "reporT_TYPE":formData.reporT_TYPE,
+    "aY_ID": formData.aY_ID,
+    "brancH_ID": formData.brancH_ID,
+    "seM_ID": formData.seM_ID
+  }
+  return this.http.post(this.url9,data)
+}
 
 }

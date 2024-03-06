@@ -18,33 +18,44 @@ export class AssignmentService {
   showAssignment(): Observable<any> {
 
     const userId = getFromLocalStorage('userId');
-    
-    // Create a new FormData object to send form data
     const data = new FormData();
-
-    // Add key-value pairs to the FormData object
     data.append('ID', '0');
     data.append('PAPER_ID', '0');
     data.append('ASSIGNMENT_DETAILS', 'string');
-
-    // Check if a file is selected before adding it to FormData
     if (this.selectedFile) {
       data.append('ASSIGNMENT_DOCUMENT', this.selectedFile, this.selectedFile.name);
     }
-
     data.append('CUTOFF_DATE', '10/10/2023');
     data.append('STATUS', 'true');
-     // data.append('ADDEDBY', userId);
     if (userId !== null) {
       data.append('ADDEDBY', userId);
     }
     if (userId !== null) {
       data.append('UPDATEDBY', userId);
     }
-    // data.append('UPDATEDBY', '1');
     data.append('MODE', 'V');
+    return this.http.post<any>(this.url, data);
+  }
 
-    // Send a POST request with the FormData
+  showAssignmentwithID(id: number): Observable<any> {
+
+    const userId = getFromLocalStorage('userId');
+    const data = new FormData();
+    data.append('ID', String(id));
+    data.append('PAPER_ID', '0');
+    data.append('ASSIGNMENT_DETAILS', 'string');
+    if (this.selectedFile) {
+      data.append('ASSIGNMENT_DOCUMENT', this.selectedFile, this.selectedFile.name);
+    }
+    data.append('CUTOFF_DATE', '10/10/2023');
+    data.append('STATUS', 'true');
+    if (userId !== null) {
+      data.append('ADDEDBY', userId);
+    }
+    if (userId !== null) {
+      data.append('UPDATEDBY', userId);
+    }
+    data.append('MODE', 'V');
     return this.http.post<any>(this.url, data);
   }
 
