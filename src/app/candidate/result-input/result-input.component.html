@@ -31,7 +31,7 @@
                                             <option *ngFor="let grdData of gradedropdwn" [value]="grdData.Letter_Grade">{{grdData.Letter_Grade}}</option>
                                         </select> -->
                                         <input type="hidden" name="ID{{i}}" [(ngModel)]="ltrgrd.ID">
-                                        <select name="dropdown{{i}}" id="Letter_Grade" [(ngModel)]="selectedValuesFromDropdown[i]">
+                                        <select name="{{i}}" id="Letter_Grade" [(ngModel)]="selectedValuesFromDropdown[i]">
                                             <option *ngFor="let grdData of gradedropdwn" [value]="grdData.Letter_Grade">{{grdData.Letter_Grade}}</option>
                                         </select>
                                     </td>

@@ -29,6 +29,7 @@ export class ResultInputComponent implements OnInit {
   selectedValuesFromId: any = [];
   selectedValuesFromDropdown: any = [];
   allIdArray: any = [];
+  resultArray: any = [];
 
 
   constructor(
@@ -48,24 +49,26 @@ export class ResultInputComponent implements OnInit {
     this.serviceData.showResultInput(this.id,this.student_id).subscribe((data)=>{
       this.showRsltInp = data;
       this.showRsltInpAll = this.showRsltInp['Results'];
+      // console.log("array");
+      // this.showRsltInpAll.forEach((data: any) => console.log(data));
       
-      this.showRsltInpAll.forEach((data: any) => {
-        this.allIdArray.push(data);
+      this.showRsltInpAll[0].LetterGrades.forEach((data: any) => {
+        this.allIdArray.push(data.ID);
       })
       console.log("array123: -")
       this.allIdArray.forEach((data: any) => console.log(data));
 
-      console.log("this.showRsltInp");
-      console.log(this.showRsltInpAll);
+      //console.log("this.showRsltInp");
+      //console.log(this.showRsltInpAll);
       
 
       // if(this.showRsltInpAll.length != 0){ 
       //   this.showInput = true;    
       //   this.updateId = this.showRsltInpAll[0].ID;
       //   localStorage.setItem('updateId',this.updateId);
-      //   console.log("this.showRsltInpAll");      
-      //   console.log("this.showRsltInp");   
-      //   console.log(this.showRsltInpAll); 
+      //   //console.log("this.showRsltInpAll");      
+      //   //console.log("this.showRsltInp");   
+      //   //console.log(this.showRsltInpAll); 
       
       //   if(this.showRsltInpAll[0].SGPA != 0){
       //     this.formData.sgpaDataInput = this.showRsltInpAll[0].SGPA;
@@ -84,8 +87,8 @@ export class ResultInputComponent implements OnInit {
 
     this.serviceData.gradeDropdown().subscribe((resp:any)=>{
       this.gradedropdwn = resp['LETTER GRADE'];
-      console.log("gradeDropdown")
-      console.log(this.gradedropdwn)
+      //console.log("gradeDropdown")
+      //console.log(this.gradedropdwn)
     })
 
   }
@@ -94,8 +97,8 @@ export class ResultInputComponent implements OnInit {
 
   // saveFormData(formData: any){    
   //   debugger
-  //   console.log("data");
-  //   console.log(formData);
+  //   //console.log("data");
+  //   //console.log(formData);
   //   const data = {
   //     "id": 4,
   //     "sgpa": formData.sgpaData,
@@ -111,8 +114,8 @@ export class ResultInputComponent implements OnInit {
   //   };
     
   //   this.serviceData.updateStudentResult(data).subscribe((resp)=>{
-  //     console.log("resp");
-  //     console.log(resp);
+  //     //console.log("resp");
+  //     //console.log(resp);
   //   })
   // }
 
@@ -123,9 +126,9 @@ export class ResultInputComponent implements OnInit {
   //     this.sgpa = parseFloat(this.formData.sgpaDataInput);
   //     this.ygpa = parseFloat(this.formData.ygpaDataInput);
   //     this.dgpa = parseFloat(this.formData.dgpaDataInput);
-  //     console.log("sgpa:- "+this.sgpa);
-  //     console.log("ygpa:- "+this.ygpa);
-  //     console.log("dgpa:- "+this.dgpa);
+  //     //console.log("sgpa:- "+this.sgpa);
+  //     //console.log("ygpa:- "+this.ygpa);
+  //     //console.log("dgpa:- "+this.dgpa);
 
   //     if (!this.isSubmitted) {
   //       // Toggle the button to confirm mode
@@ -141,7 +144,7 @@ export class ResultInputComponent implements OnInit {
   //   if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
   //     this.serviceData.updateStudentResult(this.updateId,this.sgpa,this.ygpa,this.dgpa,this.student_id).subscribe((data: any) => {
   //     this.updatedData = data;
-  //     console.log(this.updatedData)
+  //     //console.log(this.updatedData)
   //     alert("submitted successfully");
   //     this.router.navigateByUrl("/dashboard");
   //   })
@@ -151,11 +154,26 @@ export class ResultInputComponent implements OnInit {
 
 
   saveFormData(formData: any) {   
-    console.log("data");
-    console.log(formData);
-    const arr = Object.values(formData);
-    console.log("array "+arr);
-    // console.log(this.selectedValues);
+    //console.log("data");
+    //console.log(formData);
+    // const arr = Object.values(formData);
+    //console.log("array "+arr);
+    // console.log("drop array"+typeof this.selectedValuesFromDropdown);
+    // this.selectedValuesFromDropdown.forEach((data: any)=> console.log(data));
+
+    this.allIdArray.forEach((key: any, index: any) => {
+      // Create an object with the current key from keysArray and corresponding value from valuesArray
+      let obj = {};
+      obj = {
+        id : key,
+        result:this.selectedValuesFromDropdown[index]
+      }
+  
+      // Push the object into the resultArray
+      this.resultArray.push(obj);
+      console.log("Result array : -");
+      this.resultArray.forEach((data: any) => console.log(data))
+  });
 
     // Binding to array of objects
     
@@ -176,11 +194,11 @@ export class ResultInputComponent implements OnInit {
     //     };
 
     //     this.serviceData.updateStudentResult(data).subscribe((resp) => {
-    //         console.log("resp");
-    //         console.log(resp);
+    //         //console.log("resp");
+    //         //console.log(resp);
     //     });
     // } else {
-    //     console.error("LetterGrades is undefined in formData.");
+    //     //console.error("LetterGrades is undefined in formData.");
     // }
 }
 
