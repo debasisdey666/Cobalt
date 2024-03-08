@@ -10,31 +10,57 @@ import { getFromLocalStorage } from '../../environments/local-storage-util';
 export class ResultInputService {
 
   url=environment.baseUrl+"api/Result";
+  url2=environment.baseUrl+"api/DropdownBind";
 
   constructor(private http: HttpClient) { }
 
   showResultInput(id:any,student_id: any) {    
     const data = {
-      "id": id,
+      "id": 0,
       "sgpa": 0,
       "ygpa": 0,
       "dgpa": 0,
       "updatedby": "string",
-      "studenT_ID": student_id,
+      "studenT_ID":6,
+      "letterGrade": [
+        {
+          "id": 0,
+          "result": "string"
+        }
+      ],
       "mode": "V"
+
     };
     return this.http.post(this.url, data);
   }
-  updateStudentResult(id: any, sgpa: any, ygpa: any, dgpa: any, student_id: any) {    
+  updateStudentResult(formData:any) {    
     const data = {
-      "id": id,
-      "sgpa": sgpa,
-      "ygpa": ygpa,
-      "dgpa": dgpa,
+      "id": 0,
+      "sgpa": 0,
+      "ygpa": 0,
+      "dgpa": 0,
       "updatedby": "string",
-      "studenT_ID": student_id,
-      "mode": "U"
+      "studenT_ID":6,
+      "letterGrade": [
+        {
+          "id": formData.ID,
+          "result": formData.Letter_Grade,
+        }
+      ],
+      "mode": "A"
     };
     return this.http.post(this.url, data);
   }
+
+  gradeDropdown(){
+    const data = {
+      "useR_ID": 0,
+      "dropdowN_TYPE": 5,
+      "aY_ID": 0,
+      "brancH_ID": 0,
+      "seM_ID": 0
+    }
+    return this.http.post(this.url2, data);
+  }
+
 }

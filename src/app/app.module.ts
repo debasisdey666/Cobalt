@@ -140,7 +140,7 @@ import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-m
     SearchFilterPipe,
     UserComponent,
     RoleComponent,
-    RoleMenuPermissionComponent
+    RoleMenuPermissionComponent,
     // PieChartComponent,
     
   ],

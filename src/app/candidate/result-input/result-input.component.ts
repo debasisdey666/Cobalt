@@ -23,8 +23,9 @@ export class ResultInputComponent implements OnInit {
     dgpaDataInput: ''
   };
   updatedData: any;
+  gradedropdwn: any;
   isSubmitted: boolean = false;
-  showInput: boolean = true
+  // showInput: boolean = true
 
 
   constructor(
@@ -43,61 +44,80 @@ export class ResultInputComponent implements OnInit {
     }
     this.serviceData.showResultInput(this.id,this.student_id).subscribe((data)=>{
       this.showRsltInp = data;
-      this.showRsltInpAll = this.showRsltInp['Data'];
+      this.showRsltInpAll = this.showRsltInp['Results'];
 
-      if(this.showRsltInpAll.length != 0){ 
-        this.showInput = true;    
-        this.updateId = this.showRsltInpAll[0].ID;
-        localStorage.setItem('updateId',this.updateId);
-        console.log("this.showRsltInpAll");      
-        console.log("this.showRsltInp");   
-        console.log(this.showRsltInpAll); 
+      console.log("this.showRsltInp");
+      console.log(this.showRsltInpAll);
       
-        if(this.showRsltInpAll[0].SGPA != 0){
-          this.formData.sgpaDataInput = this.showRsltInpAll[0].SGPA;
-        }
-        if(this.showRsltInpAll[0].YGPA != 0){
-          this.formData.ygpaDataInput = this.showRsltInpAll[0].YGPA;
-        }
-        if(this.showRsltInpAll[0].DGPA != 0){
-          this.formData.dgpaDataInput = this.showRsltInpAll[0].DGPA;
-        }
-      }
-      else{
-        this.showInput = false;
-      }
+
+      // if(this.showRsltInpAll.length != 0){ 
+      //   this.showInput = true;    
+      //   this.updateId = this.showRsltInpAll[0].ID;
+      //   localStorage.setItem('updateId',this.updateId);
+      //   console.log("this.showRsltInpAll");      
+      //   console.log("this.showRsltInp");   
+      //   console.log(this.showRsltInpAll); 
+      
+      //   if(this.showRsltInpAll[0].SGPA != 0){
+      //     this.formData.sgpaDataInput = this.showRsltInpAll[0].SGPA;
+      //   }
+      //   if(this.showRsltInpAll[0].YGPA != 0){
+      //     this.formData.ygpaDataInput = this.showRsltInpAll[0].YGPA;
+      //   }
+      //   if(this.showRsltInpAll[0].DGPA != 0){
+      //     this.formData.dgpaDataInput = this.showRsltInpAll[0].DGPA;
+      //   }
+      // }
+      // else{
+      //   this.showInput = false;
+      // }
+    })
+
+    this.serviceData.gradeDropdown().subscribe((resp:any)=>{
+      this.gradedropdwn = resp['LETTER GRADE'];
+      console.log("gradeDropdown")
+      console.log(this.gradedropdwn)
+    })
+
+  }
+  saveFormData(data:any){
+    this.serviceData.updateStudentResult(data).subscribe((resp)=>{
+      console.log(resp);
     })
   }
 
-  saveFormData(){
-    if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
-      this.sgpa = parseFloat(this.formData.sgpaDataInput);
-      this.ygpa = parseFloat(this.formData.ygpaDataInput);
-      this.dgpa = parseFloat(this.formData.dgpaDataInput);
-      console.log("sgpa:- "+this.sgpa);
-      console.log("ygpa:- "+this.ygpa);
-      console.log("dgpa:- "+this.dgpa);
 
-      if (!this.isSubmitted) {
-        // Toggle the button to confirm mode
-        this.isSubmitted = true;
-      }
-      else{
-        this.isSubmitted = false; 
-      }
-    }
-  }
 
-  updateData(){
-    if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
-      this.serviceData.updateStudentResult(this.updateId,this.sgpa,this.ygpa,this.dgpa,this.student_id).subscribe((data: any) => {
-      this.updatedData = data;
-      console.log(this.updatedData)
-      alert("submitted successfully");
-      this.router.navigateByUrl("/dashboard");
-    })
+  // saveFormData(){
+  //   if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
+  //     this.sgpa = parseFloat(this.formData.sgpaDataInput);
+  //     this.ygpa = parseFloat(this.formData.ygpaDataInput);
+  //     this.dgpa = parseFloat(this.formData.dgpaDataInput);
+  //     console.log("sgpa:- "+this.sgpa);
+  //     console.log("ygpa:- "+this.ygpa);
+  //     console.log("dgpa:- "+this.dgpa);
+
+  //     if (!this.isSubmitted) {
+  //       // Toggle the button to confirm mode
+  //       this.isSubmitted = true;
+  //     }
+  //     else{
+  //       this.isSubmitted = false; 
+  //     }
+  //   }
+  // }
+
+  // updateData(){
+  //   if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
+  //     this.serviceData.updateStudentResult(this.updateId,this.sgpa,this.ygpa,this.dgpa,this.student_id).subscribe((data: any) => {
+  //     this.updatedData = data;
+  //     console.log(this.updatedData)
+  //     alert("submitted successfully");
+  //     this.router.navigateByUrl("/dashboard");
+  //   })
       
-    }
-    
-  }
+  //   }    
+  // }
+
+
 }

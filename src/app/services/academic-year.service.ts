@@ -83,7 +83,7 @@ editAY(formData:any){
     var data=
     {
       "id": formData.ID,
-      "aY_CODE": formData.aY_CODE,
+      "aY_CODE": formData.AY_CODE,
       "ay": formData.ay,
       "status": true,
       "ADDEDBY": userId,

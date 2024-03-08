@@ -121,6 +121,7 @@ const routes: Routes = [
   { path: 'role', component: RoleComponent, canActivate: [AuthGuard]},
   { path: 'role-menu-permission', component: RoleMenuPermissionComponent, canActivate: [AuthGuard]},
 
+
   
   // { path: '**', component: LoginComponent },
 ];

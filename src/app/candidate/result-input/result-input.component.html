@@ -3,15 +3,40 @@
         <h1>Result Input</h1>
     </div><!-- End Page Title -->
     <section class="section mainBodySec">
-        <div class="row" *ngIf="showInput">
+        <div class="row">
             <div class="row" *ngFor="let studentInp of showRsltInpAll">
-                <div class="col-md-4 mb-2">
-                    <p> <strong> Name : </strong> {{studentInp.BRANCH_NAME}}</p>
+                <div class="col-md-6 mb-2">
+                    <p> <strong> BRANCH NAME : </strong> {{studentInp.BRANCH_NAME}}</p>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <p> <strong>Sem :</strong> {{studentInp.SEM}}</p>
+                    <p> <strong>SEMESTER :</strong> {{studentInp.SEM}}</p>
                 </div>
-                <form #marksForm="ngForm" (ngSubmit)="saveFormData()">
+                <form #marksForm="ngForm" (ngSubmit)="saveFormData(marksForm.value)">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Paper</th>
+                                <th>Paper code</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                       <tbody>
+                            <tr *ngFor="let ltrgrd of studentInp.LetterGrades">
+                                <td>{{ltrgrd.PAPER_NAME}}</td>
+                                <td>{{ltrgrd.PAPER_CODE}}</td>
+                                <td>
+                                    <input type="text" name="ID" [(ngModel)]="ltrgrd.ID">
+                                    <select name="Letter_Grade" id="Letter_Grade" ngModel>
+                                        <ng-container *ngFor="let grdData of gradedropdwn">
+                                            <option id="grdData.id">{{grdData.Letter_Grade}}</option>
+                                        </ng-container>                                        
+                                    </select>
+                                </td>
+                            </tr>
+                       </tbody>                       
+                    </table>
+
+
                     <div class="mb-3 col-4 float-start px-2">
                         <label><strong>SGPA: </strong></label>
                         <input type="text" name="sgpaData" class="form-control py-2"
@@ -28,21 +53,22 @@
                             [(ngModel)]="formData.dgpaDataInput" required>
                     </div>
                     <!-- Button toggle -->
-                    <ng-container *ngIf="!isSubmitted; else confirmButton">
+                    <!-- <ng-container *ngIf="!isSubmitted; else confirmButton">
                         <button type="submit" class="btn btn-primary me-2" style="float: right;">Submit</button>
                     </ng-container>
                     <ng-template #confirmButton>
                         <button type="button" class="btn btn-primary me-2" style="float: right;"
                             (click)="updateData()">Confirm</button>
-                    </ng-template>
+                    </ng-template> -->
+                    <button type="submit" class="btn btn-primary me-2" style="float: right;">Submit</button>
                 </form>
 
             </div>
         </div>
-        <div *ngIf="!showInput">
+        <!-- <div *ngIf="!showInput">
             <div class="text-format">
                 You already been uploaded your current semester result
             </div>
-        </div>
+        </div> -->
     </section>
 </main>
