@@ -26,6 +26,9 @@ export class ResultInputComponent implements OnInit {
   gradedropdwn: any;
   isSubmitted: boolean = false;
   // showInput: boolean = true
+  selectedValuesFromId: any = [];
+  selectedValuesFromDropdown: any = [];
+  allIdArray: any = [];
 
 
   constructor(
@@ -45,6 +48,12 @@ export class ResultInputComponent implements OnInit {
     this.serviceData.showResultInput(this.id,this.student_id).subscribe((data)=>{
       this.showRsltInp = data;
       this.showRsltInpAll = this.showRsltInp['Results'];
+      
+      this.showRsltInpAll.forEach((data: any) => {
+        this.allIdArray.push(data);
+      })
+      console.log("array123: -")
+      this.allIdArray.forEach((data: any) => console.log(data));
 
       console.log("this.showRsltInp");
       console.log(this.showRsltInpAll);
@@ -80,11 +89,32 @@ export class ResultInputComponent implements OnInit {
     })
 
   }
-  saveFormData(data:any){
-    this.serviceData.updateStudentResult(data).subscribe((resp)=>{
-      console.log(resp);
-    })
-  }
+
+ 
+
+  // saveFormData(formData: any){    
+  //   debugger
+  //   console.log("data");
+  //   console.log(formData);
+  //   const data = {
+  //     "id": 4,
+  //     "sgpa": formData.sgpaData,
+  //     "ygpa": formData.ygpaData,
+  //     "dgpa": formData.dgpaData,
+  //     "updatedby": "1",
+  //     "studenT_ID":6,
+  //     "letterGrade": formData.ltrgrd.map((item: any) => ({
+  //       id: item.ID,
+  //       result: item.Letter_Grade,
+  //     })),
+  //     "mode": "A"
+  //   };
+    
+  //   this.serviceData.updateStudentResult(data).subscribe((resp)=>{
+  //     console.log("resp");
+  //     console.log(resp);
+  //   })
+  // }
 
 
 
@@ -118,6 +148,42 @@ export class ResultInputComponent implements OnInit {
       
   //   }    
   // }
+
+
+  saveFormData(formData: any) {   
+    console.log("data");
+    console.log(formData);
+    const arr = Object.values(formData);
+    console.log("array "+arr);
+    // console.log(this.selectedValues);
+
+    // Binding to array of objects
+    
+    // Check if LetterGrades is defined before trying to access it
+    // if (formData.ltrgrd) {
+    //     const data = {
+    //         "id": 4,
+    //         "sgpa": formData.sgpaData,
+    //         "ygpa": formData.ygpaData,
+    //         "dgpa": formData.dgpaData,
+    //         "updatedby": "1",
+    //         "studenT_ID": 6,
+    //         "letterGrade": formData.ltrgrd.map((item: any) => ({
+    //             id: item.ID,
+    //             result: item.Letter_Grade,
+    //         })),
+    //         "mode": "A"
+    //     };
+
+    //     this.serviceData.updateStudentResult(data).subscribe((resp) => {
+    //         console.log("resp");
+    //         console.log(resp);
+    //     });
+    // } else {
+    //     console.error("LetterGrades is undefined in formData.");
+    // }
+}
+
 
 
 }

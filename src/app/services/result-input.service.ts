@@ -33,27 +33,19 @@ export class ResultInputService {
     };
     return this.http.post(this.url, data);
   }
-  updateStudentResult(formData:any) {    
-    const data = {
-      "id": 0,
-      "sgpa": 0,
-      "ygpa": 0,
-      "dgpa": 0,
-      "updatedby": "string",
-      "studenT_ID":6,
-      "letterGrade": [
-        {
-          "id": formData.ID,
-          "result": formData.Letter_Grade,
-        }
-      ],
-      "mode": "A"
-    };
+
+
+
+
+  updateStudentResult(data:any) {   
+     debugger   
     return this.http.post(this.url, data);
   }
 
+  
+
   gradeDropdown(){
-    const data = {
+    const data = {  
       "useR_ID": 0,
       "dropdowN_TYPE": 5,
       "aY_ID": 0,
