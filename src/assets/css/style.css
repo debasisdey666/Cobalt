@@ -1971,6 +1971,7 @@ table tr td .clgprogNestedTable:last-child{
   font-size: 14px;
   color:#000;
 }
+.card-icon,
 .dashboard .card-icon {
   font-size: 32px;
   line-height: 0;
@@ -1979,6 +1980,7 @@ table tr td .clgprogNestedTable:last-child{
   flex-shrink: 0;
   flex-grow: 0;
 }
+.sales-card .card-icon,
 .dashboard .sales-card .card-icon {
   color: #4154f1;
   background: #f6f6fe;

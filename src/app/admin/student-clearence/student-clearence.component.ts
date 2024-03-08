@@ -69,11 +69,12 @@ export class StudentClearenceComponent implements OnInit {
 
           // calling API for checking checkbox
           this.clearenceService.getClearenceStatus(this.formData.regNumber).subscribe((res: any) => {
-            if(res.Data.length == 0){
+            if(res.Data == null || res.Data.length == 0 || res == null){
               this.feesChecked = true
               this.paperChecked = true
               this.libraryChecked = true
               this.disableCheckBox = true
+              this.isButtonEnabled = true
             }
             else{
               this.feesChecked = false
@@ -96,6 +97,8 @@ export class StudentClearenceComponent implements OnInit {
       this.clearenceService.saveClearence(this.registrationNumber).subscribe((res: any) => {
         this.clearenceDataResponse = res;
         this.clearenceData = this.clearenceDataResponse['Data'];
+        alert("Submitted Successfully")
+        this.getClearenceData();
       })
     }
   }
