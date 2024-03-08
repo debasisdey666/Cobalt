@@ -167,10 +167,14 @@
                 </div>
                 <div class="modal-body">
                   <div *ngFor="let paymentData of feesClearenceData.Student_Payment_Clearance[0].PAYMENT_DETAILS">
-                    <p>Name - {{paymentData.STUDENT_NAME}}</p>
-                    <p>Branch - {{paymentData.BRANCH_NAME}}</p>
-                    <p>Semester Name - {{paymentData.SEM}}</p>
-                    <p>Total Due Amount - {{paymentData.TOTAL_DUE_AMOUNT}}</p>
+                    <label class="form-label">Name</label>
+                    <input type="text" name="stu_name" class="form-control mb-2" [disabled]="true" [value]="paymentData.STUDENT_NAME">
+                    <label class="form-label">Branch</label>
+                    <input type="text" name="stu_branch" class="form-control mb-2" [disabled]="true" [value]="paymentData.BRANCH_NAME">
+                    <label class="form-label">Semester Name</label>
+                    <input type="text" name="stu_sem" class="form-control mb-2" [disabled]="true" [value]="paymentData.SEM">
+                    <label class="form-label">Total Due Amount</label>
+                    <input type="text" name="stu_sem" class="form-control mb-2" [disabled]="true" [value]="paymentData.TOTAL_DUE_AMOUNT">
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -191,9 +195,12 @@
                 </div>
                 <div class="modal-body">
                   <div *ngFor="let paperDetails of paperClearenceData.Student_Paper_Clearance[0].PAPER_CLEARANCE_DETAILS">
-                    <p>{{paperDetails.PAPER_CODE}}</p>
-                    <p>{{paperDetails.PAPER_NAME}}</p>
-                    <p>{{paperDetails.RESULT}}</p>
+                    <label class="form-label">Paper Code</label>
+                    <input type="text" name="paper_code" class="form-control mb-2" [disabled]="true" [value]="paperDetails.PAPER_CODE">
+                    <label class="form-label">Paper Name</label>
+                    <input type="text" name="paper_code" class="form-control mb-2" [disabled]="true" [value]="paperDetails.PAPER_NAME">
+                    <label class="form-label">Result</label>
+                    <input type="text" name="paper_code" class="form-control mb-2" [disabled]="true" [value]="paperDetails.RESULT">
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -209,6 +216,7 @@
             type="submit"
             class="btn btn-primary me-2"
             [disabled]="isButtonEnabled"
+            (click)="saveFormData()"
           >
             Submit
           </button>
