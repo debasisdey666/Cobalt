@@ -28,3 +28,8 @@
       height: 50px; /* Example height */
       background-color: red; /* Example background color */
   }
+
+  .content-width{
+    width: 146%; 
+    right: 7rem;
+  }

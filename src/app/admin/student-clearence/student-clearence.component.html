@@ -29,177 +29,12 @@
             Submit
           </button>
         </form>
-        <!-- <div class="tblMN table-responsive text-nowrap">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th width="40%">
-                                    Fees
-                                </th>
-                                <th width="45%">
-                                    Paper
-                                </th>
-                                <th>
-                                    Library
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let data of clearenceData">
-                               <td>{{data.FEES_CLEARANCE}}</td> 
-                               <td>{{data.RESULT_CLEARANCE}}</td> 
-                               <td>{{data.LIBRARY_CLEARANCE}}</td> 
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                </div> -->
-        <!-- <div *ngIf="moreInfo">
-                    <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="ex3-tab-1" data-bs-toggle="tab" href="#ex3-tabs-1" role="tab"
-                                aria-controls="ex3-tabs-1" aria-selected="true">Fees Clearence</a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="ex3-tab-2" data-bs-toggle="tab" href="#ex3-tabs-2" role="tab" aria-controls="ex3-tabs-2"
-                                aria-selected="false">Paper Clearence</a>
-                        </li>
-                    </ul>
-                    
-                    <div class="tab-content" id="ex2-content">
-                        <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1">
-                            Tab 1 content Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates, doloremque
-                            minima mollitia sapiente illo ut harum fugit explicabo error perspiciatis at cumque nisi eaque
-                            commodi culpa est sed ad amet.
-                            
-                        <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
-                            Tab 2 content Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates, doloremque
-                            minima mollitia sapiente illo ut harum fugit explicabo error perspiciatis at cumque nisi eaque
-                            commodi culpa est sed ad amet.
-                            <label for="paper"><input type="checkbox" id="paper" [(ngModel)]="paperChecked" (change)="onCheckboxChange(2)" /></label>
-                        </div>
-                    </div>
-                </div> -->
-
-        <!-- <div class="checkbox-container" *ngIf="moreInfo">
-                    
-                    
-                </div> -->
-
-        <!-- New Implementation  -->
-
-        <!-- <h3>Clearence</h3> -->
-
-        <!-- <div class="container"> -->
-
-        <!-- fees clearence card  -->
-        <!-- <div class="card" style="width: 18rem; margin-right: 10px">
-              <div class="card-body">
-                <h5 class="card-title">Fees Clearence</h5>
-                <p class="card-text">Fees Clearence - {{ feesStatus }}</p>
-                <a class="btn btn-primary me-2 d-block float-start" *ngIf="showPaymentDetails" data-bs-toggle="modal" data-bs-target="#staticBackdropFees">View Details</a>
-              </div>
-            </div> -->
-        <!-- <div class="card info-card sales-card">
-              <div class="card-body">
-                <h5 class="card-title card-title-sm">Fees Clearence
-                  <a [routerLink]="['/mis']" [queryParams]="{ selectedMISReport: '1' }" class="pull-right linkIcon"><i class="fa fa-share-square-o" aria-hidden="true"></i></a>
-                </h5>
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="fa fa-inr"></i>
-                  </div> -->
-        <!-- <div class="ps-3">
-                    <h6>{{showFeesc}}</h6>
-                    <span class="text-muted small pt-2 ps-1">Fees Collection...</span>
-                  </div> -->
-        <!-- </div>
-              </div>
-            </div> -->
-
-        <!-- paper clearence card  -->
-        <!-- <div class="card" style="width: 18rem">
-              <div class="card-body">
-                <h5 class="card-title">Paper Clearence</h5>
-                <p class="card-text">Paper Clearence - {{ paperStatus }}</p>
-                <a class="btn btn-primary me-2 d-block float-start" *ngIf="showPaperDetails" data-bs-toggle="modal" data-bs-target="#staticBackdropPaper">View Details</a>
-              </div>
-            </div> -->
-
-        <!-- checkbox clearence card  -->
-        <!-- <div class="card" style="width: 18rem; margin-left: 13%">
-              <div class="card-body">
-                <h5 class="card-title">please check for clearence</h5>
-                <ul style="list-style-type: none;">
-                  <li>
-                    <label for="fees"
-                      ><input
-                        type="checkbox"
-                        id="fees"
-                        class="form-check-input"
-                        [disabled]="disableCheckBox"
-                        [(ngModel)]="feesChecked"
-                        (change)="onCheckboxChange(1)"
-                    /></label>
-                    <span>&nbsp; Fees Clearence</span>
-                  </li>
-                  <li>
-                    <label for="paper"
-                      ><input
-                        type="checkbox"
-                        id="paper"
-                        class="form-check-input"
-                        [disabled]="disableCheckBox"
-                        [(ngModel)]="paperChecked"
-                        (change)="onCheckboxChange(2)"
-                    /></label>
-                    <span>&nbsp; Paper Clearence</span>
-                  </li>
-                  <li>
-                    <label for="library"
-                      ><input
-                        type="checkbox"
-                        id="library"
-                        class="form-check-input"
-                        [disabled]="disableCheckBox"
-                        [(ngModel)]="libraryChecked"
-                        (change)="onCheckboxChange(3)"
-                    /></label>
-                    <span>&nbsp; Library Clearence</span>
-                  </li>
-                </ul>
-              </div>
-            </div> -->
-
+       
         <div *ngIf="moreInfo">
           <div class="container">
             <div class="col-sm-12">
               
-              <!-- <div class="col-sm-12">
-                <div class="card info-card sales-card">
-                  <div class="card-body">
-                    <h5 class="card-title card-title-sm">
-                      Fees Clearence
-                      <a
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdropFees"
-                        class="pull-right linkIcon"
-                        ><i class="fa fa-share-square-o" aria-hidden="true"></i
-                      ></a>
-                    </h5>
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                      >
-                        <i class="fa fa-inr"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>Fees Clearence - {{ feesStatus }}</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
+              
 
               <div class="col-sm-6 pull-left p-2">
                 <div class="card info-card sales-card">
@@ -252,36 +87,7 @@
 
               <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdropCheckBox"
             role="button">Clearence </a>
-
-              <!-- <div class="col-sm-6 pull-left">
-                <div class="card info-card sales-card">
-                  <div class="card-body">
-                    <h5 class="card-title card-title-sm">
-                      Paper Clearence<a
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdropPaper"
-                        class="pull-right linkIcon"
-                        ><i class="fa fa-share-square-o" aria-hidden="true"></i
-                      ></a>
-                    </h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="fa fa-users"></i>
-                      </div>                      
-                      <div class="ps-3">
-                        <h6>Paper Clearence - {{ paperStatus }}</h6>
-                        <span class="text-muted small pt-2 ps-1">Fees Clearence Status...</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-
-
-
-            
             </div>
-
           </div>
 
           <!-- Modal fees clearence for details -->
@@ -295,7 +101,7 @@
             aria-hidden="true"
           >
             <div class="modal-dialog">
-              <div class="modal-content">
+              <div class="modal-content content-width">
                 <div class="modal-header">
                   <h5 class="modal-title" id="staticBackdropLabel">
                     {{ feesClearenceModalHeader }}
@@ -309,7 +115,7 @@
                   ></button> -->
                 </div>
                 <div class="modal-body">
-                  <div
+                  <!-- <div
                     *ngFor="
                       let paymentData of feesClearenceData
                         .Student_Payment_Clearance[0].PAYMENT_DETAILS
@@ -347,7 +153,37 @@
                       [disabled]="true"
                       [value]="paymentData.TOTAL_DUE_AMOUNT"
                     />
-                  </div>
+                  </div> -->
+
+                  <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                              <th>
+                                Name
+                              </th>       
+                              <th>
+                                Branch
+                             </th>                                  
+                              <th class="actionTd1">
+                                Semester Name
+                              </th>
+                              <th class="actionTd1">
+                                Total Due Amount
+                              </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let paymentData of feesClearenceData.Student_Payment_Clearance[0].PAYMENT_DETAILS">
+                            <td>{{paymentData.STUDENT_NAME}}</td>
+                            <td>{{paymentData.BRANCH_NAME}}</td>
+                            <td>{{paymentData.SEM}}</td>
+                            <td>{{paymentData.TOTAL_DUE_AMOUNT}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                </div>
                 </div>
                 <div class="modal-footer">
                   <button
@@ -387,7 +223,7 @@
                   ></button> -->
                 </div>
                 <div class="modal-body">
-                  <div
+                  <!-- <div
                     *ngFor="
                       let paperDetails of paperClearenceData
                         .Student_Paper_Clearance[0].PAPER_CLEARANCE_DETAILS
@@ -417,7 +253,33 @@
                       [disabled]="true"
                       [value]="paperDetails.RESULT"
                     />
-                  </div>
+                  </div> -->
+                
+                  <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                              <th>
+                                Paper Code
+                              </th>       
+                              <th>
+                                Paper Name
+                             </th>                                  
+                              <th class="actionTd1">
+                                Result
+                              </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let paperDetails of paperClearenceData.Student_Paper_Clearance[0].PAPER_CLEARANCE_DETAILS">
+                            <td>{{paperDetails.PAPER_CODE}}</td>
+                            <td>{{paperDetails.PAPER_NAME}}</td>
+                            <td>{{paperDetails.RESULT}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                </div>
                 </div>
                 <div class="modal-footer">
                   <button
