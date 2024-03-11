@@ -169,9 +169,6 @@ import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-m
     },
     { 
       provide: RouteReuseStrategy, 
-      useClass: CustomReuseStrategy },
-    { 
-      provide: RouteReuseStrategy, 
       useClass: NoRouteReuseStrategy 
     },
   ],
