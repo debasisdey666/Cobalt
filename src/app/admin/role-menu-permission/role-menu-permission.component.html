@@ -7,9 +7,9 @@
 
     <section class="section mainBodySec">
       <div class="row">
-        <div class="col-xl-12">
+        <!-- <div class="col-xl-12">
 
-            <div class="tblMN table-responsive text-nowrap">
+            <!-- <div class="tblMN table-responsive text-nowrap"> -->
                 <!-- <table class="table table-striped">
                     <thead>
                       <tr>
@@ -51,7 +51,7 @@
                      
                     </tbody>
                 </table> -->
-            </div>
+            <!-- </div> -->
             <!-- <div class="col-md-6 pull-left">
               <jw-pagination [items]="showAcademicYear" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
             </div>
@@ -61,6 +61,17 @@
             
 
             
+        <!-- </div> -->
+        <div class="mb-3">
+          <select name="role" id="roleDropDown" class="form-select dropdown">
+            <option for="administrator" selected="selected">---Select Role---</option>
+            <option *ngFor="let data of rolesData">{{data.ROLE_NAME}}</option>
+          </select>
+        </div>
+        <div class="col-xl-12">
+          <ngx-treeview [buttonClass]="buttonClass" [disabled]="!dropdownEnabled" [config]="config" [items]="items"
+            (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
+          </ngx-treeview>
         </div>
       </div>
     </section>  

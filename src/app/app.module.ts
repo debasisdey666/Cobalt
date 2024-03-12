@@ -80,6 +80,7 @@ import { NoRouteReuseStrategy } from './RouterReuseStrategy/custom-reload-Router
 import { UserComponent } from './admin/user/user.component';
 import { RoleComponent } from './admin/role/role.component';
 import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
+import { TreeviewModule } from 'ngx-treeview';
 
 
 @NgModule({
@@ -153,7 +154,8 @@ import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-m
     NgxPaginationModule,
     FullCalendarModule, // register FullCalendar with your app
     RouterModule.forRoot([]),
-    TableModule
+    TableModule,
+    TreeviewModule.forRoot()
     
   ],
   providers: [
