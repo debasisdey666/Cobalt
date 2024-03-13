@@ -68,6 +68,15 @@ export class MisComponent implements OnInit {
   searchText: string = "";
   public configuration!: Config;
   public columns!: Columns[];
+  public resultStatusConfiguration!: Config;
+  public resultStatusColumns!: Columns[];
+  showResult = [
+    "Passed",
+    "Failed",
+    "Incompleted"
+  ]
+  resultStatusData: any;
+  showTableForResult: boolean = false;
 
 
   public data = [{
@@ -171,7 +180,6 @@ export class MisComponent implements OnInit {
     this.configuration = { ...DefaultConfig };
     this.configuration.searchEnabled = false;
     
-    // ... etc.
     this.columns = [
       { key: 'phone', title: 'Phone' },
       { key: 'age', title: 'Age' },
@@ -576,6 +584,16 @@ export class MisComponent implements OnInit {
     }
   }
 
+  // Result Status
+  searchMisResultStatusData(formData: any){
+    // // get the student data
+    // let studentId = localStorage.getItem('studenId');
 
-
+    // API to get student pass fail report
+    this.serviceData.getResultStatus(formData).subscribe((res: any) => {
+      this.resultStatusData = res['STUDENT_PASS_FAIL'];
+      this.showTableForResult = true;
+    })
+  }
+  
 }

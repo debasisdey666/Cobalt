@@ -18,6 +18,7 @@ export class MisService {
   url7=environment.baseUrl+"api/Filter_ClassTimetable";
   url8=environment.baseUrl+"api/StudentAttendanceReport/StudentAttendanceReport";
   url9=environment.baseUrl+"api/LibraryClearance/ViewLibraryClearance";
+  url20=environment.baseUrl+"api/student_fail_pass_report/student_fail_pass_report";
 
   student_id: any;
 
@@ -288,6 +289,21 @@ showRank(formData:any){
     "seM_ID": formData.seM_ID
   }
   return this.http.post(this.url9,data)
+}
+
+// RESULT STATUS
+getResultStatus(formData: any){
+
+  const payload = {
+    "studenT_ID": 0,
+    "brancH_ID": formData.brancH_ID,
+    "academiC_YEAR_ID": formData.aY_ID,
+    "papeR_ID": 0,
+    "appearinG_SEM": formData.seM_ID,
+    "result": formData.result_Status
+  }
+
+  return this.http.post(this.url20, payload);
 }
 
 }
