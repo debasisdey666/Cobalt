@@ -121,8 +121,10 @@ export class TokenInterceptor implements HttpInterceptor {
     return throwError('Token refresh failed');
   }
 
-  private getTokenExpiration(token: string): Date | null {
+  private getTokenExpiration(token: string): Date | null{
     // Implement logic to extract and decode the JWT token and return the expiration date
+    // const date = new Date(JSON.parse(atob(token.split(".")[1])).exp);
+    // return date;
     return null;
   }
 
