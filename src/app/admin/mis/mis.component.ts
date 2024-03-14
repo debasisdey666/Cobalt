@@ -11,6 +11,7 @@ import * as xlsx from 'xlsx';
 import { saveAs } from 'file-saver';
 import { ActivatedRoute } from '@angular/router';
 import { APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table';
+import { NgForm } from '@angular/forms';
 // import DataTable from 'datatables.net-dt';
 
 
@@ -22,6 +23,7 @@ import { APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table';
 export class MisComponent implements OnInit {
 
   @ViewChild('table') table!: APIDefinition;
+  @ViewChild('searchResultStatus') searchResultStatusForm!: NgForm;
 
   selectedMISReport: string = '0'; // Default value for the select
   fmdate: string = ''; // Property to bind to the From Date input
@@ -519,7 +521,7 @@ export class MisComponent implements OnInit {
 
   // Pagination
 
-  pageSize = 20;
+  pageSize = 10;
   items = [];
   pageOfItems: Array<any> | undefined;
 
@@ -556,6 +558,11 @@ export class MisComponent implements OnInit {
 
   onChangePage6(pageOfItems6: Array<any>) {
     this.pageOfItems6 = pageOfItems6;
+  }
+  pageOfItems7: Array<any> | undefined;
+
+  onChangePage7(pageOfItems7: Array<any>) {
+    this.pageOfItems7 = pageOfItems7;
   }
 
 

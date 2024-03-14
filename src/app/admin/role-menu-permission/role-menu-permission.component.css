@@ -16,3 +16,27 @@ ngx-treeview ::ng-deep .treeview-header .form-control{
     width: 20rem;
     height: 3.2rem;
 }
+
+ul {
+    list-style-type: none;
+  }
+  ul ul {
+    margin-left: 20px;
+  }
+  .parent {
+    cursor: pointer;
+  }
+  .arrow::before {
+    content: '►';
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .arrow-down::before {
+    content: '▼';
+  }
+  .nested {
+    display: none;
+  }
+  .active {
+    display: block;
+  }

@@ -81,6 +81,7 @@ import { UserComponent } from './admin/user/user.component';
 import { RoleComponent } from './admin/role/role.component';
 import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
 import { TreeviewModule } from 'ngx-treeview';
+import { RoletreeComponent } from './admin/roletree/roletree.component';
 
 
 @NgModule({
@@ -142,6 +143,7 @@ import { TreeviewModule } from 'ngx-treeview';
     UserComponent,
     RoleComponent,
     RoleMenuPermissionComponent,
+    RoletreeComponent,
     // PieChartComponent,
     
   ],

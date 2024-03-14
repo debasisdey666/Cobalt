@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class RoleMenu {
   url = environment.baseUrl + 'api/DropdownBind';
+  url2 = environment.baseUrl + 'api/RoleMenuPermission';
   constructor(private http: HttpClient) {}
   // getBooks(): TreeviewItem[] {
   //   const childrenCategory = new TreeviewItem({
@@ -62,5 +63,14 @@ export class RoleMenu {
       seM_ID: 0,
     };
     return this.http.post(this.url, payload);
+  }
+
+  getRoleMenuPermission(roleId: any){
+    debugger
+    const payload = {
+      "rolE_ID": 4
+    }
+
+    return this.http.post(this.url2, payload);
   }
 }

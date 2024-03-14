@@ -412,7 +412,7 @@
 
       <!-- RESULT STATUS  -->
 
-      <div class="col-sm-12" *ngIf="selectedMISReport == '9'">
+      <div class="col-sm-10" *ngIf="selectedMISReport == '9'">
         <form #searchResultStatus="ngForm" (ngSubmit)="searchMisResultStatusData(searchResultStatus.value)" novalidate>
           <div class="row mb-2">
 
@@ -467,52 +467,6 @@
             </div>
           </div>
         </form>
-        <span *ngIf="showTableForResult">
-          <!-- Table for Result Status  -->
-          <div class="tblMN table-responsive text-nowrap mt-2" id="content" *ngIf="selectedMISReport == '9'">
-            <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
-            <table class="table table-striped mb-2">
-              <thead>
-                <tr>
-                  <th>Student Name</th>
-                  <th>Student Registration</th>
-                  <th>Branch Name</th>
-                  <th>Academic Year</th>
-                  <th>Semester</th>
-                  <th class="text-center">Paper Name</th>
-                  <th>Result</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let showResult of resultStatusData">
-                  <td>{{showResult.STUDENT_NAME}}</td>
-                  <td>{{showResult.STUDENT_REGISTRATION}}</td>
-                  <td class="text-center">{{showResult.BRANCH_NAME}}</td>
-                  <td class="text-center">{{showResult.ACADEMIC_YEAR}}</td>
-                  <td class="text-center">{{showResult.SEM}}</td>
-                  <td class="text-center">{{showResult.PAPER_NAME}}</td>
-                  <td class="text-center">{{showResult.Result}}</td>
-                </tr>
-              </tbody>
-        
-            </table>
-        
-            <!-- <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '2'">
-                      <jw-pagination [items]="showStucntAll" [pageSize]="pageSize"
-                        (changePage)="onChangePage2($event)"></jw-pagination>
-                    </div> -->
-        
-            <!-- <div *ngIf="errorMessage3" class="error-message">Error: No data found</div>
-        
-                    <div *ngIf="showBtn  && selectedMISReport == '8'" class="btn-alignment col-md-6 pull-left">
-                      <app-download-to-excel [excelName]="rank"></app-download-to-excel>
-                    </div> -->
-        
-        
-        
-          </div>
-        
-        </span>
       </div>
 
 
@@ -903,6 +857,49 @@
 
 
       </div>
+
+        <!-- Table for Result Status  -->
+        <div class="tblMN table-responsive text-nowrap mt-2" id="content" *ngIf="selectedMISReport == '9'">
+          <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+          <table class="table table-striped mb-2">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Student Registration</th>
+                <th>Branch Name</th>
+                <th>Academic Year</th>
+                <th>Semester</th>
+                <th>Paper Name</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let showResult of pageOfItems7">
+                <td>{{showResult.STUDENT_NAME}}</td>
+                <td>{{showResult.STUDENT_REGISTRATION}}</td>
+                <td>{{showResult.BRANCH_NAME}}</td>
+                <td>{{showResult.ACADEMIC_YEAR}}</td>
+                <td>{{showResult.SEM}}</td>
+                <td>{{showResult.PAPER_NAME}}</td>
+                <td>{{showResult.Result}}</td>
+              </tr>
+            </tbody>
+        
+          </table>
+        
+          <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '9'">
+            <jw-pagination [items]="resultStatusData" [pageSize]="pageSize" (changePage)="onChangePage7($event)"></jw-pagination>
+          </div>
+        
+          <!-- <div *ngIf="errorMessage3" class="error-message">Error: No data found</div>
+              
+                          <div *ngIf="showBtn  && selectedMISReport == '8'" class="btn-alignment col-md-6 pull-left">
+                            <app-download-to-excel [excelName]="rank"></app-download-to-excel>
+                          </div> -->
+        
+        
+        
+        </div>
 
 
 
