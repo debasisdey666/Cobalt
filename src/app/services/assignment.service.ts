@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AssignmentService {
   private url = environment.baseUrl + "api/Assignment";
+  private url2 = environment.baseUrl + "api/Files";
   // userId = environment.userId;
 
   selectedFile: any;
@@ -100,5 +101,15 @@ export class AssignmentService {
     // Send a POST request with the FormData
     return this.http.post(this.url, data);
   }
+
+
+  allAsignments(idData:any){
+    
+    var data = {      
+        "id": idData 
+    }
+    return this.http.post(this.url2,data, { responseType: 'blob' })
+  }
+
 
 }

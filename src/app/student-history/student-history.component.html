@@ -180,12 +180,24 @@
                                     <td> {{showAttDetails.ATTENDANCE_STATUS}}</td>
                                 </tr>                                  
                         </table>
-                        <table class="table customTableAtt">
-                           
+                        <table class="table customTableAtt customTablePap">
+                           <tr><th colspan="6">FEES PYAMENT SUMMERY</th></tr>
+                           <tr>
+                            <td> <strong> Semester</strong>  </td>
+                            <td> <strong> Fees Type</strong> </td>
+                            <td> <strong> Due Date</strong> </td>
+                            <td> <strong> Payable Amount</strong> </td>
+                            <td> <strong> Paid Amount</strong> </td>
+                            <td> <strong> Due Amount</strong> </td>
+                        </tr>
                             <tr *ngFor="let showPaySummry of showSem.FEES_PAYMENT_SUMMARY">
-                                <th>FEES PYAMENT SUMMERY</th>
-                                <th>Total Paid Amount : {{showPaySummry.TOTAL_AMOUNT_PAID}}</th>
-                                <th>Total Due Amount : {{showPaySummry.TOTAL_DUE_AMT}}</th>
+                                
+                                <td>{{showPaySummry.SEM}}</td>
+                                <td>{{showPaySummry.PAYMENT_TYPE_NAME}}</td>
+                                <td>{{showPaySummry.DUE_DATE}}</td>
+                                <td>{{showPaySummry.PAYABLE_AMOUNT}}</td>
+                                <td>{{showPaySummry.TOTAL_AMOUNT_PAID}}</td>
+                                <td>{{showPaySummry.TOTAL_DUE_AMOUNT}}</td>
                             </tr>                                  
                     </table>
                     <table class="table table customTableAtt customTablePap" *ngIf="showSem.FEES_DETAILS && showSem.FEES_DETAILS.length > 0">

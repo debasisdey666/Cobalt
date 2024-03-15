@@ -53,6 +53,8 @@ import { StudentClearenceComponent } from './admin/student-clearence/student-cle
 import { UserComponent } from './admin/user/user.component';
 import { RoleComponent } from './admin/role/role.component';
 import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
+import { TimetableSchedularComponent } from './admin/timetable-schedular/timetable-schedular.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 const routes: Routes = [
@@ -120,6 +122,8 @@ const routes: Routes = [
   { path: 'user', component: UserComponent, canActivate: [AuthGuard]},
   { path: 'role', component: RoleComponent, canActivate: [AuthGuard]},
   { path: 'role-menu-permission', component: RoleMenuPermissionComponent, canActivate: [AuthGuard]},
+  { path: 'timetable-schedular', component: TimetableSchedularComponent, canActivate: [AuthGuard]},
+  { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]},
 
 
   

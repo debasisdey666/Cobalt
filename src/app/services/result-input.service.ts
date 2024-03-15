@@ -38,7 +38,6 @@ export class ResultInputService {
 
 
   updateStudentResult(data:any) {   
-     debugger   
     return this.http.post(this.url, data);
   }
 

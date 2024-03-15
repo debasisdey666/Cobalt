@@ -18,7 +18,8 @@ export class SidebarService {
     const ROLE_ID = getFromLocalStorage('ROLE_ID');
     var data=
     {
-      "rolE_ID": ROLE_ID
+      "rolE_ID": ROLE_ID,
+      "type":1
     }
     return this.http.post(this.url,data)    
   }

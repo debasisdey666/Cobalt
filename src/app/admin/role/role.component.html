@@ -9,14 +9,14 @@
         <div class="col-xl-12">
 
             <div class="tblMN table-responsive text-nowrap">
-                <!-- <table class="table table-striped">
+                <table class="table table-striped">
                     <thead>
                       <tr>
                           <th>
-                            Code
+                            ROLE Name
                           </th>       
                           <th>
-                            Year
+                            DESCRIPTION
                          </th>                                  
                           <th class="actionTd1">
                               Action
@@ -24,16 +24,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr  *ngFor="let showAy of pageOfItems">
-                        <td>{{showAy.AY_CODE}}</td>
-                        <td>{{showAy.AY}}</td>
+                      <tr  *ngFor="let showRL of pageOfItems">
+                        <td>{{showRL.ROLE_Name}}</td>
+                        <td>{{showRL.DESCRIPTION}}</td>
                         <td>
                            
 
-                            <p class="mb-0" *ngIf="showAy.STATUS==true; else elseBlock">
-                              <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showAy,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            <p class="mb-0" *ngIf="showRL.STATUS==true; else elseBlock">
+                              <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showRL,$event)" data-bs-target="#EditModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                               
-                              <a href="#" class="activeBtn{{showAy.STATUS}}" (click)="actvinactv(showAy,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                              <a href="#" class="activeBtn{{showRL.STATUS}}" (click)="actvinactv(showRL,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
                                 <i title="Active" class="fa fa-check" aria-hidden="true"></i>
                                 <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
                             </a>
@@ -41,7 +41,7 @@
                             <ng-template #elseBlock>
                               <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                               
-                              <a href="#" class="activeBtn{{showAy.STATUS}} ms-0" (click)="actvinactv(showAy,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                              <a href="#" class="activeBtn{{showRL.STATUS}} ms-0" (click)="actvinactv(showRL,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
                                 <i title="Active" class="fa fa-check" aria-hidden="true"></i>
                                 <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
                               </a>
@@ -49,22 +49,174 @@
                             </ng-template>
                             
                         </td>
-                      </tr>
-                     
+                      </tr>                     
                     </tbody>
-                </table> -->
+                </table>
             </div>
-            <!-- <div class="col-md-6 pull-left">
-              <jw-pagination [items]="showAcademicYear" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+            <div class="col-md-6 pull-left">
+              <jw-pagination [items]="showRole" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
             </div>
             <div class="col-md-6 pull-left text-right">
               <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
-            </div> -->
-            
-
-            
+            </div>
         </div>
       </div>
     </section>  
 
   </main><!-- End #main -->
+
+
+  <div *ngIf="loading" class="loadingSec">
+    <img src="assets/images/loading-gif.gif" alt="ITC-MBS" class="loading"/>            
+  </div>
+
+  <!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Role</h5>
+        <button type="button" class="btn-cls" #closeButton data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div> 
+      <form #AddroleForm="ngForm" (ngSubmit)="AddroleFormdata(AddroleForm.value)" novalidate>
+          <div class="modal-body">
+
+            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div> 
+            <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+              Data Not Saved (Duplicate Data Not Allowed)
+            </div> 
+            
+              <div class="row">
+                
+
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Role Name<strong class="required"> *</strong> </label> 
+                  <input type="text" name="rolE_Name" class="form-control" ngModel required #rolE_Name="ngModel">
+                  <div class="" *ngIf="rolE_Name.touched">
+                    <div class="alert alert-danger" *ngIf="rolE_Name.errors?.required">
+                      This Field is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">Description<strong class="required"> *</strong> </label> 
+                  <input type="text" name="description" class="form-control" ngModel required #description="ngModel">
+                  <div class="" *ngIf="description.touched">
+                    <div class="alert alert-danger" *ngIf="description.errors?.required">
+                      This Field is required
+                    </div>
+                  </div>
+                </div>
+
+                                 
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+            <button class="btn btn-primary"  [disabled]="AddroleForm.invalid || isSubmit" >Submit</button>
+          </div>
+        </form>
+   
+      </div>
+  </div>
+</div>
+
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="EditModal" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+          <button type="button" class="btn-cls" #closeButton2 data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div> 
+        <form #EditroleForm="ngForm" (ngSubmit)="EditroleFormdata(EditroleForm.value)" novalidate>
+            <div class="modal-body">
+  
+              <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
+  
+              <div *ngIf="updateSuccessmessage" class="alert alert-success mt-3" role="alert">
+                Update Successfully.
+              </div> 
+              <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+                Data Not Saved (Duplicate Data Not Allowed)
+              </div> 
+              
+                <div class="row">
+                  
+  
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Role Name<strong class="required"> *</strong> </label> 
+                    <input type="hidden" name="ROLE_ID" class="form-control" ngModel required #ROLE_ID="ngModel" [(ngModel)]="roleUpdate.ROLE_ID">
+                    <input type="text" name="rolE_Name" class="form-control" ngModel required #rolE_Name="ngModel" [(ngModel)]="roleUpdate.ROLE_Name">
+                    <div class="" *ngIf="rolE_Name.touched">
+                      <div class="alert alert-danger" *ngIf="rolE_Name.errors?.required">
+                        This Field is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-3">
+                    <label class="form-label">Description<strong class="required"> *</strong> </label> 
+                    <input type="text" name="description" class="form-control" ngModel required #description="ngModel" [(ngModel)]="roleUpdate.DESCRIPTION">
+                    <div class="" *ngIf="description.touched">
+                      <div class="alert alert-danger" *ngIf="description.errors?.required">
+                        This Field is required
+                      </div>
+                    </div>
+                  </div>
+  
+                                   
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
+              <button class="btn btn-primary"  [disabled]="EditroleForm.invalid || isSubmit" >Submit</button>
+            </div>
+          </form>
+     
+        </div>
+    </div>
+  </div>
+
+
+  <!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" #closeButton3 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+     
+
+      <form #StatusroleForm="ngForm" (ngSubmit)="StatusroleFormdata()">
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Update Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="roleUpdate.status" name="status" [value]="true"> Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="roleUpdate.status" name="status" [value]="false"> Inactive
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" [disabled]="StatusroleForm.invalid">Yes</button>
+        </div>
+      </form>
+
+
+      
+    </div>
+  </div>
+</div>

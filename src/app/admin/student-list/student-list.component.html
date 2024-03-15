@@ -1007,6 +1007,8 @@
                             <div class="col-md-8 col-lg-9">
                                 <input type="date" name="DOB" class="form-control" ngModel required #DOB="ngModel"
                                     [(ngModel)]="studentUpdate.DOB" [max]="maxDate" [value]="studentUpdate.DOB">
+
+                                    {{studentUpdate.DOB}}
                                 <div class="alert alert-danger" *ngIf="DOB.touched && DOB.invalid">
                                     <div class="" *ngIf="DOB.errors?.required">
                                         This field is required

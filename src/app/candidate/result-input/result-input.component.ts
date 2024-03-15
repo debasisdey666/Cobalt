@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResultInputService } from 'src/app/services/result-input.service';
+import { getFromLocalStorage } from '../../../environments/local-storage-util'; 
 
 @Component({
   selector: 'app-result-input',
@@ -9,8 +10,8 @@ import { ResultInputService } from 'src/app/services/result-input.service';
 })
 export class ResultInputComponent implements OnInit {
 
-  showRsltInp:any;
-  showRsltInpAll:any;
+  showRsltInp: any;
+  showRsltInpAll: any;
   student_id: any;
   id: any;
   updateId: any;
@@ -25,6 +26,9 @@ export class ResultInputComponent implements OnInit {
   updatedData: any;
   gradedropdwn: any;
   isSubmitted: boolean = false;
+  addSuccessmessage:boolean = false;
+  errorMessage:boolean = false;
+  loading:boolean = false;
   // showInput: boolean = true
   selectedValuesFromId: any = [];
   selectedValuesFromDropdown: any = [];
@@ -33,174 +37,100 @@ export class ResultInputComponent implements OnInit {
 
 
   constructor(
-    private serviceData:ResultInputService,
+    private serviceData: ResultInputService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
     this.student_id = localStorage.getItem('studenId');
     this.student_id = parseInt(this.student_id);
-    if(localStorage.getItem('updateId') == null || localStorage.getItem('updateId')){
+    if (localStorage.getItem('updateId') == null || localStorage.getItem('updateId')) {
       this.id = 0;
     }
-    else{
+    else {
       this.id = localStorage.getItem('updateId');
     }
-    this.serviceData.showResultInput(this.id,this.student_id).subscribe((data)=>{
+    this.serviceData.showResultInput(this.id, this.student_id).subscribe((data) => {
       this.showRsltInp = data;
       this.showRsltInpAll = this.showRsltInp['Results'];
-      // console.log("array");
+       console.log(this.showRsltInpAll);
       // this.showRsltInpAll.forEach((data: any) => console.log(data));
-      
+
       this.showRsltInpAll[0].LetterGrades.forEach((data: any) => {
         this.allIdArray.push(data.ID);
+        this.selectedValuesFromDropdown.push(data.RESULT);
       })
-      console.log("array123: -")
-      this.allIdArray.forEach((data: any) => console.log(data));
-
-      //console.log("this.showRsltInp");
-      //console.log(this.showRsltInpAll);
       
-
-      // if(this.showRsltInpAll.length != 0){ 
-      //   this.showInput = true;    
-      //   this.updateId = this.showRsltInpAll[0].ID;
-      //   localStorage.setItem('updateId',this.updateId);
-      //   //console.log("this.showRsltInpAll");      
-      //   //console.log("this.showRsltInp");   
-      //   //console.log(this.showRsltInpAll); 
-      
-      //   if(this.showRsltInpAll[0].SGPA != 0){
-      //     this.formData.sgpaDataInput = this.showRsltInpAll[0].SGPA;
-      //   }
-      //   if(this.showRsltInpAll[0].YGPA != 0){
-      //     this.formData.ygpaDataInput = this.showRsltInpAll[0].YGPA;
-      //   }
-      //   if(this.showRsltInpAll[0].DGPA != 0){
-      //     this.formData.dgpaDataInput = this.showRsltInpAll[0].DGPA;
-      //   }
-      // }
-      // else{
-      //   this.showInput = false;
-      // }
+      this.formData.ID = this.showRsltInpAll[0].ID;
+      this.formData.sgpaDataInput = this.showRsltInpAll[0].SGPA;
+      this.formData.ygpaDataInput = this.showRsltInpAll[0].YGPA;
+      this.formData.dgpaDataInput = this.showRsltInpAll[0].DGPA;
     })
 
-    this.serviceData.gradeDropdown().subscribe((resp:any)=>{
+    this.serviceData.gradeDropdown().subscribe((resp: any) => {
       this.gradedropdwn = resp['LETTER GRADE'];
-      //console.log("gradeDropdown")
-      //console.log(this.gradedropdwn)
     })
 
   }
 
- 
-
-  // saveFormData(formData: any){    
-  //   debugger
-  //   //console.log("data");
-  //   //console.log(formData);
-  //   const data = {
-  //     "id": 4,
-  //     "sgpa": formData.sgpaData,
-  //     "ygpa": formData.ygpaData,
-  //     "dgpa": formData.dgpaData,
-  //     "updatedby": "1",
-  //     "studenT_ID":6,
-  //     "letterGrade": formData.ltrgrd.map((item: any) => ({
-  //       id: item.ID,
-  //       result: item.Letter_Grade,
-  //     })),
-  //     "mode": "A"
-  //   };
-    
-  //   this.serviceData.updateStudentResult(data).subscribe((resp)=>{
-  //     //console.log("resp");
-  //     //console.log(resp);
-  //   })
-  // }
 
 
 
-  // saveFormData(){
-  //   if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
-  //     this.sgpa = parseFloat(this.formData.sgpaDataInput);
-  //     this.ygpa = parseFloat(this.formData.ygpaDataInput);
-  //     this.dgpa = parseFloat(this.formData.dgpaDataInput);
-  //     //console.log("sgpa:- "+this.sgpa);
-  //     //console.log("ygpa:- "+this.ygpa);
-  //     //console.log("dgpa:- "+this.dgpa);
-
-  //     if (!this.isSubmitted) {
-  //       // Toggle the button to confirm mode
-  //       this.isSubmitted = true;
-  //     }
-  //     else{
-  //       this.isSubmitted = false; 
-  //     }
-  //   }
-  // }
-
-  // updateData(){
-  //   if(this.formData.sgpaDataInput != '' && this.formData.ygpaDataInput != '' && this.formData.dgpaDataInput != ''){
-  //     this.serviceData.updateStudentResult(this.updateId,this.sgpa,this.ygpa,this.dgpa,this.student_id).subscribe((data: any) => {
-  //     this.updatedData = data;
-  //     //console.log(this.updatedData)
-  //     alert("submitted successfully");
-  //     this.router.navigateByUrl("/dashboard");
-  //   })
-      
-  //   }    
-  // }
-
-
-  saveFormData(formData: any) {   
-    //console.log("data");
-    //console.log(formData);
-    // const arr = Object.values(formData);
-    //console.log("array "+arr);
-    // console.log("drop array"+typeof this.selectedValuesFromDropdown);
-    // this.selectedValuesFromDropdown.forEach((data: any)=> console.log(data));
-
+  saveFormData(formData: any) {
+    this.loading = true; 
+    this.resultArray=[]
     this.allIdArray.forEach((key: any, index: any) => {
       // Create an object with the current key from keysArray and corresponding value from valuesArray
       let obj = {};
       obj = {
-        id : key,
-        result:this.selectedValuesFromDropdown[index]
+        id: key,
+        result: this.selectedValuesFromDropdown[index]
       }
-  
+
       // Push the object into the resultArray
       this.resultArray.push(obj);
-      console.log("Result array : -");
-      this.resultArray.forEach((data: any) => console.log(data))
-  });
+      
+    });
 
-    // Binding to array of objects
-    
-    // Check if LetterGrades is defined before trying to access it
-    // if (formData.ltrgrd) {
-    //     const data = {
-    //         "id": 4,
-    //         "sgpa": formData.sgpaData,
-    //         "ygpa": formData.ygpaData,
-    //         "dgpa": formData.dgpaData,
-    //         "updatedby": "1",
-    //         "studenT_ID": 6,
-    //         "letterGrade": formData.ltrgrd.map((item: any) => ({
-    //             id: item.ID,
-    //             result: item.Letter_Grade,
-    //         })),
-    //         "mode": "A"
-    //     };
+      this.resultArray.forEach((data: any) => console.log(data));
+      const studentId = getFromLocalStorage('studentId');
+    const data = {
+      "id":formData.ID,
+      "sgpa": parseFloat(formData.sgpaData),
+      "ygpa": parseFloat(formData.ygpaData),
+      "dgpa": parseFloat(formData.dgpaData),
+      "updatedby": "1",
+      "studenT_ID": 6,
+      "letterGrade": this.resultArray,
+      "mode": "U"
+    };
+    this.serviceData.updateStudentResult(data).subscribe((resp: any) => {
+      
+      this.addSuccessmessage = false; 
+      this.errorMessage=false; 
+      console.log("resp");
+      console.log(resp);
 
-    //     this.serviceData.updateStudentResult(data).subscribe((resp) => {
-    //         //console.log("resp");
-    //         //console.log(resp);
-    //     });
-    // } else {
-    //     //console.error("LetterGrades is undefined in formData.");
-    // }
-}
+      if (resp.Res.StatusCode == 200 ){
+        this.addSuccessmessage = true;
+        this.loading = false; 
+      }
+      else{
+        this.errorMessage=true;   
+        this.loading = false; 
+      }
+
+      setTimeout(() => {
+        this.addSuccessmessage = false;
+        this.errorMessage=false;   
+        this.loading = false; 
+      }, 2000);
+
+    });
+
+
+
+  }
 
 
 

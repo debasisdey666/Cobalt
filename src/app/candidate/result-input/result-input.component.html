@@ -24,7 +24,7 @@
                         <tbody>
                                 <tr *ngFor="let ltrgrd of studentInp.LetterGrades;let i = index">
                                     <td>{{ltrgrd.PAPER_NAME}}</td>
-                                    <td>{{ltrgrd.PAPER_CODE}} | {{ltrgrd.ID}} | {{ltrgrd.RESULT}}</td>
+                                    <td>{{ltrgrd.PAPER_CODE}}</td>
                                     <td>
                                         <!-- <input type="hidden" name="ID" [value]="ltrgrd.ID">
                                         <select name="Letter_Grade" id="Letter_Grade" [(ngModel)]="ltrgrd.selectedGrade">
@@ -38,33 +38,36 @@
                                 </tr>
                         </tbody>                       
                         </table>
-
+                       
 
                         <div class="mb-3 col-4 float-start px-2">
                             <label><strong>SGPA: </strong></label>
-                            <input type="text" name="sgpaData" class="form-control py-2"
-                                [(ngModel)]="formData.sgpaDataInput" required>
+                            <input type="hidden" name="ID" class="form-control py-2" [(ngModel)]="formData.ID" required>
+                            <input type="text" name="sgpaData" class="form-control py-2" [(ngModel)]="formData.sgpaDataInput" required>
                         </div>
                         <div class="mb-3 col-4 float-start px-2">
                             <label><strong>YGPA: </strong></label>
-                            <input type="text" name="ygpaData" class="form-control py-2"
-                                [(ngModel)]="formData.ygpaDataInput" required>
+                            <input type="text" name="ygpaData" class="form-control py-2" [(ngModel)]="formData.ygpaDataInput" required>
                         </div>
                         <div class="mb-3 col-4 float-start px-2">
                             <label><strong>DGPA: </strong></label>
-                            <input type="text" name="dgpaData" class="form-control py-2"
-                                [(ngModel)]="formData.dgpaDataInput" required>
+                            <input type="text" name="dgpaData" class="form-control py-2" [(ngModel)]="formData.dgpaDataInput" required>
                         </div>
-                        <button type="submit" class="btn btn-primary me-2" style="float: right;">Submit</button>
-                    
-
+                        <div class="mb-3 col-4 float-start px-2">
+                            <button type="submit" class="btn btn-primary me-2" style="float: left;">Submit</button>
+                        </div>
+                        
                 </div>
             </form>
         </div>
-        <!-- <div *ngIf="!showInput">
-            <div class="text-format">
-                You already been uploaded your current semester result
-            </div>
-        </div> -->
+        <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert"  style="width:200px; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); z-index: 1000;">
+            Saved Successfully.
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert" style="position: fixed; top: 100px; left: 50%; transform: translateX(-50%); z-index: 1000;">
+            <strong>Error:</strong> Data Not Saved.           
+        </div>
+        <div *ngIf="loading" class="loadingSec">
+            <img src="assets/images/loading-gif.gif" alt="Image" class="loading" />
+        </div>
     </section>
 </main>

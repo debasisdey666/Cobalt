@@ -43,13 +43,14 @@ export class UserService {
       "status": true,
       "addedby": userId,
       "updatedby": userId,
-      "role": formData.ROLE_ID,
+      "role": parseInt(formData.ROLE_ID),
       "mode": "A"
     }
     return this.http.post(this.url,data)
   }
 
   editUser(formData:any){
+    
     const userId = getFromLocalStorage('userId');
     var data=
     {
@@ -61,7 +62,7 @@ export class UserService {
       "status": true,
       "addedby": userId,
       "updatedby": userId,
-      "role": formData.ROLE_ID,
+      "role": parseInt(formData.ROLE_ID),
       "mode": "U"
     }
     return this.http.post(this.url,data)

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
+import { RoleService } from '../../services/role.service';
 import {NgForm} from '@angular/forms';
 
 @Component({
@@ -18,6 +19,8 @@ export class UserComponent implements OnInit {
 
   showuser:any;
   showuserAll:any;
+  showroleall:any;
+  showRole:any;
   isSubmit:boolean = false;
   errormessage:boolean = false;
   addSuccessmessage:boolean = false;
@@ -25,7 +28,8 @@ export class UserComponent implements OnInit {
   loading:boolean = false;
 
   constructor(
-    private serviceData : UserService
+    private serviceData : UserService,
+    private serviceData2 : RoleService,
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +39,13 @@ export class UserComponent implements OnInit {
       console.log("this.showuser");
       console.log(this.showuser);
     })
+    this.serviceData2.showRole().subscribe((data)=>{
+      console.log("resp ROLE");
+      this.showroleall = data;
+      this.showRole = this.showroleall['Data'];
+      console.log("this.showRole");
+      console.log(this.showRole);
+    });
   }
 
     // Pagination

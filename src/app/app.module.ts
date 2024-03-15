@@ -82,6 +82,8 @@ import { RoleComponent } from './admin/role/role.component';
 import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
 import { TreeviewModule } from 'ngx-treeview';
 import { RoletreeComponent } from './admin/roletree/roletree.component';
+import { TimetableSchedularComponent } from './admin/timetable-schedular/timetable-schedular.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -144,6 +146,8 @@ import { RoletreeComponent } from './admin/roletree/roletree.component';
     RoleComponent,
     RoleMenuPermissionComponent,
     RoletreeComponent,
+    TimetableSchedularComponent,
+    ChangePasswordComponent,
     // PieChartComponent,
     
   ],
