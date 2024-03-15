@@ -417,7 +417,7 @@
           <div class="row mb-2">
 
             <!-- Branch Name  -->
-            <div class="col-sm-2 pe-0">
+            <div class="col-sm-4 pe-0">
               <label class="form-label">Branch</label>
               <select class="form-select" ngModel name="brancH_ID" required data-live-search="true" #brancH_ID="ngModel">
                 <option value="">Select One</option>
@@ -881,7 +881,7 @@
                 <td>{{showResult.ACADEMIC_YEAR}}</td>
                 <td>{{showResult.SEM}}</td>
                 <td>{{showResult.PAPER_NAME}}</td>
-                <td>{{showResult.Result}}</td>
+                <td  [ngClass]="{'text-success': showResult.Result === 'PASSED', 'text-danger': showResult.Result === 'FAILED', 'text-warning': showResult.Result === 'INCOMPLETED'}">{{showResult.Result}}</td>
               </tr>
             </tbody>
         
