@@ -88,7 +88,6 @@ export class AcademicYearComponent implements OnInit {
 
   editBtn(showAy: any, event: Event) {
     this.academicyrUpdate = JSON.parse(JSON.stringify(showAy));
-    console.log(showAy.ID)
   }
 
 

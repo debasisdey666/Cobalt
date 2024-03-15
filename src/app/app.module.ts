@@ -71,6 +71,19 @@ import { MentorshipComponent } from './candidate/mentorship/mentorship.component
 import { BookIssueComponent } from './admin/book-issue/book-issue.component';
 import { BookmasterComponent } from './bookmaster/bookmaster.component';
 import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.component'
+import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
+import { ResultInputComponent } from './candidate/result-input/result-input.component';
+import { StudentClearenceComponent } from './admin/student-clearence/student-clearence.component';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { TableModule } from 'ngx-easy-table';
+import { NoRouteReuseStrategy } from './RouterReuseStrategy/custom-reload-RouterReuseStrategy';
+import { UserComponent } from './admin/user/user.component';
+import { RoleComponent } from './admin/role/role.component';
+import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
+import { TreeviewModule } from 'ngx-treeview';
+import { RoletreeComponent } from './admin/roletree/roletree.component';
+import { TimetableSchedularComponent } from './admin/timetable-schedular/timetable-schedular.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -125,6 +138,16 @@ import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.
     BookIssueComponent,
     BookmasterComponent,
     DownloadToExcelComponent,
+    LibraryClearanceComponent,
+    ResultInputComponent,
+    StudentClearenceComponent,
+    SearchFilterPipe,
+    UserComponent,
+    RoleComponent,
+    RoleMenuPermissionComponent,
+    RoletreeComponent,
+    TimetableSchedularComponent,
+    ChangePasswordComponent,
     // PieChartComponent,
     
   ],
@@ -136,7 +159,9 @@ import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.
     JwPaginationModule,
     NgxPaginationModule,
     FullCalendarModule, // register FullCalendar with your app
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    TableModule,
+    TreeviewModule.forRoot()
     
   ],
   providers: [
@@ -152,7 +177,8 @@ import { DownloadToExcelComponent } from './download-to-excel/download-to-excel.
     },
     { 
       provide: RouteReuseStrategy, 
-      useClass: CustomReuseStrategy },
+      useClass: NoRouteReuseStrategy 
+    },
   ],
   bootstrap: [AppComponent]
 })

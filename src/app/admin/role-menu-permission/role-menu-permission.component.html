@@ -1,0 +1,92 @@
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Role Menu Permission</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section mainBodySec">
+      <div class="row">
+        <!-- <div class="col-xl-12">
+
+            <!-- <div class="tblMN table-responsive text-nowrap"> -->
+                <!-- <table class="table table-striped">
+                    <thead>
+                      <tr>
+                          <th>
+                            Code
+                          </th>       
+                          <th>
+                            Year
+                         </th>                                  
+                          <th class="actionTd1">
+                              Action
+                          </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr  *ngFor="let showAy of pageOfItems">
+                        <td>{{showAy.AY_CODE}}</td>
+                        <td>{{showAy.AY}}</td>
+                        <td>
+                           
+
+                            <p class="mb-0" *ngIf="showAy.STATUS==true; else elseBlock">
+                              <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showAy,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                              
+                              <a href="#" class="activeBtn{{showAy.STATUS}}" (click)="actvinactv(showAy,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                            </a>
+                            </p>
+                            <ng-template #elseBlock>
+                              <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>                              
+                              <a href="#" class="activeBtn{{showAy.STATUS}} ms-0" (click)="actvinactv(showAy,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                                <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                              </a>
+                            </ng-template>                           
+                        </td>
+                      </tr>
+                     
+                    </tbody>
+                </table> -->
+            <!-- </div> -->
+            <!-- <div class="col-md-6 pull-left">
+              <jw-pagination [items]="showAcademicYear" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+            </div>
+            <div class="col-md-6 pull-left text-right">
+              <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+            </div> -->
+            
+
+            
+        <!-- </div> -->
+        <div class="mb-3">
+          <select name="role" id="roleDropDown" class="form-select dropdown">
+            <option for="administrator" selected="selected">---Select Role---</option>
+            <option *ngFor="let data of rolesData">{{data.ROLE_NAME}}</option>
+          </select>
+        </div>
+        <div class="col-xl-12">
+          <ngx-treeview [buttonClass]="buttonClass" [disabled]="!dropdownEnabled" [config]="config" [items]="items"
+            (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
+          </ngx-treeview>
+        </div>
+        <!-- <div class="col-xl-12">
+          <ul data-role="treeview">
+            <li class="expanded" data-caption="Checkboxes">
+                <ul>
+                    <li><input type="checkbox" data-role="checkbox" data-caption="Play animation"></li>
+                    <li><input type="checkbox" data-role="checkbox" data-caption="Play sound" checked></li>
+                    <li><input type="checkbox" data-role="checkbox" data-caption="Disabled" disabled></li>
+                    <li><input type="checkbox" data-role="checkbox" data-caption="Disabled checked" checked disabled></li>
+                </ul>
+            </li>
+          </ul>
+        </div> -->
+      </div>
+    </section>  
+
+  </main><!-- End #main -->
+

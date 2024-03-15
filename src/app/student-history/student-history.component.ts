@@ -38,6 +38,7 @@ export class StudentHistoryComponent implements OnInit {
         this.serviceData.showStudDetails(studntid).subscribe((data) => {
           this.showStudentDetails = data;
           this.showStudetail = this.showStudentDetails['Student_History'];
+          console.log(this.showStudetail);
         });
       } else {
         console.log('No data found in local storage for key "stid"');

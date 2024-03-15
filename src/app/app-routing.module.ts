@@ -47,6 +47,14 @@ import { InternshipComponent } from './candidate/internship/internship.component
 import { MentorshipComponent } from './candidate/mentorship/mentorship.component';
 import { BookIssueComponent } from './admin/book-issue/book-issue.component';
 import { BookmasterComponent } from './bookmaster/bookmaster.component';
+import { LibraryClearanceComponent } from './admin/library-clearance/library-clearance.component';
+import { ResultInputComponent } from './candidate/result-input/result-input.component';
+import { StudentClearenceComponent } from './admin/student-clearence/student-clearence.component';
+import { UserComponent } from './admin/user/user.component';
+import { RoleComponent } from './admin/role/role.component';
+import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
+import { TimetableSchedularComponent } from './admin/timetable-schedular/timetable-schedular.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 const routes: Routes = [
@@ -69,8 +77,8 @@ const routes: Routes = [
   { path: 'scrutiny', component: ScrutinyComponent, canActivate: [AuthGuard] },
   { path: 'fees', component: FeesComponent, canActivate: [AuthGuard] },
 
-  { path: 'university', component: UniversityComponent , canActivate: [AuthGuard] },
-  { path: 'college', component: CollegeComponent , canActivate: [AuthGuard] },
+  { path: 'university', component: UniversityComponent , canActivate: [AuthGuard], data: { routeReuse: false } },
+  { path: 'college', component: CollegeComponent , canActivate: [AuthGuard], data: { routeReuse: false } },
   { path: 'academic-year', component: AcademicYearComponent , canActivate: [AuthGuard] },
   { path: 'semester', component: SemesterComponent , canActivate: [AuthGuard] },
   { path: 'paper-type', component: PaperTypeComponent , canActivate: [AuthGuard] },
@@ -107,6 +115,16 @@ const routes: Routes = [
 
   { path: 'book-issue', component: BookIssueComponent , canActivate: [AuthGuard] }, 
   { path: 'bookmaster', component: BookmasterComponent , canActivate: [AuthGuard] }, 
+  { path: 'library-clearance', component: LibraryClearanceComponent , canActivate: [AuthGuard] }, 
+  { path: 'result-input', component: ResultInputComponent , canActivate: [AuthGuard] }, 
+  { path: 'student-clearence', component: StudentClearenceComponent, canActivate: [AuthGuard]},
+
+  { path: 'user', component: UserComponent, canActivate: [AuthGuard]},
+  { path: 'role', component: RoleComponent, canActivate: [AuthGuard]},
+  { path: 'role-menu-permission', component: RoleMenuPermissionComponent, canActivate: [AuthGuard]},
+  { path: 'timetable-schedular', component: TimetableSchedularComponent, canActivate: [AuthGuard]},
+  { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]},
+
 
   
   // { path: '**', component: LoginComponent },

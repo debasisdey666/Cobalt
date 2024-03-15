@@ -16,8 +16,19 @@ export class MisService {
   url5=environment.baseUrl+"api/MIS/instructorcount";
   url6=environment.baseUrl+"api/MIS/feesdefaulter";
   url7=environment.baseUrl+"api/Filter_ClassTimetable";
+  url8=environment.baseUrl+"api/StudentAttendanceReport/StudentAttendanceReport";
+  url9=environment.baseUrl+"api/LibraryClearance/ViewLibraryClearance";
+  url20=environment.baseUrl+"api/student_fail_pass_report/student_fail_pass_report";
 
   student_id: any;
+
+  //variables for datatables
+  branch: any;
+  academicYear: any;
+  fromDate: any;
+  toDate: any;
+  ayId: any;
+  semId: any;
 
   constructor(private http: HttpClient) {
     
@@ -245,5 +256,54 @@ export class MisService {
     return this.http.post(this.url7,data)
   }
 
+
+   // Student Attendance new
+
+
+ showStudentAttnw(formData:any){
+    const userId = getFromLocalStorage('userId');
+    var data=   
+    {
+      "useR_ID": userId,
+      "reporT_TYPE": 9,
+      "branch_id": formData.brancH_ID,
+      "aY_ID": formData.aY_ID,
+      "seM_ID": formData.seM_ID,
+      "clasS_OF_DATE_START": formData.fmdate,
+      "clasS_OF_DATE_END": formData.todate,
+    }
+    return this.http.post(this.url8,data)
+  }
+
+// RANK
+
+showRank(formData:any){
+  const userId = getFromLocalStorage('userId');
+  
+  var data=
+  {
+    "studenT_ID": 0,
+    "reporT_TYPE":formData.reporT_TYPE,
+    "aY_ID": formData.aY_ID,
+    "brancH_ID": formData.brancH_ID,
+    "seM_ID": formData.seM_ID
+  }
+  return this.http.post(this.url9,data)
+}
+
+// RESULT STATUS
+getResultStatus(formData: any){
+
+  const payload = {
+    "studenT_ID": 0,
+    "brancH_ID": formData.brancH_ID,
+    "academiC_YEAR_ID": formData.aY_ID,
+    "papeR_ID": 0,
+    "appearinG_SEM": formData.seM_ID,
+    "result": formData.result_Status
+  }
+
+  return this.http.post(this.url20, payload);
+}
 
 }

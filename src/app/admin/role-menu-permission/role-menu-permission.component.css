@@ -1,0 +1,42 @@
+ngx-treeview ::ng-deep ngx-treeview-item .treeview-item i{
+    float: left;
+    display: block;
+    margin-right: 25px;
+}
+ngx-treeview ::ng-deep .treeview-header i svg{
+    display: none
+}
+
+ngx-treeview ::ng-deep .treeview-header .form-control{
+    width: 28%;
+    height: 3.2rem;
+}
+
+.dropdown{
+    width: 20rem;
+    height: 3.2rem;
+}
+
+ul {
+    list-style-type: none;
+  }
+  ul ul {
+    margin-left: 20px;
+  }
+  .parent {
+    cursor: pointer;
+  }
+  .arrow::before {
+    content: '►';
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .arrow-down::before {
+    content: '▼';
+  }
+  .nested {
+    display: none;
+  }
+  .active {
+    display: block;
+  }

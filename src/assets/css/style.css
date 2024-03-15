@@ -1451,6 +1451,25 @@ table td{
   cursor:pointer;
   margin-right: 4px
 }
+.genrateBtn {
+  color: #06b927;
+  border:1px solid #06b927;
+  display: inline-block;
+  line-height: 23px;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 4px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 10px;
+  text-decoration: none;
+}
+.genrateBtn:hover{
+  color:#06b927;
+  opacity: 0.6;
+}
 .attedBtn{
   background-color: #206fe0;
 }
@@ -1737,18 +1756,18 @@ table tr td .clgprogNestedTable:last-child{
 .tooltipSec {
   border: 0;
   color: #fff;
-  font-size: 16px!important;
+  font-size: 12px!important;
   width: 20px;
   padding: 0!important;
   background-color: #033a8f!important;
   border-radius: 50%!important;
-  width: 25px;
-  height: 25px;
+  width: 18px;
+  height: 18px;
   display: inline-block;
   font-weight: bold;
   margin: 0;
   text-align: center;
-  cursor:default;
+  cursor: default;
 }
 /* .tooltip-inner {
   background-color: #2f4fff;
@@ -1938,13 +1957,17 @@ table tr td .clgprogNestedTable:last-child{
 .cardDetail{
   text-align: justify;
 }
+.successTrue,
 .attPresent{
   color: #08bf08;
   font-weight:bold;
+  text-transform: uppercase;
 }
+.successFalse,
 .atAabsent{
   color: #ff0000;
   font-weight:bold;
+  text-transform: uppercase;
 }
 .attNotTaken{
   color: #f69f07;
@@ -1967,6 +1990,7 @@ table tr td .clgprogNestedTable:last-child{
   font-size: 14px;
   color:#000;
 }
+.card-icon,
 .dashboard .card-icon {
   font-size: 32px;
   line-height: 0;
@@ -1975,6 +1999,7 @@ table tr td .clgprogNestedTable:last-child{
   flex-shrink: 0;
   flex-grow: 0;
 }
+.sales-card .card-icon,
 .dashboard .sales-card .card-icon {
   color: #4154f1;
   background: #f6f6fe;
@@ -2065,4 +2090,20 @@ table tr td .clgprogNestedTable:last-child{
   padding: 14px!important;
   border-radius: 50px!important;
 }
-
+/*=========== 07032024 ===============*/
+.Nwtbl .ngx-pagination-range{
+  position: absolute;
+  left: 10px;
+  top: 0;
+}
+.Nwtbl th .ngx-icon-arrow-down,
+.Nwtbl th .ngx-icon-arrow-up
+{
+  display: none;
+}
+.Nwtbl .ngx-icon
+{
+  width: 20px;
+  font-size: 11px;
+  vertical-align: inherit;
+}

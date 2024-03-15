@@ -44,6 +44,7 @@ export class AssignmentsComponent implements OnInit {
   addSuccessmessage: boolean = false;
   updateSuccessmessage: boolean = false;
   loading: boolean = false;
+  downloadSuccessmessage: boolean = false;
 
   maxDate: string = '';
   minDate: string | undefined;
@@ -68,8 +69,8 @@ searchFilters: { [key: string]: string } = {};
     this.serviceData.showAssignment().subscribe((data) => {
       this.showAssignment = data;
       this.showAsigmnt = this.showAssignment['Data'];
-      console.log("this.showAsigmnt");
-      console.log(this.showAsigmnt);
+       console.log("this.showAsigmnt");
+       console.log(this.showAsigmnt);
       this.updateFilteredItems(); 
     });
     this.serviceData2.showPaper().subscribe((data) => {
@@ -94,7 +95,25 @@ searchFilters: { [key: string]: string } = {};
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-   // Pagination
+
+  cutofdateWithId:any;
+
+  onLinkClick(assignmentId: any) {
+    // Make your API call here
+    this.serviceData.showAssignmentwithID(assignmentId).subscribe((data) => {
+      this.showAssignment = data;
+      this.showAsigmnt = this.showAssignment['Data'];
+      this.cutofdateWithId = this.showAsigmnt[0].CUTOFF_DATE;
+      console.log("this.showAsigmnt a click");
+      console.log(this.cutofdateWithId);
+      localStorage.setItem('cutofdateWithId', this.cutofdateWithId);
+      this.updateFilteredItems();       
+    });
+   
+   }
+    
+
+  // Pagination
   
   //  pageSize =5;
   //  items = [];
@@ -411,6 +430,50 @@ assignStstusFormData() {
 
     // Format the date in 'yyyy-MM-dd' ISO format
     this.minDate = `${year}-${month}-${day}`;
+  }
+
+
+
+  allassignments(data:any){
+    const now = new Date();
+
+  // Extracting Date Components
+  const year = now.getFullYear(); // Full year (e.g., 2024)
+  const month = now.getMonth() + 1; // Month (0-11, so we add 1 to get 1-12)
+  const day = now.getDate(); // Day of the month (1-31)
+  const dayOfWeek = now.getDay(); // Day of the week (0-6, where 0 is Sunday)
+
+  // Extracting Time Components
+  const hours = now.getHours(); // Hour (0-23)
+  const minutes = now.getMinutes(); // Minute (0-59)
+  const seconds = now.getSeconds(); // Second (0-59)
+  const milliseconds = now.getMilliseconds(); // Millisecond (0-999)
+
+  // Creating a formatted string
+  const formattedDate = `${day}_${month}_${year}_`;
+  const formattedTime = `${hours}_${minutes}_${seconds}`;
+
+    console.log(data);
+    this.loading = true;
+    this.serviceData.allAsignments(data).subscribe((response: Blob)=>{
+      this.loading = false;
+      this.downloadSuccessmessage = true;
+
+      const blob = new Blob([response], { type: 'application/zip' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.style.display = 'none';
+      a.href = url;
+      a.download = formattedDate+formattedTime+'_assignments.zip'; // Set the filename for the download
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      setTimeout(() => {
+        this.downloadSuccessmessage = false;
+      }, 2000);
+
+    })
   }
   
 

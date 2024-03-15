@@ -1,0 +1,369 @@
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>User</h1>
+  </div><!-- End Page Title -->
+
+  <section class="section mainBodySec">
+    <div class="row">
+      <div class="col-xl-12">
+
+        <div class="tblMN table-responsive text-nowrap">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>USER NAME</th>
+                <th>PHONE</th>
+                <th>EMAIL</th>
+                <th>PASSWORD</th>
+                <th>ROLE NAME</th>
+                <th class="actionTd1">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let showUsr of pageOfItems">
+                <td>{{showUsr.USER_NAME}}</td>
+                <td>{{showUsr.PHONE}}</td>
+                <td>{{showUsr.EMAIL}}</td>
+                <td>{{showUsr.PASSWORD}}</td>
+                <td>{{showUsr.ROLE_NAME}}</td>
+                <td>
+                  <p class="mb-0" *ngIf="showUsr.STATUS==true; else elseBlock">
+                    <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showUsr,$event)"
+                      data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+
+                    <a href="#" class="activeBtn{{showUsr.STATUS}}" (click)="actvinactv(showUsr,$event)"
+                      data-bs-toggle="modal" data-bs-target="#statusModal">
+                      <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                      <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                    </a>
+                  </p>
+                  <ng-template #elseBlock>
+                    <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil"
+                        aria-hidden="true"></i></a>
+
+                    <a href="#" class="activeBtn{{showUsr.STATUS}} ms-0" (click)="actvinactv(showUsr,$event)"
+                      data-bs-toggle="modal" data-bs-target="#statusModal">
+                      <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                      <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                    </a>
+
+                  </ng-template>
+
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6 pull-left">
+          <jw-pagination [items]="showuser" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+        </div>
+        <div class="col-md-6 pull-left text-right">
+          <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal"
+            role="button">Add </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+
+<div *ngIf="loading" class="loadingSec">
+  <img src="assets/images/loading-gif.gif" alt="ITC-MBS" class="loading"/>            
+</div>
+
+
+<!-- Add Modal -->
+<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true"
+  data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Accademic Year</h5>
+        <button type="button" class="btn-cls" #closeButton data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+
+      <form #userAddForm="ngForm" (ngSubmit)="userAddFormdata(userAddForm.value)" novalidate>
+        <div class="modal-body">
+
+          <small class="mandatoryFld"> <strong>*</strong> Mandatory field</small>
+
+          <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+            Saved Successfully.
+          </div>
+          <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+            Data Not Saved (Duplicate Data Not Allowed)
+          </div>
+
+          <div class="row">
+
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">User name<strong class="required"> *</strong> </label>
+              <!-- <input type="text" name="UNIVERSITY_CODE" class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" ngModel required #UNIVERSITY_CODE="ngModel">  -->
+              <input type="text" name="USER_NAME" class="form-control" ngModel required #USER_NAME="ngModel"
+                pattern="^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$">
+              <div class="alert alert-danger" *ngIf="USER_NAME.touched && USER_NAME.invalid">
+                <div class="" *ngIf="USER_NAME.errors?.required">
+                  This field is required
+                </div>
+                <div class="" *ngIf="USER_NAME.errors?.pattern">
+                  Invalid Input
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Phone<strong class="required"> *</strong> </label>
+              <!-- <input type="text" name="UNIVERSITY_CODE" class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" ngModel required #UNIVERSITY_CODE="ngModel">  -->
+              <input type="text" name="PHONE" class="form-control" ngModel required pattern="[0-9]*" minlength="10"
+                maxlength="10" #PHONE="ngModel" />
+
+              <div class="alert alert-danger" *ngIf="PHONE.touched && PHONE.invalid">
+                <div *ngIf="PHONE.errors?.required">
+                  This field is required
+                </div>
+                <div *ngIf="PHONE.errors?.pattern">
+                  Invalid Input. Please enter only numeric characters.
+                </div>
+                <div *ngIf="PHONE.errors?.minlength">
+                  Phone number must be at least 10 characters long.
+                </div>
+                <div *ngIf="PHONE.errors?.maxlength">
+                  Phone number cannot be more than 15 characters long.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Email<strong class="required"> *</strong> </label>
+              <!-- <input type="text" name="UNIVERSITY_CODE" class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" ngModel required #UNIVERSITY_CODE="ngModel">  -->
+              <input type="email" name="EMAIL" class="form-control" ngModel required
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #EMAIL="ngModel">
+
+              <div class="alert alert-danger" *ngIf="EMAIL.touched && EMAIL.invalid">
+                <div *ngIf="EMAIL.errors?.required">
+                  This field is required
+                </div>
+                <div *ngIf="EMAIL.errors?.pattern">
+                  Invalid email address
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Password<strong class="required"> *</strong> </label>
+              <!-- <input type="password" name="PASSWORD" class="form-control" ngModel required
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" #PASSWORD="ngModel"> -->
+
+              <input type="text" name="PASSWORD" class="form-control" ngModel required #PASSWORD="ngModel">
+
+              <div class="alert alert-danger" *ngIf="PASSWORD.touched && PASSWORD.invalid">
+                <div *ngIf="PASSWORD.errors?.required">
+                  This field is required
+                </div>
+                <!-- <div *ngIf="PASSWORD.errors?.pattern">
+                  Invalid email address
+                </div> -->
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Role<strong class="required"> *</strong> </label>
+              <!-- <input type="text" name="UNIVERSITY_CODE" class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" ngModel required #UNIVERSITY_CODE="ngModel">  -->
+              
+              <select class="form-select" ngModel name="ROLE_ID" data-live-search="true" required
+              #ROLE_ID="ngModel">
+              <option value="">-- Select One --</option>
+              <option *ngFor="let sr of showRole" [value]="sr.ROLE_ID">{{sr.ROLE_Name}}</option>
+              <!-- <option value="1">ADMIN</option>
+              <option value="4">MIS</option>
+              <option value="5">OPARATIONs</option>
+              <option value="6">LIBRARIAN</option> -->
+               
+             </select>
+
+              <div class="alert alert-danger" *ngIf="ROLE_ID.touched && ROLE_ID.invalid">
+                <div *ngIf="ROLE_ID.errors?.required">
+                  This field is required
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary" [disabled]="userAddForm.invalid || isSubmit">Submit</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true"
+  data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Accademic Year</h5>
+        <button type="button" class="btn-cls" #closeButton2 data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+
+      <form #userEditForm="ngForm" (ngSubmit)="userEditFormdata(userEditForm.value)" novalidate>
+        <div class="modal-body">
+
+          <small class="mandatoryFld"> <strong>*</strong> Mandatory field</small>
+
+          <div *ngIf="updateSuccessmessage" class="alert alert-success mt-3" role="alert">
+            Update Successfully.
+          </div>
+          <!-- <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+            Data Not Saved (Duplicate Data Not Allowed)
+          </div> -->
+
+          <div class="row">
+
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">User name<strong class="required"> *</strong> </label>
+              <input type="hidden" name="USER_ID" class="form-control" #USER_ID="ngModel" [(ngModel)]="userUpdate.USER_ID">
+              <input type="hidden" name="USER_NAME" class="form-control" #USER_NAME="ngModel" required [(ngModel)]="userUpdate.USER_NAME" 
+                pattern="^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$">
+                <span class="form-control">{{userUpdate.USER_NAME}}</span>
+              <!-- <div class="alert alert-danger" *ngIf="USER_NAME.touched && USER_NAME.invalid">
+                <div class="" *ngIf="USER_NAME.errors?.required">
+                  This field is required
+                </div>
+                <div class="" *ngIf="USER_NAME.errors?.pattern">
+                  Invalid Input
+                </div>
+              </div> -->
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Phone<strong class="required"> *</strong> </label>
+              <!-- <input type="text" name="UNIVERSITY_CODE" class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" ngModel required #UNIVERSITY_CODE="ngModel">  -->
+              <input type="text" name="PHONE" class="form-control" ngModel required pattern="[0-9]*" minlength="10"
+                maxlength="10" #PHONEV="ngModel" [(ngModel)]="userUpdate.PHONE"/>
+
+              <div class="alert alert-danger" *ngIf="PHONEV.touched && PHONEV.invalid">
+                <div *ngIf="PHONEV.errors?.required">
+                  This field is required
+                </div>
+                <div *ngIf="PHONEV.errors?.pattern">
+                  Invalid Input. Please enter only numeric characters.
+                </div>
+                <div *ngIf="PHONEV.errors?.minlength">
+                  Phone number must be at least 10 characters long.
+                </div>
+                <div *ngIf="PHONEV.errors?.maxlength">
+                  Phone number cannot be more than 15 characters long.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Email<strong class="required"> *</strong> </label>
+              <!-- <input type="text" name="UNIVERSITY_CODE" class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" ngModel required #UNIVERSITY_CODE="ngModel">  -->
+              <input type="email" name="EMAIL" class="form-control" ngModel required
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #EMAILV="ngModel" [(ngModel)]="userUpdate.EMAIL">
+
+              <div class="alert alert-danger" *ngIf="EMAILV.touched && EMAILV.invalid">
+                <div *ngIf="EMAILV.errors?.required">
+                  This field is required
+                </div>
+                <div *ngIf="EMAILV.errors?.pattern">
+                  Invalid email address
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Password<strong class="required"> *</strong> </label>
+              <!-- <input type="password" name="PASSWORD" class="form-control" ngModel required
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" #PASSWORD="ngModel"> -->
+
+              <input type="text" name="PASSWORD" class="form-control" ngModel required #PASSWORDV="ngModel" [(ngModel)]="userUpdate.PASSWORD">
+
+              <div class="alert alert-danger" *ngIf="PASSWORDV.touched && PASSWORDV.invalid">
+                <div *ngIf="PASSWORDV.errors?.required">
+                  This field is required
+                </div>
+                <!-- <div *ngIf="PASSWORD.errors?.pattern">
+                  Invalid email address
+                </div> -->
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Role<strong class="required"> *</strong> </label>
+              <!-- <input type="text" name="UNIVERSITY_CODE" class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" ngModel required #UNIVERSITY_CODE="ngModel">  -->
+              
+              <select class="form-select" ngModel name="ROLE_ID" data-live-search="true" required
+              #ROLE_ID="ngModel" [(ngModel)]="userUpdate.ROLE_ID" readonly>
+              <option value="">-- Select One --</option>
+              <option *ngFor="let sr of showRole" [value]="sr.ROLE_ID">{{sr.ROLE_Name}}</option>            
+             </select>           
+              <!-- <option *ngFor="let sr of showRole" [value]="sr.ROLE_ID">{{sr.ROLE_Name}}</option>                -->
+             
+
+              <div class="alert alert-danger" *ngIf="ROLE_ID.touched && ROLE_ID.invalid">
+                <div *ngIf="ROLE_ID.errors?.required">
+                  This field is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary" [disabled]="userEditForm.invalid || isSubmit">Submit</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ----status change---- -->
+
+<div class="modal fade" id="statusModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button type="button" #closeButton3 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+      <form #userActiveForm="ngForm" (ngSubmit)="userActiveFormData()">
+        <div class="modal-body text-center">
+          <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
+            Update Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="userUpdate.STATUS" name="STATUS" [value]="true"> Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input type="radio" [(ngModel)]="userUpdate.STATUS" name="STATUS" [value]="false"> Inactive
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button class="btn btn-primary" [disabled]="userActiveForm.invalid">Yes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

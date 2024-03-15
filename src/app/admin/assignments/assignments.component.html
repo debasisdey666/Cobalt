@@ -1,5 +1,4 @@
 
-
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>Assignments</h1>
@@ -24,18 +23,22 @@
                     <tr>
                       <th>
                         Paper Name  
-                        <p class="tooltipSec" data-toggle="tooltip" data-placement="top" title="Click on paper to upload Assignment">?</p>
+                        <p class="tooltipSec" data-toggle="tooltip" data-placement="top" title="Click on paper to upload Assignment">i</p>
                        
                       </th> 
                         <th>
                             Assignment Details 
                         </th>  
+                         
                         <th>
-                            Assignment File
-                        </th>  
-                        <th>
-                            Cut Off Date  <p class="tooltipSec" data-toggle="tooltip" data-placement="top" title="Upload Assignment within cut off date">?</p>
+                            Cut Off Date  <p class="tooltipSec" data-toggle="tooltip" data-placement="top" title="Upload Assignment within cut off date">i</p>
                         </th> 
+                        <th class="text-center">
+                          Assignment File
+                        </th> 
+                        <th *ngIf="ROLE_ID==1" class="text-center">
+                          All Assignments
+                        </th>  
                                                       
                         <th class="actionTd1" *ngIf="ROLE_ID==3">
                             Action
@@ -45,16 +48,21 @@
                   <tbody>
                     <tr  *ngFor="let showAsgn of pageOfItems">
                       <!-- <td>{{showAsgn.PAPER_NAME}}</td> -->
-                      <td>  <a [routerLink]="['../assignment-upload', showAsgn.ID]">{{ showAsgn.PAPER_NAME }}</a> </td>
+                      <td>  <a [routerLink]="['../assignment-upload', showAsgn.ID]"  (click)="onLinkClick(showAsgn.ID)">{{ showAsgn.PAPER_NAME }}</a> </td>
                       <td> 
                         {{showAsgn.ASSIGNMENT_DETAILS}}
                       </td>
-                     
-                      <td> 
-                        <a href="{{linkurl}}{{showAsgn.ASSIGNMENT_DOCUMENT}}" target="_blank">Download</a>
+                      <td>{{ showAsgn.CUTOFF_DATE | date:'dd-MM-yyyy' }}</td>
+                      <td class="text-center"> 
+                        <a href="{{linkurl}}{{showAsgn.ASSIGNMENT_DOCUMENT}}" target="_blank" class="genrateBtn"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
                       </td>
                       
-                      <td>{{ showAsgn.CUTOFF_DATE | date:'dd-MM-yyyy' }}</td>
+                     
+                      <td *ngIf="ROLE_ID==1" class="text-center"> 
+                        <a href="javascript:void(0);" (click)="allassignments(showAsgn.ID)" class="genrateBtn">
+                          <i class="fa fa-download" aria-hidden="true"></i> Download
+                        </a> 
+                      </td>
                       <td *ngIf="ROLE_ID==3">
 
                         <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showAsgn,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
@@ -112,6 +120,10 @@
 
 <div *ngIf="loading" class="loadingSec">
   <img src="assets/images/loading-gif.gif" alt="Image" class="loading"/>            
+</div>
+
+<div *ngIf="downloadSuccessmessage" class="alert alert-success" role="alert" style="width:250px; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); z-index: 9999;">
+  Files Downloaded Successfully 
 </div>
 
 <!-- status -->

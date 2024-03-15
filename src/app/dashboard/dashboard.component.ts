@@ -144,14 +144,14 @@ export class DashboardComponent implements OnInit {
   linkurl: string = environment.baseUrl;
 
 
-  ngAfterViewInit(): void {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        // Perform actions after route change and page load
-        // This code will be executed after each successful route navigation
-        location.reload();
-      });
-  }
+  // ngAfterViewInit(): void {
+  //   this.router.events
+  //     .pipe(filter(event => event instanceof NavigationEnd))
+  //     .subscribe(() => {
+  //       // Perform actions after route change and page load
+  //       // This code will be executed after each successful route navigation
+  //       // location.reload();
+  //     });
+  // }
 
 }

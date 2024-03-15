@@ -1,0 +1,404 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Student Clearence</h1>
+  </div>
+  <!-- End Page Title -->
+
+  <section class="section mainBodySec">
+    <div class="row">
+      <div class="col-xl-12">
+        <form
+          #clearenceForm="ngForm"
+          (ngSubmit)="getClearenceData()"
+          class="pb-2 col-md-7 d-inline-block"
+        >
+          <label class="fw-bold d-block float-start w-auto"
+            >Student Registration:</label
+          >
+
+          <input
+            type="text"
+            name="registrationData"
+            class="form-control ps-3 py-2 d-block float-start w-50 mx-2"
+            [(ngModel)]="formData.regNumber"
+          />
+          <button
+            type="submit"
+            class="btn btn-primary me-2 d-block float-start"
+          >
+            Submit
+          </button>
+        </form>
+       
+        <div *ngIf="moreInfo">
+          <div class="container">
+            <div class="col-sm-12">
+              
+              
+
+              <div class="col-sm-6 pull-left p-2">
+                <div class="card info-card sales-card">
+                  <div class="card-body">
+                    <h5 class="card-title"> <strong> Fees Clearence</strong>  
+                      <a
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdropFees"
+                      class="pull-right linkIcon"
+                      ><i class="fa fa-share-square-o" aria-hidden="true"></i
+                    ></a>
+                    </h5>
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" *ngIf="showPaymentDetails">
+                        <i class="fa fa-inr"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6> <strong>Fees Clearence - </strong>   {{ feesStatus }}</h6>
+                        <span class="text-muted small pt-2 ps-1">Fees Clearence Status...</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-sm-6 pull-left p-2">
+                <div class="card info-card sales-card">
+                  <div class="card-body">
+                    <h5 class="card-title"> <strong> Paper Clearence </strong> 
+                      <a
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdropPaper"
+                      class="pull-right linkIcon"
+                      ><i class="fa fa-share-square-o" aria-hidden="true"></i
+                    ></a>
+                    </h5>
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" *ngIf="showPaperDetails">
+                        <i class="fa fa-file"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6> <strong>Paper Clearence - </strong>   {{ paperStatus }}  </h6>
+                        <span class="text-muted small pt-2 ps-1">Paper Clearence Status...</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdropCheckBox"
+            role="button">Clearence </a>
+            </div>
+          </div>
+
+          <!-- Modal fees clearence for details -->
+          <div
+            class="modal fade"
+            id="staticBackdropFees"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content content-width">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    {{ feesClearenceModalHeader }}
+                  </h5>
+                  <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+                  <!-- <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button> -->
+                </div>
+                <div class="modal-body">
+                  <!-- <div
+                    *ngFor="
+                      let paymentData of feesClearenceData
+                        .Student_Payment_Clearance[0].PAYMENT_DETAILS
+                    "
+                  >
+                    <label class="form-label">Name</label>
+                    <input
+                      type="text"
+                      name="stu_name"
+                      class="form-control mb-2"
+                      [disabled]="true"
+                      [value]="paymentData.STUDENT_NAME"
+                    />
+                    <label class="form-label">Branch</label>
+                    <input
+                      type="text"
+                      name="stu_branch"
+                      class="form-control mb-2"
+                      [disabled]="true"
+                      [value]="paymentData.BRANCH_NAME"
+                    />
+                    <label class="form-label">Semester Name</label>
+                    <input
+                      type="text"
+                      name="stu_sem"
+                      class="form-control mb-2"
+                      [disabled]="true"
+                      [value]="paymentData.SEM"
+                    />
+                    <label class="form-label">Total Due Amount</label>
+                    <input
+                      type="text"
+                      name="stu_sem"
+                      class="form-control mb-2"
+                      [disabled]="true"
+                      [value]="paymentData.TOTAL_DUE_AMOUNT"
+                    />
+                  </div> -->
+
+                  <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                              <th>
+                                Name
+                              </th>       
+                              <th>
+                                Branch
+                             </th>                                  
+                              <th class="actionTd1">
+                                Semester Name
+                              </th>
+                              <th class="actionTd1">
+                                Total Due Amount
+                              </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let paymentData of feesClearenceData.Student_Payment_Clearance[0].PAYMENT_DETAILS">
+                            <td>{{paymentData.STUDENT_NAME}}</td>
+                            <td>{{paymentData.BRANCH_NAME}}</td>
+                            <td>{{paymentData.SEM}}</td>
+                            <td>{{paymentData.TOTAL_DUE_AMOUNT}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal paper clearence for details -->
+          <div
+            class="modal fade"
+            id="staticBackdropPaper"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    {{ paperClearenceHeader }}
+                  </h5>
+                  <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+                  <!-- <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button> -->
+                </div>
+                <div class="modal-body">
+                  <!-- <div
+                    *ngFor="
+                      let paperDetails of paperClearenceData
+                        .Student_Paper_Clearance[0].PAPER_CLEARANCE_DETAILS
+                    "
+                  >
+                    <label class="form-label">Paper Code</label>
+                    <input
+                      type="text"
+                      name="paper_code"
+                      class="form-control mb-2"
+                      [disabled]="true"
+                      [value]="paperDetails.PAPER_CODE"
+                    />
+                    <label class="form-label">Paper Name</label>
+                    <input
+                      type="text"
+                      name="paper_code"
+                      class="form-control mb-2"
+                      [disabled]="true"
+                      [value]="paperDetails.PAPER_NAME"
+                    />
+                    <label class="form-label">Result</label>
+                    <input
+                      type="text"
+                      name="paper_code"
+                      class="form-control mb-2"
+                      [disabled]="true"
+                      [value]="paperDetails.RESULT"
+                    />
+                  </div> -->
+                
+                  <div class="tblMN table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                              <th>
+                                Paper Code
+                              </th>       
+                              <th>
+                                Paper Name
+                             </th>                                  
+                              <th class="actionTd1">
+                                Result
+                              </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let paperDetails of paperClearenceData.Student_Paper_Clearance[0].PAPER_CLEARANCE_DETAILS">
+                            <td>{{paperDetails.PAPER_CODE}}</td>
+                            <td>{{paperDetails.PAPER_NAME}}</td>
+                            <td>{{paperDetails.RESULT}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Modal for Checkbox  -->
+          <div
+            class="modal fade"
+            id="staticBackdropCheckBox"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    Check For clearance
+                  </h5>
+                  <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+                  <!-- <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button> -->
+                </div>
+                <div class="modal-body">
+                  <ul class="list-group" id="studenpaper">
+                      <li class="list-group-item">
+                        <label for="fees"
+                          ><input
+                            type="checkbox"
+                            id="fees"
+                            class="form-check-input"
+                            [disabled]="disableCheckBox"
+                            [(ngModel)]="feesChecked"
+                            (change)="onCheckboxChange(1)"
+                        /></label>
+                        <span>&nbsp; <strong> Fees Clearence</strong> </span>
+                      </li>
+
+                      <li class="list-group-item">
+                        <label for="paper"
+                          ><input
+                            type="checkbox"
+                            id="paper"
+                            class="form-check-input"
+                            [disabled]="disableCheckBox"
+                            [(ngModel)]="paperChecked"
+                            (change)="onCheckboxChange(2)"
+                        /></label>
+                        <span>&nbsp; <strong>Paper Clearence </strong> </span>
+                      </li>
+
+                      <li class="list-group-item">
+                        <label for="library"
+                          ><input
+                            type="checkbox"
+                            id="library"
+                            class="form-check-input"
+                            [disabled]="disableCheckBox"
+                            [(ngModel)]="libraryChecked"
+                            (change)="onCheckboxChange(3)"
+                        /></label>
+                        <span>&nbsp; 
+                          <strong>Library Clearence </strong> </span>
+                      </li>
+                
+                  </ul>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                      type="submit"
+                      class="btn btn-primary me-2"
+                      [disabled]="isButtonEnabled"
+                      (click)="saveFormData()"
+                    >
+                      Submit
+                    </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="align" *ngIf="moreInfo">
+          
+        </div>
+
+
+
+      
+
+
+
+
+
+
+      </div>
+    </div>
+  </section>
+</main>

@@ -8,7 +8,8 @@
     <div class="row">
       <div class="col-sm-2 pe-0 mb-2">
         <label class="form-label">MIS Report</label>
-        <select required class="form-select" [(ngModel)]="selectedMISReport" (change)="changeFlag()" name="misReport" id="misReport">
+        <select required class="form-select" [(ngModel)]="selectedMISReport" (change)="changeFlag()" name="misReport"
+          id="misReport">
           <option value="0">Select MIS Report</option>
           <option value="1">FEES COLLECTION</option>
           <option value="2">STUDENT COUNT</option>
@@ -17,11 +18,13 @@
           <option value="5">FEES DEFAULTER</option>
           <option value="6">LIBRARY DEFAULTER</option>
           <option value="7">STUDENT ATTENDANCE</option>
+          <option value="8">RANK </option>
+          <option value="9">RESULT STATUS</option>
           <!-- <option value="8">FACULTY ATTENDANCE</option> -->
         </select>
       </div>
 
-      
+      <!-- Filter Start -->
 
       <!-- FEES COLLECTION -->
 
@@ -205,9 +208,9 @@
 
 
 
-      
+
       <!-- FEES DEFAULTER -->
-      
+
       <div class="col-sm-9" *ngIf="selectedMISReport == '5'">
         <form #searchFeesDef="ngForm" (ngSubmit)="searchFeesDeaflt(searchFeesDef.value)" novalidate>
           <div class="row mb-2">
@@ -279,11 +282,12 @@
 
       <!-- Student Attendance -->
 
-      <div class="col-sm-10" *ngIf="selectedMISReport == '7'">
-        <form #searchStudentattnDef="ngForm" (ngSubmit)="searchStudentAttnDeaflt(searchStudentattnDef.value)" novalidate >
-          <div class="row mb-2">            
+      <div class="col-sm-12" *ngIf="selectedMISReport == '7'">
+        <form #searchStudentattnDef="ngForm" (ngSubmit)="searchStudentAttnDeaflt(searchStudentattnDef.value)"
+          novalidate>
+          <div class="row mb-2">
 
-            <div class="col-sm-3 pe-0">
+            <!-- <div class="col-sm-3 pe-0">
               <label class="form-label">Paper </label>                   
                 <select required class="form-select" ngModel name="papeR_ID" data-live-search="true"
                     #papeR_ID="ngModel">
@@ -292,19 +296,49 @@
                         {{paperDropdwn.PAPER_NAME}}
                     </option>
                 </select>                        
+            </div> -->
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">Branch</label>
+              <select class="form-select" ngModel name="brancH_ID" data-live-search="true" #brancH_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                  {{branchDropdwn.BRANCH_NAME}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">Academic Year</label>
+              <select class="form-select" ngModel name="aY_ID" data-live-search="true" #aY_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let AcademicYearDropdwn of showAcademicYearTrue" [value]="AcademicYearDropdwn.ID">
+                  {{AcademicYearDropdwn.AY}}
+                </option>
+              </select>
             </div>
 
-            <div class="col-sm-3 pe-0">
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">Semester</label>
+              <select class="form-select" ngModel name="seM_ID" data-live-search="true" #seM_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let semDropdwn of showSem" [value]="semDropdwn.ID">
+                  {{semDropdwn.SEM}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-2 pe-0">
               <label class="form-label">From Date</label>
-              <input required type="date" name="fmdate" class="form-control" [(ngModel)]="fmdate" [max]="maxDate" #fmdateInput="ngModel" required (change)="validateDateRange()">
-              
+              <input required type="date" name="fmdate" class="form-control" [(ngModel)]="fmdate" [max]="maxDate"
+                #fmdateInput="ngModel" required (change)="validateDateRange()">
+
               <div *ngIf="fmdateInput.invalid && fmdateInput.touched">
                 <!-- <div *ngIf="fmdateInput.errors?.required">From Date is required</div> -->
               </div>
             </div>
-            <div class="col-sm-3 pe-0">
+            <div class="col-sm-2 pe-0">
               <label class="form-label">To Date</label>
-              <input required type="date" name="todate" class="form-control" [max]="maxDate" [(ngModel)]="todate" #todateInput="ngModel" required (change)="validateDateRange()">
+              <input required type="date" name="todate" class="form-control" [max]="maxDate" [(ngModel)]="todate"
+                #todateInput="ngModel" required (change)="validateDateRange()">
               <div *ngIf="todateInput.invalid && todateInput.touched">
                 <!-- <div *ngIf="todateInput.errors?.required">To Date is required</div> -->
                 <div *ngIf="toDateInvalid && (todateInput.dirty || todateInput.touched)">
@@ -312,15 +346,140 @@
                 </div>
               </div>
             </div>
-          
-              <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '7'">     
-                <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4" [disabled]="!searchStudentattnDef.form.valid || buttonDisabled">Search</button>
-              </div> 
-            </div>          
-          </form>
+
+            <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '7'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4"
+                [disabled]="!searchStudentattnDef.form.valid || buttonDisabled">Search</button>
+            </div>
+          </div>
+        </form>
       </div>
 
-      <!-- Tables  -->
+
+
+      <!-- RANK -->
+
+      <div class="col-sm-9" *ngIf="selectedMISReport == '8'">
+        <form #searchMisRank="ngForm" (ngSubmit)="searchMisRankData(searchMisRank.value)" novalidate>
+          <div class="row mb-2">
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '8'">
+              <label class="form-label">Report Type</label>
+              <select required class="form-select" ngModel name="reporT_TYPE" data-live-search="true"
+                #reporT_TYPE="ngModel" (ngModelChange)="onReportTypeChange($event)">
+                <option value="0">Select One</option>
+                <option value="2">SGPA</option>
+                <option value="3">YGPA</option>
+                <option value="4">DGPA</option>
+              </select>
+            </div>
+            <div class="col-sm-3 pe-0" *ngIf="selectedMISReport == '8'">
+              <label class="form-label">Branch</label>
+              <select required class="form-select" ngModel name="brancH_ID" data-live-search="true"
+                #brancH_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                  {{branchDropdwn.BRANCH_NAME}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-2 pe-0" *ngIf="selectedMISReport == '8'">
+              <label class="form-label">Academic Year</label>
+              <select required class="form-select" ngModel name="aY_ID" data-live-search="true" #aY_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let AcademicYearDropdwn of showAcademicYearTrue" [value]="AcademicYearDropdwn.ID">
+                  {{AcademicYearDropdwn.AY}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-2 pe-0" *ngIf="selectedMISReport == '8'">
+              <label class="form-label">Semester</label>
+              <select required class="form-select" ngModel name="seM_ID" data-live-search="true" #seM_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let semDropdwn of showSem" [value]="semDropdwn.ID">
+                  {{semDropdwn.SEM}}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '8'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4"
+                [disabled]="!searchMisRank.form.valid || buttonDisabled">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- RESULT STATUS  -->
+
+      <div class="col-sm-10" *ngIf="selectedMISReport == '9'">
+        <form #searchResultStatus="ngForm" (ngSubmit)="searchMisResultStatusData(searchResultStatus.value)" novalidate>
+          <div class="row mb-2">
+
+            <!-- Branch Name  -->
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">Branch</label>
+              <select class="form-select" ngModel name="brancH_ID" required data-live-search="true" #brancH_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                  {{branchDropdwn.BRANCH_NAME}}
+                </option>
+              </select>
+            </div>
+
+            <!-- Academic Year  -->
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">Academic Year</label>
+              <select class="form-select" ngModel name="aY_ID" required data-live-search="true" #aY_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let AcademicYearDropdwn of showAcademicYearTrue" [value]="AcademicYearDropdwn.ID">
+                  {{AcademicYearDropdwn.AY}}
+                </option>
+              </select>
+            </div>
+
+            <!-- semester  -->
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">Semester</label>
+              <select class="form-select" ngModel name="seM_ID" required data-live-search="true" #seM_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let semDropdwn of showSem" [value]="semDropdwn.ID">
+                  {{semDropdwn.SEM}}
+                </option>
+              </select>
+            </div>
+
+            <!-- Result  -->
+            <div class="col-sm-2 pe-0">
+              <label class="form-label">Result</label>
+              <select class="form-select" ngModel name="result_Status" required data-live-search="true" #result_Status="ngModel">
+                <option value="">Select result</option>
+                <option *ngFor="let resultDropdwn of showResult">
+                  {{resultDropdwn}}
+                </option>
+              </select>
+            </div>
+
+            <!-- search button  -->
+            <div class="col-sm-2 pe-0 mt-1" *ngIf="selectedMISReport == '9'">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4"
+                [disabled]="searchResultStatus.invalid || buttonDisabled">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+
+
+      <!-- Filter End -->
+
+
+
+
+
+
+      <!-- Tables Start -->
 
       <!-- FEES COLLECTION -->
 
@@ -360,8 +519,6 @@
       </div>
 
 
-
-
       <!-- STUDENT COUNT -->
 
       <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '2'" id="content">
@@ -393,15 +550,18 @@
           </tbody>
 
         </table>
-        <div *ngIf="showBtn" class="btn-alignment">
+
+        <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '2'">
+          <jw-pagination [items]="showStucntAll" [pageSize]="pageSize"
+            (changePage)="onChangePage2($event)"></jw-pagination>
+        </div>
+
+        <div *ngIf="showBtn  && selectedMISReport == '2'" class="btn-alignment col-md-6 pull-left">
           <app-download-to-excel [excelName]="stuCount"></app-download-to-excel>
         </div>
 
-      </div>
 
-      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '2'">
-        <jw-pagination [items]="showStucntAll" [pageSize]="pageSize"
-          (changePage)="onChangePage2($event)"></jw-pagination>
+
       </div>
 
 
@@ -433,7 +593,7 @@
           </tbody>
         </table>
 
-        <div *ngIf="showBtn" class="btn-alignment">
+        <div *ngIf="showBtn && selectedMISReport == '3'" class="btn-alignment">
           <app-download-to-excel [excelName]="facultyCount"></app-download-to-excel>
         </div>
 
@@ -443,7 +603,6 @@
         <jw-pagination [items]="showFaculAll" [pageSize]="pageSize"
           (changePage)="onChangePage3($event)"></jw-pagination>
       </div>
-
 
 
       <!-- STUDENT HISTORY -->
@@ -471,9 +630,10 @@
               <td>{{showStuHistry.DOB}}</td>
               <td class="text-center">
                 <!-- <a class="linkIcon" title="View" [routerLink]="['../student-history', showStuHistry.ID]"><i class="fa fa-share-square-o" aria-hidden="true"></i></a> -->
-                
-                <a class="linkIcon" title="View" (click)="getStudentID(showStuHistry)"><i class="fa fa-share-square-o" aria-hidden="true"></i></a>
-                
+
+                <a class="linkIcon" title="View" (click)="getStudentID(showStuHistry)"><i class="fa fa-share-square-o"
+                    aria-hidden="true"></i></a>
+
                 <!-- <a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                 </a> -->
@@ -491,14 +651,11 @@
       <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '4'">
         <jw-pagination [items]="showStuHistory" [pageSize]="pageSize"
           (changePage)="onChangePage($event)"></jw-pagination>
-      </div>      
-
-
-
+      </div>
 
       <!-- FEES DEFAULTER -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '5'"  id="content">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '5'" id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2 long-text-cell">
           <thead>
@@ -538,19 +695,21 @@
           </tbody>
 
         </table>
-        <div *ngIf="showBtn" class="btn-alignment">
+        <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '5'">
+          <jw-pagination [items]="showFeesDf" [pageSize]="pageSize"
+            (changePage)="onChangePage5($event)"></jw-pagination>
+        </div>
+        <div class="col-md-6 pull-left" *ngIf="showBtn && selectedMISReport == '5'" class="btn-alignment">
           <app-download-to-excel [excelName]="feesDefaulter"></app-download-to-excel>
         </div>
 
       </div>
-      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '5'">
-        <jw-pagination [items]="showFeesDf" [pageSize]="pageSize" (changePage)="onChangePage5($event)"></jw-pagination>
-      </div>
+
 
 
       <!-- LIDRARY DEFAULTER -->
 
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '6'"  id="content">
+      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '6'" id="content">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
         <table class="table table-striped mb-2">
           <thead>
@@ -584,62 +743,177 @@
           </tbody>
 
         </table>
-        <div *ngIf="showBtn" class="btn-alignment">
+
+        <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '6'">
+          <jw-pagination [items]="showLibraryDf" [pageSize]="pageSize"
+            (changePage)="onChangePage4($event)"></jw-pagination>
+        </div>
+        <div *ngIf="showBtn && selectedMISReport == '6'" class="btn-alignment">
           <app-download-to-excel [excelName]="libraryDefaulter"></app-download-to-excel>
         </div>
       </div>
 
-      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '6'">
-        <jw-pagination [items]="showLibraryDf" [pageSize]="pageSize"
-          (changePage)="onChangePage4($event)"></jw-pagination>
+      <!-- Student Attendance New-->
+
+      <div class="tblMN table-responsive text-nowrap mt-2 position-relative Nwtbl pt-5" id="content"
+        *ngIf="selectedMISReport == '7'">
+        <div *ngIf="showTable">
+          <!-- <input type="text" name="form-control search field" placeholder="search here" [(ngModel)]="searchText" style="float: right"> -->
+          <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+          <!-- <table class="table table-striped mb-2 long-text-cell" id="abc" datatable [dtOptions]="dtOptions"> -->
+          <!-- <thead>
+                      <tr>        
+                        <ng-container *ngFor="let showColumn of swStuatNwCol">
+                            <th >{{showColumn}}</th>
+                        </ng-container>
+                      </tr>
+                    </thead> -->
+          <!-- <tbody>
+                      <tr *ngFor="let showRow of swStuatNwRow">
+                        <ng-container *ngFor="let key of getObjectKeys(showRow)">
+                          <td>{{ showRow[key] }}</td>
+                        </ng-container>
+                      </tr>
+                    </tbody>
+                  
+                </table> -->
+          <ngx-table [configuration]="configuration" [data]="data" [columns]="columns">
+          </ngx-table>
+        </div>
       </div>
 
 
+      <!-- RANK -->
 
-      <!-- Student Attendance -->
-
-      <div class="tblMN table-responsive text-nowrap mt-2" *ngIf="selectedMISReport == '7'"  id="content">
+      <div class="tblMN table-responsive text-nowrap mt-2" id="content" *ngIf="selectedMISReport == '8'">
         <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
-        <table class="table table-striped mb-2 long-text-cell">
+        <table class="table table-striped mb-2">
+          <thead>
+            <tr>
+              <th>SL No.</th>
+              <th>Student Name</th>
+              <th>Registration No.</th>
+              <th class="text-center">
+                <ng-container *ngIf="reportTypeValue==2">
+                  SGPA
+                </ng-container>
+                <ng-container *ngIf="reportTypeValue==3">
+                  YGPA
+                </ng-container>
+                <ng-container *ngIf="reportTypeValue==4">
+                  DGPA
+                </ng-container>
+              </th>
+              <th class="text-center">
+                <ng-container *ngIf="reportTypeValue==2">
+                  SGPA RANK
+                </ng-container>
+                <ng-container *ngIf="reportTypeValue==3">
+                  YGPA RANK
+                </ng-container>
+                <ng-container *ngIf="reportTypeValue==4">
+                  DGPA RANK
+                </ng-container>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let showSGPA of showRankSgpa; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{showSGPA.STUDENT_NAME}}</td>
+              <td>{{showSGPA.STUDENT_REGISTRATION}}</td>
+              <td class="text-center">{{showSGPA.SGPA_MARKS}}</td>
+              <td class="text-center">{{showSGPA.SGPA_Rank}}</td>
+            </tr>
+            <tr *ngFor="let showYGPA of showRankYgpa; let j = index">
+              <td>{{j + 1}}</td>
+              <td>{{showYGPA.STUDENT_NAME}}</td>
+              <td>{{showYGPA.STUDENT_REGISTRATION}}</td>
+              <td class="text-center">{{showYGPA.YGPA_MARKS}}</td>
+              <td class="text-center">{{showYGPA.YGPA_Rank}}</td>
+            </tr>
+            <tr *ngFor="let showDGPA of showRankDgpa; let k = index">
+              <td>{{k + 1}}</td>
+              <td>{{showDGPA.STUDENT_NAME}}</td>
+              <td>{{showDGPA.STUDENT_REGISTRATION}}</td>
+              <td class="text-center">{{showDGPA.DGPA_MARKS}}</td>
+              <td class="text-center">{{showDGPA.DGPA_Rank}}</td>
+            </tr>
+          </tbody>
+
+        </table>
+
+        <!-- <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '2'">
+            <jw-pagination [items]="showStucntAll" [pageSize]="pageSize"
+              (changePage)="onChangePage2($event)"></jw-pagination>
+          </div> -->
+
+        <div *ngIf="errorMessage3" class="error-message">Error: No data found</div>
+
+        <div *ngIf="showBtn  && selectedMISReport == '8'" class="btn-alignment col-md-6 pull-left">
+          <app-download-to-excel [excelName]="rank"></app-download-to-excel>
+        </div>
+
+
+
+      </div>
+
+        <!-- Table for Result Status  -->
+        <div class="tblMN table-responsive text-nowrap mt-2" id="content" *ngIf="selectedMISReport == '9'">
+          <!-- <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1" (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button> -->
+          <table class="table table-striped mb-2">
             <thead>
-              <tr>                        
-                  <th>STUDENT NAME</th> 
-                  <th>INSTRUCTOR NAME</th> 
-                  <th>PAPER NAME</th> 
-                  <th class="text-center">ATTENDANCE STATUS</th> 
+              <tr>
+                <th>Student Name</th>
+                <th>Student Registration</th>
+                <th>Branch Name</th>
+                <th>Academic Year</th>
+                <th>Semester</th>
+                <th>Paper Name</th>
+                <th>Result</th>
               </tr>
             </thead>
             <tbody>
-              <tr  *ngFor="let showstu of pageOfItems6">
-                <td>{{showstu.STUDENT_NAME}}</td>
-                <td>{{showstu.INSTRUCTOR_NAME}}</td>
-                <td>{{showstu.PAPER_NAME}}</td> 
-                <td class="text-center">
-                  <p [ngClass]="{ 'text-danger': showstu.ATTENDANCE_STATUS === 'ABSENT', 'text-success': showstu.ATTENDANCE_STATUS === 'PRESENT' }"> <strong>{{ showstu.ATTENDANCE_STATUS }}</strong>  </p>
-
-                </td>
+              <tr *ngFor="let showResult of pageOfItems7">
+                <td>{{showResult.STUDENT_NAME}}</td>
+                <td>{{showResult.STUDENT_REGISTRATION}}</td>
+                <td>{{showResult.BRANCH_NAME}}</td>
+                <td>{{showResult.ACADEMIC_YEAR}}</td>
+                <td>{{showResult.SEM}}</td>
+                <td>{{showResult.PAPER_NAME}}</td>
+                <td>{{showResult.Result}}</td>
               </tr>
-              <!-- <tr *ngIf="showFaculAll.length > 0" >
-                <td colspan="5"> <strong>Total Student Count: {{ showFaculAll.length }} </strong>  </td> 
-              </tr> -->
-
-            
             </tbody>
-          
-        </table>
-        <div *ngIf="showBtn" class="btn-alignment">
-          <app-download-to-excel [excelName]="studentAttendace"></app-download-to-excel>
+        
+          </table>
+        
+          <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '9'">
+            <jw-pagination [items]="resultStatusData" [pageSize]="pageSize" (changePage)="onChangePage7($event)"></jw-pagination>
+          </div>
+        
+          <!-- <div *ngIf="errorMessage3" class="error-message">Error: No data found</div>
+              
+                          <div *ngIf="showBtn  && selectedMISReport == '8'" class="btn-alignment col-md-6 pull-left">
+                            <app-download-to-excel [excelName]="rank"></app-download-to-excel>
+                          </div> -->
+        
+        
+        
         </div>
-      </div>
-      <div class="col-md-6 pull-left" *ngIf="selectedMISReport == '7'">
-        <jw-pagination [items]="showstudntDf" [pageSize]="pageSize" (changePage)="onChangePage6($event)"></jw-pagination>
-      </div>
 
 
 
-      <!-- <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+
+
+
+
+      <!-- Table End-->
+
+
+      <div *ngIf="errorMessage2" class="alert alert-danger mt-3" role="alert">
         Data not found
-      </div> -->
+      </div>
+
 
     </div>
   </section>
