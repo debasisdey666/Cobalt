@@ -84,6 +84,7 @@ import { TreeviewModule } from 'ngx-treeview';
 import { RoletreeComponent } from './admin/roletree/roletree.component';
 import { TimetableSchedularComponent } from './admin/timetable-schedular/timetable-schedular.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { WeeklyTimetableComponent } from './admin/weekly-timetable/weekly-timetable.component';
 
 
 @NgModule({
@@ -148,6 +149,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     RoletreeComponent,
     TimetableSchedularComponent,
     ChangePasswordComponent,
+    WeeklyTimetableComponent,
     // PieChartComponent,
     
   ],
@@ -159,7 +161,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     JwPaginationModule,
     NgxPaginationModule,
     FullCalendarModule, // register FullCalendar with your app
-    RouterModule.forRoot([]),
+    RouterModule.forRoot([]), 
     TableModule,
     TreeviewModule.forRoot()
     

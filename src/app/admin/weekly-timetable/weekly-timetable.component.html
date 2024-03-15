@@ -1,0 +1,228 @@
+<p>weekly-timetable works!</p>
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Weekly Time Table</h1>
+    </div><!-- End Page Title -->
+
+    <div class="col-sm-12 mt-4">
+        <form #searchWeeklytmtb="ngForm" (ngSubmit)="searchWeeklytimetable(searchWeeklytmtb.value)" novalidate>
+          <div class="row mb-2">
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">Branch</label>
+              <select required class="form-select" ngModel name="brancH_ID" data-live-search="true"
+                #brancH_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let branchDropdwn of showBranch" [value]="branchDropdwn.ID">
+                  {{branchDropdwn.BRANCH_NAME}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">Academic Year</label>
+              <select required class="form-select" ngModel name="aY_ID" data-live-search="true" #aY_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let AcademicYearDropdwn of showAcademicYearTrue" [value]="AcademicYearDropdwn.ID">
+                  {{AcademicYearDropdwn.AY}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-3 pe-0">
+              <label class="form-label">Semester</label>
+              <select required class="form-select" ngModel name="seM_ID" data-live-search="true" #seM_ID="ngModel">
+                <option value="">Select One</option>
+                <option *ngFor="let semDropdwn of showSem" [value]="semDropdwn.ID">
+                  {{semDropdwn.SEM}}
+                </option>
+              </select>
+            </div>
+            <div class="col-sm-3 pe-0 mt-1">
+              <button type="submit" class="btn btn-primary px-5 py-3 me-1 mt-4">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+  
+    <section class="section mainBodySec">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="tblMN table-responsive text-nowrap">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th style="text-align:center">Day</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Paper</th>
+                  <th>Instructor</th>
+                  <th>Room No.</th>
+                  <th class="actionTd1">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <th rowspan="6" style="color:#fff; text-align: center; vertical-align: middle;">Monday</th>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <th rowspan="6" style="color:#fff; text-align: center; vertical-align: middle;">Tuesday</th>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                    <td>10:00 am</td>
+                    <td>11:00 am</td>
+                    <td>Tourism Marketing</td>
+                    <td>Akash Sen</td>
+                    <td>102</td>
+                    <td><a class="editBtn" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a></td>
+                </tr>
+                <!-- <tr *ngFor="let showUnv of pageOfItems">
+                  <td>{{showUnv.UNIVERSITY_CODE}}</td>
+                  <td>{{showUnv.UNIVERSITY_NAME}}</td>
+                  <td>
+                   <p class="mb-0" *ngIf="showUnv.STATUS==true; else elseBlock">
+                            <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showUnv,$event)" data-bs-target="#editModal">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" class="activeBtntrue" data-bs-toggle="modal" data-bs-target="#statusModal" (click)="actvinactv(showUnv,$event)">
+                                <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                            </a>
+                          </p>
+                           <ng-template #elseBlock>
+                            <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            
+                            <a href="#" class="activeBtn{{showUnv.STATUS}} ms-0" (click)="actvinactv(showUnv,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
+                              <i title="Active" class="fa fa-check" aria-hidden="true"></i>
+                              <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
+                            </a>
+  
+                          </ng-template>
+                  </td>
+                </tr> -->
+  
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="col-md-6 pull-left">
+            <jw-pagination [items]="showUniversity" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination> 
+            </div>
+            <div class="col-md-6 pull-left text-right">
+              <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add</a>
+            </div> -->
+             
+          
+        </div>
+      </div>
+    </section>
+  
+  </main><!-- End #main -->

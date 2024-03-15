@@ -55,6 +55,7 @@ import { RoleComponent } from './admin/role/role.component';
 import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
 import { TimetableSchedularComponent } from './admin/timetable-schedular/timetable-schedular.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { WeeklyTimetableComponent } from './admin/weekly-timetable/weekly-timetable.component';
 
 
 const routes: Routes = [
@@ -124,6 +125,7 @@ const routes: Routes = [
   { path: 'role-menu-permission', component: RoleMenuPermissionComponent, canActivate: [AuthGuard]},
   { path: 'timetable-schedular', component: TimetableSchedularComponent, canActivate: [AuthGuard]},
   { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard]},
+  { path: 'weekly-timetable', component: WeeklyTimetableComponent, canActivate: [AuthGuard]},
 
 
   
