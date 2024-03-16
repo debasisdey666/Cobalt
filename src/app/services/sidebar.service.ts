@@ -23,4 +23,12 @@ export class SidebarService {
     }
     return this.http.post(this.url,data)    
   }
+  showmenuForRole(roleId: any)  {   
+    var data=
+    {
+      "rolE_ID": roleId,
+      "type": 2
+    }
+    return this.http.post(this.url,data)    
+  }
 }

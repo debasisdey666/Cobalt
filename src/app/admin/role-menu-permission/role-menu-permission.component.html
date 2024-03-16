@@ -63,14 +63,14 @@
             
         <!-- </div> -->
         <div class="mb-3">
-          <select name="role" id="roleDropDown" class="form-select dropdown">
-            <option for="administrator" selected="selected">---Select Role---</option>
-            <option *ngFor="let data of rolesData">{{data.ROLE_NAME}}</option>
+          <select name="role" id="roleDropDown" class="form-select dropdown" (change)="onRoleSelected($event)">
+            <option value="" selected="selected">---Select Role---</option>
+            <option *ngFor="let data of rolesData" [value]="data.ROLE_ID">{{data.ROLE_NAME}}</option>
           </select>
         </div>
         <div class="col-xl-12">
-          <ngx-treeview [buttonClass]="buttonClass" [disabled]="!dropdownEnabled" [config]="config" [items]="items"
-            (selectedChange)="onSelectedChange($event)" (filterChange)="onFilterChange($event)">
+          <ngx-treeview [buttonClass]="buttonClass" [config]="config" [items]="items" (selectedChange)="onSelectedChange($event, items)"
+            (filterChange)="onFilterChange($event)">
           </ngx-treeview>
         </div>
         <!-- <div class="col-xl-12">
