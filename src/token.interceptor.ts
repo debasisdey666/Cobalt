@@ -123,13 +123,19 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private getTokenExpiration(token: string): boolean {
-    // Implement logic to extract and decode the JWT token and return the expiration date
-    const date = JSON.parse(atob(token.split('.')[1])).exp;
-    // return date;
-    const expirationTime: number = parseInt(date) * 1000; // Convert expiration time to milliseconds
-    const currentTime: number = Date.now(); // Current time in milliseconds
+    // // Implement logic to extract and decode the JWT token and return the expiration date
+    // const date = JSON.parse(atob(token.split('.')[1])).exp;
+    // // return date;
+    // const expirationTime: number = parseInt(date) * 1000; // Convert expiration time to milliseconds
+    // const currentTime: number = Date.now(); // Current time in milliseconds
 
-    return expirationTime < currentTime;
+
+    // return expirationTime < currentTime;
+    const excTime: number = 2 * 60 * 1000
+    setInterval(() => {
+      return false
+    }, excTime)
+    return true;
     // const current
   }
 
