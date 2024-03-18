@@ -31,14 +31,6 @@ export class ChangePasswordComponent implements OnInit {
       this.loading = false;
       this.updateSuccessmessage = true;
 
-      // setTimeout(() => {
-      //   this.updateSuccessmessage = false;
-      //   this.changePassForm.resetForm();
-      // }, 1000);
-
-      // console.log("change pass");
-      // console.log(resp);
-
       localStorage.removeItem('Data');
     localStorage.removeItem('Data2');
     localStorage.removeItem('session');
@@ -53,6 +45,15 @@ export class ChangePasswordComponent implements OnInit {
 
 
     })
+  }
+
+
+  confirmPasswordValue: string = '';
+  passwordsNotMatch: boolean = false;
+
+   checkPasswordsMatch(password: string, confirmPassword: string) {
+    // Compare the passwords and update the error message flag
+    this.passwordsNotMatch = password !== confirmPassword;
   }
 
 }
