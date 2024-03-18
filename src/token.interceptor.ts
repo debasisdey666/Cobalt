@@ -15,9 +15,10 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+  refreshTokenUrl: any;
   constructor(private http: HttpClient) {}
 
-  refreshTokenbaseurl=environment.baseUrl+"api/Auth/refresh-token";
+  refreshTokenbaseurl = environment.baseUrl + 'api/Auth/refresh-token';
 
   intercept(
     request: HttpRequest<any>,
@@ -28,10 +29,11 @@ export class TokenInterceptor implements HttpInterceptor {
     const exp = localStorage.getItem('exp');
     const expAsNumber = exp ? parseInt(exp, 10) : null;
 
+    debugger;
     if (token) {
       const tokenExpiration = this.getTokenExpiration(token);
 
-      if (expAsNumber !== null && tokenExpiration && tokenExpiration.getTime() <= expAsNumber) {
+      if (expAsNumber !== null && tokenExpiration == false) {
         // Access token has expired; initiate token refresh
         if (refreshToken) {
           return this.refreshTokenAndHandleRequest(request, next, refreshToken);
@@ -53,8 +55,8 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
           // If the status code is 401, initiate token refresh
-          console.log("status=401");
-          
+          console.log('status=401');
+
           return this.handle401Error(request, next);
         } else {
           return throwError(error);
@@ -70,7 +72,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const refreshToken = localStorage.getItem('refreshToken');
 
     if (refreshToken) {
-      console.log("refreshToken");
+      console.log('refreshToken');
       return this.refreshTokenAndHandleRequest(request, next, refreshToken);
     } else {
       // Handle the case where there's no refresh token available
@@ -78,25 +80,24 @@ export class TokenInterceptor implements HttpInterceptor {
     }
   }
 
-  private refreshTokenAndHandleRequest(    
+  private refreshTokenAndHandleRequest(
     request: HttpRequest<any>,
     next: HttpHandler,
     refreshToken = localStorage.getItem('refreshToken')
   ): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
-    const refreshTokenUrl = this.refreshTokenbaseurl;
+    this.refreshTokenUrl = this.refreshTokenbaseurl;
     const requestBody = { accessToken: token, refreshToken: refreshToken };
 
-
-    return this.sendRefreshTokenRequest(refreshTokenUrl, requestBody).pipe(
+    return this.sendRefreshTokenRequest(this.refreshTokenUrl, requestBody).pipe(
       switchMap((response: any) => {
-        console.log("response",response);
-        console.log("response.access_token",response.accessToken);
+        console.log('response', response);
+        console.log('response.access_token', response.accessToken);
         if (response && response.accessToken) {
           localStorage.setItem('token', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
-          console.log("response accessToken",response.accessToken);
-          console.log("response refreshToken",response.refreshToken);
+          console.log('response accessToken', response.accessToken);
+          console.log('response refreshToken', response.refreshToken);
           if (response.expAsNumber) {
             localStorage.setItem('exp', response.expAsNumber);
           }
@@ -121,11 +122,15 @@ export class TokenInterceptor implements HttpInterceptor {
     return throwError('Token refresh failed');
   }
 
-  private getTokenExpiration(token: string): Date | null{
+  private getTokenExpiration(token: string): boolean {
     // Implement logic to extract and decode the JWT token and return the expiration date
-    // const date = new Date(JSON.parse(atob(token.split(".")[1])).exp);
+    const date = JSON.parse(atob(token.split('.')[1])).exp;
     // return date;
-    return null;
+    const expirationTime: number = parseInt(date) * 1000; // Convert expiration time to milliseconds
+    const currentTime: number = Date.now(); // Current time in milliseconds
+
+    return expirationTime < currentTime;
+    // const current
   }
 
   private sendRefreshTokenRequest(
