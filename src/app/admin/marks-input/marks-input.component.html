@@ -38,7 +38,7 @@
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                            <th>Registration No.</th>       
+                            <th>Roll No.</th>       
                             <th>Student Name</th>
                             <th>Sem</th>
                             <th>Paper</th>
@@ -121,7 +121,7 @@
               <div class="row">
                 
                 <div class="col-md-12 mt-3">
-                  <label class="form-label">Registration No.<strong class="required"> *</strong> </label> 
+                  <label class="form-label">Roll No.<strong class="required"> *</strong> </label> 
                   <input type="text" class="form-control" disabled name="STUDENT_REGISTRATION" #STUDENT_REGISTRATION="ngModel" required [(ngModel)]="marksinputUpdate.STUDENT_REGISTRATION" [value]="marksinputUpdate.STUDENT_REGISTRATION" placeholder="e.g: 23">
                   <input type="hidden" class="form-control" [(ngModel)]="marksinputUpdate.ID" name="ID" [value]="marksinputUpdate.ID">                
                   <div class="alert alert-danger" *ngIf="STUDENT_REGISTRATION.touched && STUDENT_REGISTRATION.invalid">

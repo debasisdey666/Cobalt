@@ -132,7 +132,7 @@ export class StudentHistoryComponent implements OnInit {
   downloadPDF() {
     // Fetch HTML content
     const content = document.getElementById('content');
-    debugger
+    
     console.log("path is ,"+ this.linkurl+this.showStudetail[0].PHOTO_PATH)
   
     // Check if the element with id 'content' exists
@@ -142,7 +142,7 @@ export class StudentHistoryComponent implements OnInit {
         // Convert canvas to PDF
         // const imgData = canvas.toDataURL('image/png');
         const imgData = canvas.toDataURL(this.linkurl+this.showStudetail[0].PHOTO_PATH);
-        alert(imgData);
+        // alert(imgData);
         const pdf = new jsPDF('p', 'mm', 'a4');
         const imgWidth = pdf.internal.pageSize.getWidth();
         const imgHeight = canvas.height * imgWidth / canvas.width;

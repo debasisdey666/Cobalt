@@ -19,7 +19,7 @@
                           <th>ISBN</th>                                 
                           <th>Publisher</th>                                 
                           <th>Edition</th>                                 
-                          <th>Mrp</th>                                 
+                          <th>MRP</th>                                 
                           <th class="actionTd1">Action</th>
                       </tr>
                     </thead>
@@ -190,8 +190,8 @@
                   </div>
 
                   <div class="col-md-12 mt-3">
-                    <label class="form-label">Mrp<strong class="required"> *</strong> </label>  
-                    <input type="text" name="cost" pattern="[0-9][0-9]*" ngModel required #cost="ngModel" required class="form-control" placeholder="Mrp">
+                    <label class="form-label">MRP<strong class="required"> *</strong> </label>  
+                    <input type="text" name="cost" pattern="[0-9][0-9]*" ngModel required #cost="ngModel" required class="form-control" placeholder="MRP">
                     <div class="" *ngIf="cost.touched && cost.invalid">
                       <div class="alert alert-danger" *ngIf="cost.errors?.required">
                         This field is required
@@ -332,7 +332,7 @@
                   </div>
 
                   <div class="col-md-12 mt-3">
-                    <label class="form-label">Mrp<strong class="required"> *</strong> </label>  
+                    <label class="form-label">MRP<strong class="required"> *</strong> </label>  
                     <input type="text" name="COST" pattern="[0-9][0-9]*" [(ngModel)]="bookmasterUpdate.COST" required #COST="ngModel" required class="form-control" placeholder="COST">
                     <div class="" *ngIf="COST.touched && COST.invalid">
                       <div class="alert alert-danger" *ngIf="COST.errors?.required">

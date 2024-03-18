@@ -1973,6 +1973,7 @@ table tr td .clgprogNestedTable:last-child{
   color: #f69f07;
   font-weight:bold;
 }
+.long-text-cell table,
 .long-text-cell{
   white-space: pre-wrap; /* Preserve newlines and allow wrapping */
   overflow-x: auto; /* Enable horizontal scrolling */

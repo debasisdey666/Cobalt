@@ -146,7 +146,6 @@ export class RoleMenuPermissionComponent implements OnInit {
   // }
 
   onRoleSelected(event: any) {
-    debugger
     const selectedValue: number = parseInt(event.target.value);
     console.log('Selected Role:', selectedValue);
     // You can assign this value to a variable or perform any additional actions here

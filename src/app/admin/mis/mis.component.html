@@ -489,7 +489,7 @@
             <tr>
               <th>Payment Date</th>
               <th>Student Name</th>
-              <th>Student Reg No.</th>
+              <th>Student Roll No.</th>
               <th>Semester</th>
               <th>Branch</th>
               <th class="text-end">Amount</th>
@@ -527,7 +527,7 @@
           <thead>
             <tr>
               <th>Student Name</th>
-              <th>Registration No.</th>
+              <th>Roll No.</th>
               <th>Registration Year</th>
               <th>Branch </th>
               <th>SEM</th>
@@ -614,7 +614,7 @@
               <th>Name</th>
               <th>Email</th>
               <th>Phone No.</th>
-              <th>Registration No.</th>
+              <th>Roll No.</th>
               <th>Date Of Birth</th>
               <th class="actionTd1">
                 View Details
@@ -666,7 +666,7 @@
               <th>Payment For</th>
               <th>Payble Amount </th>
               <th>Due Date </th>
-              <th>Reg No. </th>
+              <th>Roll No. </th>
               <th>Student </th>
               <th>Current SEM </th>
               <th>Paid </th>
@@ -715,7 +715,7 @@
           <thead>
             <tr>
               <th>Student Name</th>
-              <th>Registration No.</th>
+              <th>Roll No.</th>
               <th>Current SEM</th>
               <th>Book Name</th>
               <th>Issued Date </th>
@@ -755,7 +755,7 @@
 
       <!-- Student Attendance New-->
 
-      <div class="tblMN table-responsive text-nowrap mt-2 position-relative Nwtbl pt-5" id="content"
+      <div class="tblMN table-responsive text-nowrap mt-2 position-relative Nwtbl pt-5 long-text-cell" id="content"
         *ngIf="selectedMISReport == '7'">
         <div *ngIf="showTable">
           <!-- <input type="text" name="form-control search field" placeholder="search here" [(ngModel)]="searchText" style="float: right"> -->
@@ -779,6 +779,7 @@
                 </table> -->
           <ngx-table [configuration]="configuration" [data]="data" [columns]="columns">
           </ngx-table>
+
         </div>
       </div>
 
@@ -792,7 +793,7 @@
             <tr>
               <th>SL No.</th>
               <th>Student Name</th>
-              <th>Registration No.</th>
+              <th>Roll No.</th>
               <th class="text-center">
                 <ng-container *ngIf="reportTypeValue==2">
                   SGPA
@@ -865,7 +866,7 @@
             <thead>
               <tr>
                 <th>Student Name</th>
-                <th>Student Registration</th>
+                <th>Student Roll No.</th>
                 <th>Branch Name</th>
                 <th>Academic Year</th>
                 <th>Semester</th>
