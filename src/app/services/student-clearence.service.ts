@@ -30,7 +30,7 @@ export class StudentClearenceService {
       "resulT_CLEARANCE": true,
       "librarY_CLEARANCE": true,
       "addedby": "1",
-      "mode": "U"
+      "mode": "A"
     }
     return this.http.post(this.saveUrl, payload);
   }

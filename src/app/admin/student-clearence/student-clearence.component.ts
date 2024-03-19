@@ -16,7 +16,7 @@ export class StudentClearenceComponent implements OnInit {
   feesChecked: boolean = false
   paperChecked: boolean = false
   libraryChecked: boolean = false
-  isButtonEnabled: boolean = true;
+  isButtonDisabled: boolean = true;
   moreInfo: boolean = false;
   clearenceDataResponse: any;
   clearenceData: any
@@ -69,19 +69,45 @@ export class StudentClearenceComponent implements OnInit {
 
           // calling API for checking checkbox
           this.clearenceService.getClearenceStatus(this.formData.regNumber).subscribe((res: any) => {
-            if(res.Data == null || res.Data.length == 0 || res == null){
-              this.feesChecked = true
-              this.paperChecked = true
-              this.libraryChecked = true
-              this.disableCheckBox = true
-              this.isButtonEnabled = true
-            }
-            else{
+            // Data null and both clearence yes - normal way
+            if((res.Data == null || res.Data.length == 0 || res == null) && (this.paperStatus == 'YES' && this.feesStatus == 'YES')){
               this.feesChecked = false
               this.paperChecked = false
               this.libraryChecked = false
               this.disableCheckBox = false
+              this.isButtonDisabled = false;      
             }
+            // Data null and both clearence no - cannot submit
+            if((res.Data == null || res.Data.length == 0 || res == null) && (this.paperStatus == 'YES' && this.feesStatus == 'YES')){
+              this.feesChecked = false
+              this.paperChecked = false
+              this.libraryChecked = false
+              this.disableCheckBox = true
+              this.isButtonDisabled = true;      
+            }
+            // Data not null and both clearence no - cannot submit
+            else if((res.Data != null || res.Data.length != 0 || res != null) && (this.paperStatus == 'NO' && this.feesStatus == 'NO')){
+              this.feesChecked = false
+              this.paperChecked = false
+              this.libraryChecked = false
+              this.disableCheckBox = true
+              this.isButtonDisabled = true
+            }
+            // Data not null and both clearence yes - already submitted
+            else if((res.Data != null || res.Data.length != 0 || res != null) && (this.paperStatus == 'YES' && this.feesStatus == 'YES')){
+              this.feesChecked = true
+              this.paperChecked = true
+              this.libraryChecked = true
+              this.disableCheckBox = true
+              this.isButtonDisabled = true
+            }
+            // else{
+            //   this.feesChecked = true
+            //   this.paperChecked = true
+            //   this.libraryChecked = true
+            //   this.disableCheckBox = true
+            //   this.isButtonEnabled = true
+            // }
           })
         })
       })
@@ -115,10 +141,10 @@ export class StudentClearenceComponent implements OnInit {
     }
 
     if (this.feesChecked == true && this.paperChecked == true && this.libraryChecked == true) {
-      this.isButtonEnabled = false;
+      this.isButtonDisabled = false;
     }
     else {
-      this.isButtonEnabled = true;
+      this.isButtonDisabled = true;
     }
   }
 
