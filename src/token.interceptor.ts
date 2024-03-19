@@ -15,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  refreshTokenUrl: any;
+  // refreshTokenUrl: any;
   constructor(private http: HttpClient) {}
 
   refreshTokenbaseurl = environment.baseUrl + 'api/Auth/refresh-token';
@@ -29,11 +29,11 @@ export class TokenInterceptor implements HttpInterceptor {
     const exp = localStorage.getItem('exp');
     const expAsNumber = exp ? parseInt(exp, 10) : null;
 
-    debugger;
+    // debugger;
     if (token) {
       const tokenExpiration = this.getTokenExpiration(token);
 
-      if (expAsNumber !== null && tokenExpiration == false) {
+      if (expAsNumber !== null && tokenExpiration && tokenExpiration.getTime() <= expAsNumber) {
         // Access token has expired; initiate token refresh
         if (refreshToken) {
           return this.refreshTokenAndHandleRequest(request, next, refreshToken);
@@ -86,10 +86,10 @@ export class TokenInterceptor implements HttpInterceptor {
     refreshToken = localStorage.getItem('refreshToken')
   ): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
-    this.refreshTokenUrl = this.refreshTokenbaseurl;
+    const refreshTokenUrl = this.refreshTokenbaseurl;
     const requestBody = { accessToken: token, refreshToken: refreshToken };
 
-    return this.sendRefreshTokenRequest(this.refreshTokenUrl, requestBody).pipe(
+    return this.sendRefreshTokenRequest(refreshTokenUrl, requestBody).pipe(
       switchMap((response: any) => {
         console.log('response', response);
         console.log('response.access_token', response.accessToken);
@@ -122,7 +122,7 @@ export class TokenInterceptor implements HttpInterceptor {
     return throwError('Token refresh failed');
   }
 
-  private getTokenExpiration(token: string): boolean {
+  private getTokenExpiration(token: string): Date | null {
     // // Implement logic to extract and decode the JWT token and return the expiration date
     // const date = JSON.parse(atob(token.split('.')[1])).exp;
     // // return date;
@@ -131,12 +131,13 @@ export class TokenInterceptor implements HttpInterceptor {
 
 
     // return expirationTime < currentTime;
-    const excTime: number = 2 * 60 * 1000
-    setInterval(() => {
-      return false
-    }, excTime)
-    return true;
+    // const excTime: number = 2 * 60 * 1000
+    // setInterval(() => {
+    //   return false
+    // }, excTime)
+    // return true;
     // const current
+    return null;
   }
 
   private sendRefreshTokenRequest(
