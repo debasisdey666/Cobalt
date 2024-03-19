@@ -81,7 +81,6 @@ import { UserComponent } from './admin/user/user.component';
 import { RoleComponent } from './admin/role/role.component';
 import { RoleMenuPermissionComponent } from './admin/role-menu-permission/role-menu-permission.component';
 import { TreeviewModule } from 'ngx-treeview';
-import { RoletreeComponent } from './admin/roletree/roletree.component';
 import { TimetableSchedularComponent } from './admin/timetable-schedular/timetable-schedular.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { WeeklyTimetableComponent } from './admin/weekly-timetable/weekly-timetable.component';
@@ -146,7 +145,6 @@ import { WeeklyTimetableComponent } from './admin/weekly-timetable/weekly-timeta
     UserComponent,
     RoleComponent,
     RoleMenuPermissionComponent,
-    RoletreeComponent,
     TimetableSchedularComponent,
     ChangePasswordComponent,
     WeeklyTimetableComponent,
