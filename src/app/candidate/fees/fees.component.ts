@@ -24,7 +24,9 @@ export class FeesComponent implements OnInit {
   constructor(
     private serviceData:FeesService,
     private serviceData2:PaymentTypeService,
-  ) { }
+  ) { 
+    this.setMaxDate();
+  }
 
 
   shoeFeesS:any;
@@ -132,7 +134,7 @@ export class FeesComponent implements OnInit {
   calculateDifference() {
     return this.feesUpdate.PAYMENT_AMOUNT - this.feesUpdate.TOTAL_AMOUNT_PAID;
   }
-  isAmountValid() {
+  isAmountValid() {   
     return this.feesUpdate.AMOUNT <= this.calculateDifference();
   }
   
@@ -159,4 +161,26 @@ export class FeesComponent implements OnInit {
     });
   }
 
+  maxDate: string = '';
+
+  setMaxDate(): void {
+    debugger
+    const today = new Date();
+    const year = today.getFullYear();
+    let month: number | string = today.getMonth() + 1;
+    let day: number | string = today.getDate();
+
+    // Ensure month and day have two digits
+    month = month < 10 ? `0${month}` : month;
+    day = day < 10 ? `0${day}` : day;
+
+    this.maxDate = `${year}-${month}-${day}`;
+    console.log(this.maxDate);
+  }
+
+  resetForm(){
+    if (this.getFeeSForm) {
+      this.getFeeSForm.resetForm();
+    }
+  }
 }

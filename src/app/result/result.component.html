@@ -32,8 +32,8 @@
                               <th>Student Name</th>       
                               <th>Roll No.</th>
                               <th>Paper Name</th>
-                              <th>Result</th>
-                              <th>Score</th>
+                              <th class="text-center">Result</th>
+                              <!-- <th>Score</th> as per sayan -->
                           </tr>
                         </thead>
                         <tbody>
@@ -42,8 +42,8 @@
                             <td>{{showMI.STUDENT_REGISTRATION}}</td>
                             <td>{{showMI.PAPER_NAME}}</td>
                             <!-- <td>{{showMI.APPEARING_SEM}}</td> -->
-                            <td>{{showMI.RESULT}}</td>
-                            <td>{{showMI.SCORE}}</td>
+                            <td class="text-center" > <p class="rndbg rndbg2 text-center" [style.backgroundColor]="(showMI.RESULT === 'F' || showMI.RESULT === 'I') ? 'red !important' : ''"> {{showMI.RESULT}} </p></td>
+                            <!-- <td>{{showMI.SCORE}}</td> -->
                            
                           </tr>
                           <tr *ngIf="addErrormessage" style="background-color: #fff;">

@@ -154,7 +154,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Add Fees</h5>
-                <button type="button" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
+                <button type="button" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()">x</button>
             </div>
             <form #getFeeSForm="ngForm" (ngSubmit)="getFeeSFormdata(getFeeSForm.value)">
                 <div class="modal-body">
@@ -168,7 +168,7 @@
                     <div class="row">
 
                         <div class="col-md-12 mt-3">  
-                          <input type="hidden" class="form-control" name="COLLEGE_ID" #COLLEGE_ID="ngModel" [(ngModel)]="feesUpdate.COLLEGE_ID" [value]="feesUpdate.COLLEGE_ID">                
+                          <input type="hidden" class="form-control"  name="COLLEGE_ID" #COLLEGE_ID="ngModel" [(ngModel)]="feesUpdate.COLLEGE_ID" [value]="feesUpdate.COLLEGE_ID">                
                           <input type="hidden" class="form-control" [(ngModel)]="feesUpdate.ID" name="ID" [value]="feesUpdate.ID">                        
                           <input type="hidden" class="form-control" name="BRANCH_ID"  #BRANCH_ID="ngModel" [(ngModel)]="feesUpdate.BRANCH_ID" [value]="feesUpdate.BRANCH_ID">
                           <input type="hidden" class="form-control" name="CATEGORY_ID" #CATEGORY_ID="ngModel" [(ngModel)]="feesUpdate.CATEGORY_ID" [value]="feesUpdate.CATEGORY_ID">
@@ -200,22 +200,38 @@
 
                       <div class="col-md-12 mt-3">
                         <label class="form-label"> Amount<strong class="required"> *</strong> </label>  
-                        <input type="text" class="form-control" name="AMOUNT" [(ngModel)]="feesUpdate.AMOUNT" #AMOUNT="ngModel" required>
-                        <div *ngIf="!isAmountValid() && AMOUNT.touched" class="alert alert-danger">
-                          Exceed from Due Amount.
+                        <input type="text" class="form-control" name="AMOUNT" required [(ngModel)]="feesUpdate.AMOUNT" #AMOUNT="ngModel" >
+
+
+                        <div class="" *ngIf="AMOUNT.touched && AMOUNT.invalid">
+                          <div class="alert alert-danger" *ngIf="AMOUNT.errors?.required">
+                            This field is required
+                          </div>
                         </div>
+                        
+                          <div *ngIf="!isAmountValid() && AMOUNT.dirty" class="alert alert-danger">
+                            Exceed from Due Amount.
+                          </div>
                       </div>
                       
                      <div class="col-md-12 mt-3">
                         <label class="form-label"> Payment Date <strong class="required"> *</strong> </label>  
-                        <input type="date" class="form-control" name="PAYMENT_DATE" ngModel #PAYMENT_DATE="ngModel" required>  
+                        <input type="date" class="form-control" [max]="maxDate" name="PAYMENT_DATE" required ngModel #PAYMENT_DATE="ngModel" >  
+
+                        <div class="" *ngIf="PAYMENT_DATE.touched && PAYMENT_DATE.invalid">
+                          <div class="alert alert-danger" *ngIf="PAYMENT_DATE.errors?.required">
+                            This field is required
+                          </div>
+                        </div>
+
                       </div>
+
 
                     </div>
                 </div>
                 <div class="modal-footer">
                     <!-- <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-                    <button class="btn btn-primary">Submit</button>
+                    <button class="btn btn-primary" [disabled]="getFeeSForm.invalid || !isAmountValid()">Submit</button>
                 </div>
             </form>
 

@@ -180,7 +180,7 @@
                                     <td> {{showAttDetails.ATTENDANCE_STATUS}}</td>
                                 </tr>                                  
                         </table>
-                        <table class="table customTableAtt customTablePap">
+                        <table class="table customTableAtt customTablePap" *ngIf="showSem.FEES_PAYMENT_SUMMARY && showSem.FEES_PAYMENT_SUMMARY.length > 0">
                            <tr><th colspan="6">FEES PYAMENT SUMMERY</th></tr>
                            <tr>
                             <td> <strong> Semester</strong>  </td>
@@ -240,6 +240,46 @@
                         <td class="text-end"> {{showlIBraryBkIssu.FINE_AMOUNT}}</td>
                     </tr>                                  
             </table>
+            <table class="table table customTableAtt customTablePap" *ngIf="showSem.ASSIGNMENT && showSem.ASSIGNMENT.length > 0">
+                           
+                <tr>
+                    <th colspan="8">ASSIGNMENT</th>
+                </tr>
+                <tr>
+                    <td> <strong> PAPER NAME</strong>  </td>
+                    <td class="text-center"> <strong> CUTOFF DATE </strong> </td>
+                    <td class="text-center"> <strong> ASSIGNMENT UPLOAD DATE </strong> </td>
+                    <td class="text-center"> <strong> ASSIGNMENT </strong> </td>
+                    <td class="text-center"> <strong> ASSIGNMENT UPLOAD</strong> </td>
+                    
+                </tr>
+                <tr *ngFor="let showASSIGNMENT of showSem.ASSIGNMENT">
+                    <td>{{ showASSIGNMENT.PAPER_NAME }}</td>
+                    <td class="text-center"> {{showASSIGNMENT.CUTOFF_DATE | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-center"> {{showASSIGNMENT.ASSIGNMENT_UPLOAD_DATE | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-center"> <a target="_blank" class="customlinkBtn genrateBtn" href="{{linkurl}}{{showASSIGNMENT.ASSIGNMENT_DOCUMENTS}}"><i class="fa fa-eye"></i> Document</a> </td>
+                     <td class="text-center"> <a target="_blank" class="genrateBtn" href="{{linkurl}}{{showASSIGNMENT.ASSIGNMENT_UPLOAD_DOCUMENT}}"><i class="fa fa-file" aria-hidden="true"></i> Uploaded Document</a></td>
+                    
+                </tr>                                  
+        </table>
+        <table class="table table customTableAtt customTablePap" *ngIf="showSem.RESULT && showSem.RESULT.length > 0">
+                           
+            <tr>
+                <th colspan="8">RESULT
+                </th>
+            </tr>
+            <tr>
+                <td> <strong> PAPER NAME</strong>  </td>
+                <td class="text-center"> <strong> RESULT</strong> </td>
+                <!-- <td class="text-center"> <strong> SCORE </strong> </td> -->
+                
+            </tr>
+            <tr *ngFor="let showResult of showSem.RESULT">
+                <td>{{ showResult.PAPER_NAME }}</td>
+                <td class="text-center"> <p *ngIf="showResult.RESULT.length > 0" class="rndbg text-center" [style.backgroundColor]="(showResult.RESULT === 'F' || showResult.RESULT === 'I') ? 'red !important' : ''">{{showResult.RESULT}}</p> </td>
+                <!-- <td class="text-center"> <strong>{{showResult.SCORE}} </strong> </td> -->
+            </tr>                                  
+    </table>
                     
 
                     </ng-container>  

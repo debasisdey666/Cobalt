@@ -52,7 +52,7 @@
                     <div class="search-container">
                         <div class="row mb-4 me-0 ms-0">
                             <div class="col-sm-3 pe-0"> <input class="form-control" type="text"
-                                    placeholder="Search Reg No..." [(ngModel)]="searchFilters['STUDENT_REGISTRATION']"
+                                    placeholder="Search Roll No..." [(ngModel)]="searchFilters['STUDENT_REGISTRATION']"
                                     (input)="updateFilteredItems()" /> </div>
                             <div class="col-sm-3 pe-0"><input class="form-control" type="text"
                                     placeholder="Search Student Name..." [(ngModel)]="searchFilters['STUDENT_NAME']"
@@ -1008,7 +1008,7 @@
                                 <input type="date" name="DOB" class="form-control" ngModel required #DOB="ngModel"
                                     [(ngModel)]="studentUpdate.DOB" [max]="maxDate" [value]="studentUpdate.DOB">
 
-                                    {{studentUpdate.DOB}}
+                                    
                                 <div class="alert alert-danger" *ngIf="DOB.touched && DOB.invalid">
                                     <div class="" *ngIf="DOB.errors?.required">
                                         This field is required

@@ -20,6 +20,7 @@ export class StudentHistoryComponent implements OnInit {
   showStudetail:any;
   linkurl: string =environment.baseUrl;
   ROLE_ID: any;
+  
 
   constructor(
     private serviceData: MisService,

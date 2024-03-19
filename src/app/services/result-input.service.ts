@@ -14,14 +14,17 @@ export class ResultInputService {
 
   constructor(private http: HttpClient) { }
 
-  showResultInput(id:any,student_id: any) {    
+  showResultInput(id:any,student_id: any) {   
+
+    const studenId = getFromLocalStorage('studenId');
+    
     const data = {
       "id": 0,
       "sgpa": 0,
       "ygpa": 0,
       "dgpa": 0,
       "updatedby": "string",
-      "studenT_ID":6,
+      "studenT_ID":studenId,
       "letterGrade": [
         {
           "id": 0,
