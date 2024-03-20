@@ -12,6 +12,7 @@ export class LoginService {
   constructor(private http:HttpClient) { }
 
   url=environment.baseUrl+"api/Auth/Login";
+  refreshTokenUrl = environment.baseUrl+"api/Auth/refresh-token"
 
   addLogin(formData:any){
     console.log(formData.useR_NAME);
@@ -33,4 +34,22 @@ export class LoginService {
     return throwError('An error occurred. Please try again later.');
   }
 
+  getToken(){
+    return localStorage.getItem('token') || ''
+  }
+  getRefreshToken(){
+    return localStorage.getItem('refreshToken') || ''
+  }
+  generateRefreshToken(){
+    debugger
+    let payload = {
+      "accessToken": this.getToken(),
+      "refreshToken": this.getRefreshToken()
+    }
+    return this.http.post(this.refreshTokenUrl, payload);
+  }
+  saveTokens(tokendata: any){
+    localStorage.setItem("token", tokendata.accessToken);
+    localStorage.setItem("refreshToken", tokendata.refreshToken);
+  }
 }

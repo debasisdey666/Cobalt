@@ -8,7 +8,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, delay, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -33,7 +33,7 @@ export class TokenInterceptor implements HttpInterceptor {
     if (token) {
       const tokenExpiration = this.getTokenExpiration(token);
 
-      if (expAsNumber !== null && tokenExpiration && tokenExpiration.getTime() <= expAsNumber) {
+      if (expAsNumber !== null && tokenExpiration && Date.now() <= expAsNumber) {
         // Access token has expired; initiate token refresh
         if (refreshToken) {
           return this.refreshTokenAndHandleRequest(request, next, refreshToken);
@@ -90,10 +90,11 @@ export class TokenInterceptor implements HttpInterceptor {
     const requestBody = { accessToken: token, refreshToken: refreshToken };
 
     return this.sendRefreshTokenRequest(refreshTokenUrl, requestBody).pipe(
+      delay(3000), // Adjust the delay as needed
       switchMap((response: any) => {
         console.log('response', response);
         console.log('response.access_token', response.accessToken);
-        if (response && response.accessToken) {
+        if (response) {
           localStorage.setItem('token', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
           console.log('response accessToken', response.accessToken);
