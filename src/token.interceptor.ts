@@ -90,7 +90,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const requestBody = { accessToken: token, refreshToken: refreshToken };
 
     return this.sendRefreshTokenRequest(refreshTokenUrl, requestBody).pipe(
-      delay(3000), // Adjust the delay as needed
+      delay(5000), // Adjust the delay as needed
       switchMap((response: any) => {
         console.log('response', response);
         console.log('response.access_token', response.accessToken);
