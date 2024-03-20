@@ -44,11 +44,13 @@ export class TokenInterceptor implements HttpInterceptor {
       }
 
       // Access token is valid; set it in the request headers
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      if(localStorage.getItem('flag') === "true"){
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
     }
 
     return next.handle(request).pipe(
@@ -88,9 +90,10 @@ export class TokenInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');
     const refreshTokenUrl = this.refreshTokenbaseurl;
     const requestBody = { accessToken: token, refreshToken: refreshToken };
+    localStorage.setItem('flag','false');
 
     return this.sendRefreshTokenRequest(refreshTokenUrl, requestBody).pipe(
-      delay(5000), // Adjust the delay as needed
+      // delay(2000), // Adjust the delay as needed
       switchMap((response: any) => {
         console.log('response', response);
         console.log('response.access_token', response.accessToken);
@@ -99,6 +102,7 @@ export class TokenInterceptor implements HttpInterceptor {
           localStorage.setItem('refreshToken', response.refreshToken);
           console.log('response accessToken', response.accessToken);
           console.log('response refreshToken', response.refreshToken);
+          localStorage.setItem('flag','true');
           if (response.expAsNumber) {
             localStorage.setItem('exp', response.expAsNumber);
           }
