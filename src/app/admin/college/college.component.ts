@@ -36,7 +36,6 @@ export class CollegeComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
 
   ngOnInit(): void {
-    console.log("I am in")
     this.subscription = this.serviceData.showCollegeType().subscribe((data) => {
       this.showCTData = data;
       this.showCollegeType =  this.showCTData['Data'];      

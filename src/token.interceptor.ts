@@ -90,6 +90,8 @@ export class TokenInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');
     const refreshTokenUrl = this.refreshTokenbaseurl;
     const requestBody = { accessToken: token, refreshToken: refreshToken };
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     localStorage.setItem('flag','false');
 
     return this.sendRefreshTokenRequest(refreshTokenUrl, requestBody).pipe(
