@@ -42,7 +42,7 @@
                             <td>{{showMI.STUDENT_REGISTRATION}}</td>
                             <td>{{showMI.PAPER_NAME}}</td>
                             <!-- <td>{{showMI.APPEARING_SEM}}</td> -->
-                            <td class="text-center" > <p class="rndbg rndbg2 text-center" [style.backgroundColor]="(showMI.RESULT === 'F' || showMI.RESULT === 'I') ? 'red !important' : ''"> {{showMI.RESULT}} </p></td>
+                            <td class="text-center" > <p *ngIf="showMI.RESULT.length > 0" class="rndbg rndbg2 text-center" [style.backgroundColor]="(showMI.RESULT === 'F' || showMI.RESULT === 'I') ? 'red !important' : '#00ce00 !important'"> {{showMI.RESULT}} </p></td>
                             <!-- <td>{{showMI.SCORE}}</td> -->
                            
                           </tr>

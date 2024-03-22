@@ -11,20 +11,20 @@
           <div class="col-xl-12">
             <form #searchMarksInp="ngForm" (ngSubmit)="searchMarksInput()" novalidate>
               <div class="row mb-4">
-                <div class="col-sm-4 pe-0">                      
+                <div class="col-sm-4 pe-0 mb-2">                      
                   <select required class="form-select" [(ngModel)]="selectedSem" name="SEM" #SEM="ngModel">
                     <option value="0" disabled>Select Sem</option>
                     <option *ngFor="let showsm of showSem" [value]="showsm.ID">{{showsm.SEM}}</option>
                   </select>
               </div> 
-                  <div class="col-sm-4 pe-0">                      
+                  <div class="col-sm-4 pe-0 mb-2">                      
                       <select required class="form-select" [(ngModel)]="selectedPaperId" name="PAPER_NAME" #PAPER_NAME="ngModel">
                         <option value="0" disabled>Select Paper</option>
                         <option *ngFor="let showpaper of showpr" [value]="showpaper.ID">{{showpaper.PAPER_NAME}}</option>
                       </select>
                   </div> 
                                   
-                  <div class="col-sm-4 pe-0">       
+                  <div class="col-sm-4 pe-0 mb-2">       
                           <!--<button class="btn btn-primary px-5 py-3 me-1">Search</button>-->
                           <button class="btn btn-primary px-5 py-3 me-1">Search</button>
                   </div>
@@ -34,7 +34,7 @@
          
           <div class="col-xl-12">
   
-              <div class="tblMN table-responsive text-nowrap">
+              <div class="tblMN table-responsive text-nowrap mb-2">
                   <table class="table table-striped">
                       <thead>
                         <tr>
@@ -42,8 +42,8 @@
                             <th>Student Name</th>
                             <th>Sem</th>
                             <th>Paper</th>
-                            <th>Result</th>
                             <th>Score</th>
+                            <th>Result</th>
                             <th class="actionTd1">
                                 Action
                             </th>
@@ -55,8 +55,11 @@
                           <td>{{showMI.STUDNET_NAME}}</td>
                           <td>{{showMI.APPEARING_SEM}}</td>
                           <td>{{showMI.PAPER_NAME}}</td>
-                          <td>{{showMI.RESULT}}</td>
                           <td>{{showMI.SCORE}}</td>
+                          <td>
+                            <p *ngIf="showMI.RESULT.length > 0" class="rndbg rndbg2 text-center" [style.backgroundColor]="(showMI.RESULT === 'F' || showMI.RESULT === 'I') ? 'red !important' : '#00ce00 !important'">{{showMI.RESULT}}</p>
+                
+                            </td>
                           <td>
                              
   

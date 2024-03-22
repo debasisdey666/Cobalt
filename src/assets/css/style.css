@@ -1380,7 +1380,7 @@ h6 {
   background-color: #206fe0!important;
 }
 .mainBodySec{
-  margin-top:35px;
+  margin-top:20px;
 }
 
 .bigBtn{
@@ -2131,4 +2131,49 @@ table tr td .clgprogNestedTable:last-child{
 }
 .rndbg2{
   line-height: 20px;
+}
+.mobShow,
+.headerUsernm{
+  display: none;
+}
+.mobOff{
+  display: block;
+}
+
+
+/* Media query for screens less than 768 pixels wide */
+
+@media screen and (max-width: 500px) {
+
+  .logo img {
+    max-height: 28px;
+  }
+  .mobShow,
+  .headerUsernm{
+    display: block;
+  }
+  .mobOff{
+    display: none;
+  }
+  .form-select, .form-control {
+    font-size: 12px!important;
+  }
+  .form-select, .form-control {
+    padding: 0.5rem 0.5rem!important;
+  }
+  .form-label {
+    margin-bottom: .5rem;
+    font-size: 14px;
+  }
+  .btn-primary{
+    padding: 8px 22px !important;
+  }
+  #main {
+    padding: 0 20px;
+  }
+  table td,
+  table th {
+    font-size: 12px;
+  }
+
 }

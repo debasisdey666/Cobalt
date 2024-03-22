@@ -12,10 +12,10 @@
 
           <div class="search-container">
             <div class="row mb-4">
-              <div class="col-sm-3 pe-0"><input class="form-control" type="text" placeholder="Search Academic Year..." [(ngModel)]="searchFilters['AY']" (input)="updateFilteredItems()" /></div>
-              <div class="col-sm-3 pe-0"><input class="form-control" type="text" placeholder="Search Branch Name..." [(ngModel)]="searchFilters['BRANCH_NAME']" (input)="updateFilteredItems()" /></div>
-              <div class="col-sm-3 pe-0"><input class="form-control" type="text" placeholder="Search SEM ..." [(ngModel)]="searchFilters['SEM']" (input)="updateFilteredItems()" /></div>
-              <div class="col-sm-3 pe-0">  <input class="form-control" type="text" placeholder="Search Paper Name..." [(ngModel)]="searchFilters['PAPER_NAME']" (input)="updateFilteredItems()" /> </div>
+              <div class="col-sm-3 pe-0 mb-1"><input class="form-control" type="text" placeholder="Search Academic Year..." [(ngModel)]="searchFilters['AY']" (input)="updateFilteredItems()" /></div>
+              <div class="col-sm-3 pe-0 mb-1"><input class="form-control" type="text" placeholder="Search Branch Name..." [(ngModel)]="searchFilters['BRANCH_NAME']" (input)="updateFilteredItems()" /></div>
+              <div class="col-sm-3 pe-0 mb-1"><input class="form-control" type="text" placeholder="Search SEM ..." [(ngModel)]="searchFilters['SEM']" (input)="updateFilteredItems()" /></div>
+              <div class="col-sm-3 pe-0 mb-1">  <input class="form-control" type="text" placeholder="Search Paper Name..." [(ngModel)]="searchFilters['PAPER_NAME']" (input)="updateFilteredItems()" /> </div>
                 
                 <!-- <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Email..." [(ngModel)]="searchFilters.parsedFormattedPapers" (input)="updateFilteredItems()" /></div> -->
                 <!-- <div class="col-sm-3 pe-0">    
@@ -105,7 +105,7 @@
           <button (click)="onNextButtonClick()" class="paginationBtn" [disabled]="currentPage === totalPages"> >> </button>          
         </div> -->
 
-        <div class="col-md-6 pull-left mt-3"> 
+        <div class="col-12 col-md-6 pull-left mt-3"> 
           <button (click)="onPreviousButtonClick()" class="paginationBtn" [disabled]="currentPage === 1"> << </button>
           
           <!-- Display a subset of pages -->
@@ -119,8 +119,8 @@
       </div>
 
 
-        <div class="col-md-6 pull-left text-right">
-          <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add</a>
+        <div class="col-12 col-md-6 pull-left text-md-end mt-3">
+          <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add</a>
         </div>
 
       </div>

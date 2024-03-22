@@ -10,8 +10,8 @@
 
             <div class="search-container">
               <div class="row mb-4">
-                <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Paper Name..." [(ngModel)]="searchFilters['PAPER_NAME']" (input)="updateFilteredItems()" /></div>
-                  <div class="col-sm-4 pe-0">  <input class="form-control" type="text" placeholder="Search Instructor Name..." [(ngModel)]="searchFilters['INSTRUCTOR_NAME']" (input)="updateFilteredItems()" /> </div>
+                <div class="col-sm-4 pe-0 mb-2"><input class="form-control" type="text" placeholder="Search Paper Name..." [(ngModel)]="searchFilters['PAPER_NAME']" (input)="updateFilteredItems()" /></div>
+                  <div class="col-sm-4 pe-0 mb-2">  <input class="form-control" type="text" placeholder="Search Instructor Name..." [(ngModel)]="searchFilters['INSTRUCTOR_NAME']" (input)="updateFilteredItems()" /> </div>
                   <!-- <div class="col-sm-4 pe-0">  <input class="form-control" type="date" placeholder="Search Date..." [(ngModel)]="searchFilters['CLASS_OF_DATE'] " (input)="updateFilteredItems()" /> </div> -->
                   
               </div>
@@ -71,7 +71,7 @@
             <jw-pagination [items]="showClsTmtbl" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
           </div> -->
 
-          <div class="col-md-6 pull-left mt-3"> 
+          <div class="col-12 col-md-6 pull-left mt-3 mb-2"> 
             <button (click)="onPreviousButtonClick()" class="paginationBtn" [disabled]="currentPage === 1"> << </button>
             
             <!-- Display a subset of pages -->
@@ -83,8 +83,8 @@
             
             <button (click)="onNextButtonClick()" class="paginationBtn" [disabled]="currentPage === totalPages"> >> </button>          
         </div>
-          <div class="col-md-6 pull-left text-right" *ngIf="ROLE_ID != 2">
-            <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+          <div class="col-12 col-md-6 pull-left text-md-end" *ngIf="ROLE_ID != 2">
+            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
           </div>
           
           

@@ -7,7 +7,7 @@
       <section class="section mainBodySec">
         <div class="row">
           <div class="col-xl-12">  
-            <div class="tblMN table-responsive text-nowrap">
+            <div class="tblMN table-responsive text-nowrap mb-2">
   
               <table class="table table-striped">
                   <thead>
@@ -55,13 +55,13 @@
               </table>
           </div>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-12 col-md-6 pull-left">
               <jw-pagination [items]="showAsUpld" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
             </div>
-            <div class="col-md-6 text-right">
-              <a class="btn btn-primary  px-4 py-3 pull-right" href="#" data-bs-toggle="modal" *ngIf="pageOfItems?.length === 0 && ROLE_ID == 2" data-bs-target="#AddModal" role="button">Add </a>
-              <a class="btn btn-primary me-2 px-4 py-3 backBtn pull-right" [routerLink]="['/assignment']"><i class="fa fa-arrow-left"></i> Back</a>
-              
+            <div class="col-12 col-md-6 text-md-end">
+              <a class="btn btn-primary me-2 backBtn" [routerLink]="['/assignment']"><i class="fa fa-arrow-left"></i> Back</a>
+              <a class="btn btn-primary" href="#" data-bs-toggle="modal" *ngIf="pageOfItems?.length === 0 && ROLE_ID == 2" data-bs-target="#AddModal" role="button">Add </a>
+              <!-- <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a> -->
             </div>
           </div>
          

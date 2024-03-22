@@ -5,11 +5,11 @@
       <a routerLink="/dashboard" class="logo d-flex align-items-center">
         <img src="assets/images/logo.jpg" alt="">
       </a>
-      <i onclick="onSave()" class="fa fa-bars toggle-sidebar-btn"></i>
+      <i onclick="onSave()" class="fa fa-bars toggle-sidebar-btn mobOff"></i>
     </div><!-- End Logo -->
 
     
-
+    
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
         <!-- <li class="nav-item dropdown pe-3">{{result}}</li> -->
@@ -17,20 +17,20 @@
           <ng-container *ngIf="ROLE_ID == 1 || ROLE_ID == 4; else restContent">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <i class="fa fa-user"></i>
-              <span class="d-md-block dropdown-toggle ps-2">WELCOME {{userName}}</span>
+              <span class="d-md-block dropdown-toggle ps-2 mobOff">WELCOME {{userName}}</span>
             </a>
           </ng-container>
           <ng-template #restContent>
             <ng-container *ngIf="ROLE_ID == 3; else studentContent">
               <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                 <i class="fa fa-user"></i>
-                <span class="d-md-block dropdown-toggle ps-2">WELCOME {{facultyNm}}</span>
+                <span class="d-md-block dropdown-toggle ps-2 mobOff">WELCOME {{facultyNm}}</span>
               </a>
             </ng-container>
             <ng-template #studentContent>
               <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" *ngFor="let showStd of showStudent">
                 <i class="fa fa-user"></i>
-                <span class="d-md-block dropdown-toggle ps-2">
+                <span class="d-md-block dropdown-toggle ps-2 mobOff">
                   WELCOME {{showStd.STUDENT_NAME}} ( {{showStd.SEM}})
                   <!-- Additional condition for students -->
                   <span *ngIf="showStd.SOME_OTHER_CONDITION"> - Additional Content</span>
@@ -45,7 +45,13 @@
             <span class="d-md-block dropdown-toggle ps-2">WELCOME {{showStd.STUDENT_NAME}} ( Sem{{showStd.CURRENT_SEM}} )</span>
           </a>
         </ng-template> -->
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">  
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"> 
+            <li class="headerUsernm">              
+              <a class="dropdown-item d-flex align-items-center">
+                <i class="fa fa-user"></i>
+                <span>{{userName}}</span>
+              </a>
+            </li> 
             <li>
               <a class="dropdown-item d-flex align-items-center" routerLink="/change-password">
                 <i class="fa fa-unlock"></i>
@@ -64,5 +70,6 @@
 
       </ul>
     </nav><!-- End Icons Navigation -->
+    <i onclick="onSave()" class="fa fa-bars toggle-sidebar-btn p-0 mobShow"></i>
 
   </header><!-- End Header -->

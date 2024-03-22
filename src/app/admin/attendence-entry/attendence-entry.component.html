@@ -66,10 +66,14 @@
               </tbody>
             </table>
           </div>
-          <jw-pagination [items]="showAtted" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+          <div class="col-12 col-md-6 pull-left mt-2">
+            <jw-pagination [items]="showAtted" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
+          </div>
+          
+          <div class="col-12 col-md-6 pull-left text-md-end">
           <button type="button" class="btn btn-primary me-2" (click)="goBack()">Back</button>
           <button *ngIf="ROLE_ID != 2"  [disabled]="attendanceForm.invalid || isSubmit" type="submit" class="btn btn-primary">Submit</button>
-          
+          </div>
           
         </div>
       </form>

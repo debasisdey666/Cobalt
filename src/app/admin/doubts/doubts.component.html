@@ -10,9 +10,9 @@
 
             <div class="search-container" *ngIf="ROLE_ID != 2">
               <div class="row mb-4">
-                <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Instructor Name..." [(ngModel)]="searchFilters['INSTRUCTURE_NAME']" (input)="updateFilteredItems()" /></div>
-                <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Student Name..." [(ngModel)]="searchFilters['QUESTION_ADDEDBY']" (input)="updateFilteredItems()" /></div>
-                <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Topic Name..." [(ngModel)]="searchFilters['TOPIC_NAME']" (input)="updateFilteredItems()" /></div> 
+                <div class="col-sm-4 pe-0 mb-2"><input class="form-control" type="text" placeholder="Search Instructor Name..." [(ngModel)]="searchFilters['INSTRUCTURE_NAME']" (input)="updateFilteredItems()" /></div>
+                <div class="col-sm-4 pe-0 mb-2"><input class="form-control" type="text" placeholder="Search Student Name..." [(ngModel)]="searchFilters['QUESTION_ADDEDBY']" (input)="updateFilteredItems()" /></div>
+                <div class="col-sm-4 pe-0 mb-2"><input class="form-control" type="text" placeholder="Search Topic Name..." [(ngModel)]="searchFilters['TOPIC_NAME']" (input)="updateFilteredItems()" /></div> 
                 <!-- <div class="col-sm-4 pe-0">
                   <select class="form-select" name="topic" id="topic" [(ngModel)]="searchFilters['TOPIC_NAME']" (change)="updateFilteredItems()">
                     <option *ngFor="let tp of showdbt" [value]="tp.TOPIC_ID">{{tp.TOPIC_NAME}}</option>
@@ -24,7 +24,7 @@
               </div>
           </div>
   
-            <div class="tblMN table-responsive text-nowrap">
+            <div class="tblMN table-responsive text-nowrap mb-2">
               <table class="table table-striped">
                   <thead>
                     <tr>
@@ -70,7 +70,7 @@
               <jw-pagination [items]="showdbt" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
             </div> -->
 
-            <div class="col-md-6 pull-left mt-3"> 
+            <div class="col-12 col-md-6 pull-left mb-2"> 
               <button (click)="onPreviousButtonClick()" class="paginationBtn" [disabled]="currentPage === 1"> << </button>
               
               <!-- Display a subset of pages -->
@@ -83,8 +83,8 @@
               <button (click)="onNextButtonClick()" class="paginationBtn" [disabled]="currentPage === totalPages"> >> </button>          
           </div>
 
-            <div class="col-md-6" *ngIf="ROLE_ID == 2">
-              <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add</a>
+            <div class="col-12 col-md-6 text-md-end" *ngIf="ROLE_ID == 2">
+              <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add</a>
             </div> 
           </div>
 

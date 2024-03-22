@@ -96,13 +96,13 @@
                   </table>
                 </div>
               
-                <div class="col-md-6 pull-left">
+                <div class="col-12 col-md-6 pull-left">
                   <!-- Adjust the pagination component here if needed -->
                   <jw-pagination [items]="showStuHistory" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
                 </div> 
               
-                <div class="col-sm-6  pull-right text-right" *ngIf="showStuHistory.length > 0">
-                  <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                <div class="col-12 col-md-6 pull-left text-md-end" *ngIf="showStuHistory.length > 0">
+                  <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 
               </form>

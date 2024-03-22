@@ -8,14 +8,14 @@
 
                 <div class="search-container">
                     <div class="row mb-4">
-                      <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Student Name..." [(ngModel)]="searchFilters['STUDENT_NAME']" (input)="updateFilteredItems()" /></div>
-                      <div class="col-sm-4 pe-0"><input class="form-control" type="text" placeholder="Search Registration No..." [(ngModel)]="searchFilters['REGISTRATION_NO']" (input)="updateFilteredItems()" /></div>
-                        <div class="col-sm-4 pe-0">  <input class="form-control" type="text" placeholder="Search Roll No..." [(ngModel)]="searchFilters['ROLL_NO']" (input)="updateFilteredItems()" /> </div>
+                      <div class="col-sm-4 pe-0 mb-2"><input class="form-control" type="text" placeholder="Search Student Name..." [(ngModel)]="searchFilters['STUDENT_NAME']" (input)="updateFilteredItems()" /></div>
+                      <div class="col-sm-4 pe-0 mb-2"><input class="form-control" type="text" placeholder="Search Registration No..." [(ngModel)]="searchFilters['REGISTRATION_NO']" (input)="updateFilteredItems()" /></div>
+                      <div class="col-sm-4 pe-0 mb-2">  <input class="form-control" type="text" placeholder="Search Roll No..." [(ngModel)]="searchFilters['ROLL_NO']" (input)="updateFilteredItems()" /> </div>
                         
                     </div>
                 </div>
 
-                <div class="tblMN table-responsive text-nowrap">
+                <div class="tblMN table-responsive text-nowrap long-text-cell mb-2">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -87,7 +87,7 @@
               <div class="col-md-6 pull-left text-right">
                 <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
               </div> -->
-              <div class="col-md-6 pull-left mt-3"> 
+              <div class="col-12 col-md-6 pull-left mb-2"> 
                 <button (click)="onPreviousButtonClick()" class="paginationBtn" [disabled]="currentPage === 1"> << </button>
                 
                 <!-- Display a subset of pages -->
@@ -99,8 +99,8 @@
                 
                 <button (click)="onNextButtonClick()" class="paginationBtn" [disabled]="currentPage === totalPages"> >> </button>          
             </div>
-            <div class="col-md-6 pull-left text-right"  *ngIf="ROLE_ID == 2">
-                <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
+            <div class="col-12 col-md-6 pull-left text-md-end"  *ngIf="ROLE_ID == 1">
+                <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
               </div>
             </div>
         </div>

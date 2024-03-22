@@ -276,7 +276,9 @@
             </tr>
             <tr *ngFor="let showResult of showSem.RESULT">
                 <td>{{ showResult.PAPER_NAME }}</td>
-                <td class="text-center"> <p *ngIf="showResult.RESULT.length > 0" class="rndbg text-center" [style.backgroundColor]="(showResult.RESULT === 'F' || showResult.RESULT === 'I') ? 'red !important' : ''">{{showResult.RESULT}}</p> </td>
+                <td class="text-center"> 
+                    <p *ngIf="showResult.RESULT.length > 0" class="rndbg text-center" [style.backgroundColor]="(showResult.RESULT === 'F' || showResult.RESULT === 'I') ? 'red !important' : '#00ce00 !important'">{{showResult.RESULT}}</p>
+                 </td>
                 <!-- <td class="text-center"> <strong>{{showResult.SCORE}} </strong> </td> -->
             </tr>                                  
     </table>

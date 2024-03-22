@@ -51,16 +51,19 @@
 
                     <div class="search-container">
                         <div class="row mb-4 me-0 ms-0">
-                            <div class="col-sm-3 pe-0"> <input class="form-control" type="text"
+                            <div class="col-sm-3 p-0 ps-1 mb-2"> <input class="form-control" type="text"
                                     placeholder="Search Roll No..." [(ngModel)]="searchFilters['STUDENT_REGISTRATION']"
                                     (input)="updateFilteredItems()" /> </div>
-                            <div class="col-sm-3 pe-0"><input class="form-control" type="text"
+
+                            <div class="col-sm-3 p-0 ps-1 mb-2"><input class="form-control" type="text"
                                     placeholder="Search Student Name..." [(ngModel)]="searchFilters['STUDENT_NAME']"
                                     (input)="updateFilteredItems()" /></div>
-                            <div class="col-sm-3 pe-0"><input class="form-control" type="text"
+
+                            <div class="col-sm-3 p-0 ps-1 mb-2"><input class="form-control" type="text"
                                     placeholder="Search Branch..." [(ngModel)]="searchFilters['BRANCH_NAME']"
                                     (input)="updateFilteredItems()" /></div>
-                            <div class="col-sm-3 pe-0">
+
+                            <div class="col-sm-3 p-0">
                                 <button type="button" class="btn btn-primary pull-right px-4 py-3 me-1"
                                     (click)="exportToExcel()"><i class="fa fa-download"></i> &nbsp; Download</button>
                             </div>
@@ -211,7 +214,7 @@
                             </button>
                 </div> -->
 
-                <div class="col-md-6 pull-left mt-3"> 
+                <div class="col-12 col-md-6 pull-left mt-3"> 
                     <button (click)="onPreviousButtonClick()" class="paginationBtn" [disabled]="currentPage === 1"> << </button>
                     
                     <!-- Display a subset of pages -->
@@ -225,11 +228,12 @@
                 </div>
 
 
-                <div class="col-md-6 pull-right mt-2">
-                    <a class="btn btn-primary ms-2 pull-right" data-bs-toggle="modal" data-bs-target="#bulkModel">Bulk
-                        Upload</a>
-                    <a class="btn btn-primary pull-right" href="#" data-bs-toggle="modal" data-bs-target="#AddModal"
+                <div class="col-12 col-md-6 pull-right mt-2 text-md-end">
+                    <a class="btn btn-primary text-md-end" href="#" data-bs-toggle="modal" data-bs-target="#AddModal"
                         role="button">Add </a>
+                    <a class="btn btn-primary ms-2 text-md-end" data-bs-toggle="modal" data-bs-target="#bulkModel">Bulk
+                        Upload</a>
+                    
                 </div>
 
             </div>
