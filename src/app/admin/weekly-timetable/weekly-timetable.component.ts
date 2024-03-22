@@ -16,6 +16,7 @@ export class WeeklyTimetableComponent implements OnInit {
     private serviceData2: BranchService,
     private serviceData3: AcademicYearService,
     private serviceData4: SemesterService,
+    private serviceData5: WeeklyTimetableService,
   ) { }
 
   showBranchData:any;
@@ -24,6 +25,9 @@ export class WeeklyTimetableComponent implements OnInit {
   showAcademicYearTrue:any;
   showSemesterTrue:any;
   showSem:any;
+  showwktimetable:any;
+  showwktmtabl:any;
+  showwktmtabl2:any;
 
   ngOnInit(): void {
 
@@ -42,10 +46,43 @@ export class WeeklyTimetableComponent implements OnInit {
       this.showSem = this.showSemesterTrue['Data'];
     })
 
+    this.serviceData5.showWeekTimetabl().subscribe((data)=>{
+      this.showwktimetable = data;
+      this.showwktmtabl =this.showwktimetable['WeeklyTimeTableSchedularView'][0].WeeklyTimeTable;
+      console.log("this.showwktimetable");
+      console.log(this.showwktmtabl);
+    })
+
+  }
+
+
+  // Pagination
+  
+  pageSize =10;
+  items = [];
+  pageOfItems: Array<any> | undefined;
+
+  onChangePage(pageOfItems: Array<any>) {
+    this.pageOfItems = pageOfItems;
+  }
+
+
+  calculateRowspan(weekdayName: string): number {
+    let count = 0;
+    for (const item of this.showwktmtabl) {
+      if (item.WEEKDAY_NAME === weekdayName) {
+        count++;
+      }
+    }
+    return count;
   }
 
   searchWeeklytimetable(data:any){
     
+  }
+
+  editBtn(showWkTm:any, event:Event){
+
   }
 
 }

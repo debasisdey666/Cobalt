@@ -9,8 +9,18 @@ import { getFromLocalStorage } from '../../environments/local-storage-util';
 })
 export class WeeklyTimetableService {
 
-  // url=environment.baseUrl+"api/University";
+  url=environment.baseUrl+"api/WeeklyTimeTableCreate/ViewWeeklyTimeTableCreate";
 
   constructor(private http: HttpClient) { }
+
+  showWeekTimetabl(){
+    // const userId = getFromLocalStorage('userId');
+    var data=
+    {
+      "id":1,
+      "reporT_TYPE": 1
+    }
+    return this.http.post(this.url,data)
+  }
 
 }
