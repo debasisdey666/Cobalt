@@ -7,6 +7,9 @@ import { PaperService } from 'src/app/services/paper.service';
 import { getFromLocalStorage } from '../../../environments/local-storage-util';
 import {NgForm} from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { Subject } from 'rxjs';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 // declare var BootstrapInit: any;
 // import '../../../assets/js/bootstrap-init.js';
@@ -23,15 +26,18 @@ declare interface JQuery<TElement = HTMLElement> {
 })
 export class AssignmentsComponent implements OnInit {
 
-
+  dtOptions: DataTables.Settings = {};
+  // We use this trigger because fetching the list of persons can be quite long,
+  // thus we ensure the data is fetched before rendering
+  dtTrigger: Subject<any> = new Subject<any>();
   @ViewChild('closeButton') closeButton!: ElementRef;
   @ViewChild('closeButton2') closeButton2!: ElementRef;
   @ViewChild('closeButton3') closeButton3!: ElementRef;
   @ViewChild('getAssignmntForm') getAssignmntForm!: NgForm;
   @ViewChild('assignmentFormedit') assignmentFormedit!: NgForm;
+  @ViewChild('assingmentTable') assingmentTable!: ElementRef;
   
 // Inside your component class or a relevant function
-
 
 
   linkurl: string =environment.baseUrl;
@@ -66,11 +72,17 @@ searchFilters: { [key: string]: string } = {};
     ) { }
 
   ngOnInit(): void {
+    
+    this.dtOptions = {
+      ajax: this.showAsigmnt,
+      dom: 'Bfrtip'
+    }
     this.serviceData.showAssignment().subscribe((data) => {
       this.showAssignment = data;
       this.showAsigmnt = this.showAssignment['Data'];
        console.log("this.showAsigmnt");
        console.log(this.showAsigmnt);
+       this.dtTrigger.next();
       this.updateFilteredItems(); 
     });
     this.serviceData2.showPaper().subscribe((data) => {
@@ -95,6 +107,19 @@ searchFilters: { [key: string]: string } = {};
     $('[data-toggle="tooltip"]').tooltip();
   }
 
+  openPDF(): void {
+    const doc = new jsPDF();
+
+    // Get the table element
+    const DATA = this.assingmentTable.nativeElement;
+  
+    // Convert table to PDF
+    (doc as any).autoTable({ html: DATA });
+
+  
+    // Save or display the PDF
+    doc.save('table.pdf');
+  }
 
   cutofdateWithId:any;
 

@@ -84,6 +84,7 @@ import { TreeviewModule } from 'ngx-treeview';
 import { TimetableSchedularComponent } from './admin/timetable-schedular/timetable-schedular.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { WeeklyTimetableComponent } from './admin/weekly-timetable/weekly-timetable.component';
+import { DataTablesModule } from 'angular-datatables';
 
 
 @NgModule({
@@ -161,7 +162,8 @@ import { WeeklyTimetableComponent } from './admin/weekly-timetable/weekly-timeta
     FullCalendarModule, // register FullCalendar with your app
     RouterModule.forRoot([]), 
     TableModule,
-    TreeviewModule.forRoot()
+    TreeviewModule.forRoot(),
+    DataTablesModule
     
   ],
   providers: [

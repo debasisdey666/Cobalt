@@ -2,7 +2,7 @@
     <div class="pagetitle">
         <h1>Student History </h1>
     </div><!-- End Page Title -->
-    <section class="section mainBodySec profile">
+    <section #historyForm class="section mainBodySec profile">
         <div class="row" id="content">
             <div class="col-xl-2">
                 <div class="text-center" *ngFor="let showStd of showStudetail">
@@ -342,7 +342,7 @@
           
         </div>
 
-        <!-- Button to trigger download -->
-        <button class="btn btn-primary" (click)="downloadPDF() ">Download PDF</button>
     </section>
+    <!-- Button to trigger download -->
+    <button class="btn btn-primary" (click)="printPage() ">Download PDF</button>
 </main><!-- End #main -->

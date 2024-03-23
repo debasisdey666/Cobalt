@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MisService } from '../services/mis.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/environment';
@@ -20,7 +20,7 @@ export class StudentHistoryComponent implements OnInit {
   showStudetail:any;
   linkurl: string =environment.baseUrl;
   ROLE_ID: any;
-  
+  @ViewChild('historyForm') historyForm!: ElementRef;
 
   constructor(
     private serviceData: MisService,
@@ -96,6 +96,41 @@ export class StudentHistoryComponent implements OnInit {
     }
   }
 
+  printPage(): void {
+    // Capture the HTML content of the page
+    const element = this.historyForm.nativeElement;
+  
+    html2canvas(element).then(canvas => {
+      // Convert canvas to an image
+      const imgData = canvas.toDataURL('image/png');
+  
+      // Calculate the page size based on the content
+      const pdf = new jsPDF({
+        orientation: 'portrait', // or 'landscape'
+        unit: 'px', // or 'pt', 'mm', 'cm', 'in'
+        format: [canvas.width, canvas.height] // set width and height dynamically
+      });
+  
+      // Calculate left and right margins (e.g., 50px each)
+      const leftMargin = 50;
+      const rightMargin = canvas.width - leftMargin;
+  
+      // Calculate top and bottom margins
+      const topMargin = 50;
+      const bottomMargin = 50;
+  
+      // Calculate the available height for content on the page
+      const availableHeight = canvas.height - topMargin - bottomMargin;
+  
+      // Add the image to the PDF with adjusted margins
+      pdf.addImage(imgData, 'PNG', leftMargin, topMargin, rightMargin - leftMargin, availableHeight);
+  
+      // Save or display the PDF
+      pdf.save('page.pdf');
+    });
+  }
+  
+  
 
 
 
