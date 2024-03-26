@@ -95,15 +95,11 @@ export class TokenInterceptor implements HttpInterceptor {
     localStorage.setItem('flag','false');
 
     return this.sendRefreshTokenRequest(refreshTokenUrl, requestBody).pipe(
-      // delay(2000), // Adjust the delay as needed
       switchMap((response: any) => {
         console.log('response', response);
-        console.log('response.access_token', response.accessToken);
-        if (response) {
+        if (response && response.accessToken && response.refreshToken) {
           localStorage.setItem('token', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
-          console.log('response accessToken', response.accessToken);
-          console.log('response refreshToken', response.refreshToken);
           localStorage.setItem('flag','true');
           if (response.expAsNumber) {
             localStorage.setItem('exp', response.expAsNumber);
@@ -123,6 +119,7 @@ export class TokenInterceptor implements HttpInterceptor {
       })
     );
   }
+
 
   private handleTokenRefreshFailure(): Observable<HttpEvent<any>> {
     // Handle token refresh failure, e.g., redirect to login
