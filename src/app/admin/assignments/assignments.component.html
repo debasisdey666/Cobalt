@@ -1,24 +1,38 @@
-
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>Assignments</h1>
-    </div><!-- End Page Title -->
-    <section class="section mainBodySec">
-        <div class="row">
-          <div class="col-xl-12">
-
-            <div class="search-container">
-              <div class="row mb-4">
-                <div class="col-sm-4 pe-0 mb-2"><input class="form-control" type="text" placeholder="Search Paper Name..." [(ngModel)]="searchFilters['PAPER_NAME']" (input)="updateFilteredItems()" /></div>
-                <div class="col-sm-4 pe-0 mb-2"><input class="form-control" type="text" placeholder="Search Assignment Details..." [(ngModel)]="searchFilters['ASSIGNMENT_DETAILS']" (input)="updateFilteredItems()" /></div>
-                  <!-- <div class="col-sm-4 pe-0">  <input class="form-control" type="date" placeholder="Search Cut Off Date..." [(ngModel)]="searchFilters['CUTOFF_DATE']" (input)="updateFilteredItems()" /> </div> -->
-                  
-              </div>
+  <div class="pagetitle">
+    <h1>Assignments</h1>
+  </div>
+  <!-- End Page Title -->
+  <section class="section mainBodySec">
+    <div class="row">
+      <div class="col-xl-12">
+        <!-- <div class="search-container">
+          <div class="row mb-4">
+            <div class="col-sm-4 pe-0 mb-2">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Search Paper Name..."
+                [(ngModel)]="searchFilters['PAPER_NAME']"
+                (input)="updateFilteredItems()"
+              />
+            </div>
+            <div class="col-sm-4 pe-0 mb-2">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Search Assignment Details..."
+                [(ngModel)]="searchFilters['ASSIGNMENT_DETAILS']"
+                (input)="updateFilteredItems()"
+              />
+            </div>
+            
           </div>
-  
-            <div class="tblMN table-responsive text-nowrap mb-2">
-  
-              <!-- <table class="table table-striped">
+        </div> -->
+        <div
+          class="tblMN table-responsive assing-table text-nowrap mb-2 position-relative"
+        >
+          <!-- <table class="table table-striped">
                   <thead>
                     <tr>
                       <th>
@@ -73,286 +87,532 @@
                     </tr>                   
                   </tbody>
               </table> -->
-              <div class="m-4">
-                <button (click)="openPDF()">PDF</button>
-              </div>
-              <table #assingmentTable datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                <thead>
-                  <tr>
-                    <th>
-                      Paper Name  
-                      <p class="tooltipSec" data-toggle="tooltip" data-placement="top" title="Click on paper to upload Assignment">i</p>
-                     
-                    </th> 
-                      <th>
-                          Assignment Details 
-                      </th>  
-                       
-                      <th>
-                          Cut Off Date  <p class="tooltipSec" data-toggle="tooltip" data-placement="top" title="Upload Assignment within cut off date">i</p>
-                      </th> 
-                      <th class="text-center">
-                        Assignment File
-                      </th> 
-                      <th *ngIf="ROLE_ID==1" class="text-center">
-                        All Assignments
-                      </th>  
-                                                    
-                      <th class="actionTd1" *ngIf="ROLE_ID==3">
-                          Action
-                      </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr  *ngFor="let showAsgn of pageOfItems">
-                 
-                    <td>  <a [routerLink]="['../assignment-upload', showAsgn.ID]"  (click)="onLinkClick(showAsgn.ID)">{{ showAsgn.PAPER_NAME }}</a> </td>
-                    <td> 
-                      {{showAsgn.ASSIGNMENT_DETAILS}}
-                    </td>
-                    <td>{{ showAsgn.CUTOFF_DATE | date:'dd-MM-yyyy' }}</td>
-                    <td class="text-center"> 
-                      <a href="{{linkurl}}{{showAsgn.ASSIGNMENT_DOCUMENT}}" target="_blank" class="genrateBtn"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
-                    </td>
-                    
-                   
-                    <td *ngIf="ROLE_ID==1" class="text-center"> 
-                      <a href="javascript:void(0);" (click)="allassignments(showAsgn.ID)" class="genrateBtn">
-                        <i class="fa fa-download" aria-hidden="true"></i> Download
-                      </a> 
-                    </td>
-                    <td *ngIf="ROLE_ID==3">
+          <button class="pdfButton btn-pdf" (click)="openPDF()">PDF</button>
+          <table
+            #assingmentTable
+            datatable
+            [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger"
+            class="row-border hover"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Paper Name
+                  <p
+                    class="tooltipSec"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Click on paper to upload Assignment"
+                  >
+                    i
+                  </p>
+                </th>
+                <th>Assignment Details</th>
 
-                      <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showAsgn,$event)" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                <th>
+                  Cut Off Date
+                  <p
+                    class="tooltipSec"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Upload Assignment within cut off date"
+                  >
+                    i
+                  </p>
+                </th>
+                <th class="text-center">Assignment File</th>
+                <th *ngIf="ROLE_ID == 1" class="text-center">
+                  All Assignments
+                </th>
 
-                        
-                        
-                    </td>
-                  </tr>                   
-                </tbody>
-              </table>
+                <th class="actionTd1" *ngIf="ROLE_ID == 3">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let showAsgn of pageOfItems">
+                <td>
+                  <a
+                    [routerLink]="['../assignment-upload', showAsgn.ID]"
+                    (click)="onLinkClick(showAsgn.ID)"
+                    >{{ showAsgn.PAPER_NAME }}</a
+                  >
+                </td>
+                <td>
+                  {{ showAsgn.ASSIGNMENT_DETAILS }}
+                </td>
+                <td>{{ showAsgn.CUTOFF_DATE | date : "dd-MM-yyyy" }}</td>
+                <td class="text-center">
+                  <a
+                    href="{{ linkurl }}{{ showAsgn.ASSIGNMENT_DOCUMENT }}"
+                    target="_blank"
+                    class="genrateBtn"
+                    ><i class="fa fa-eye" aria-hidden="true"></i> View</a
+                  >
+                </td>
 
-          </div>
-          <div class="row">
-            <!-- <div class="col-md-6">
+                <td *ngIf="ROLE_ID == 1" class="text-center">
+                  <a
+                    href="javascript:void(0);"
+                    (click)="allassignments(showAsgn.ID)"
+                    class="genrateBtn"
+                  >
+                    <i class="fa fa-download" aria-hidden="true"></i> Download
+                  </a>
+                </td>
+                <td *ngIf="ROLE_ID == 3">
+                  <a
+                    class="editBtn"
+                    title="Edit"
+                    data-bs-toggle="modal"
+                    (click)="editBtn(showAsgn, $event)"
+                    data-bs-target="#editModal"
+                    ><i class="fa fa-pencil" aria-hidden="true"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <!-- <div class="col-md-6">
               <jw-pagination [items]="showAsigmnt" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination>
             </div> -->
-            <div class="col-12 col-md-6 pull-left mb-2"> 
+          <!-- <div class="col-12 col-md-6 pull-left mb-2"> 
               <button (click)="onPreviousButtonClick()" class="paginationBtn" [disabled]="currentPage === 1"> << </button>
-              
-              <!-- Display a subset of pages -->
-              <ng-container *ngFor="let page of getVisiblePages()">
+               -->
+          <!-- Display a subset of pages -->
+          <!-- <ng-container *ngFor="let page of getVisiblePages()">
                   <button (click)="onChangePage(page)" [class.active]="currentPage === page" class="paginationBtn">
                       {{ page }}
                   </button>
-              </ng-container>
-              
-              <button (click)="onNextButtonClick()" class="paginationBtn" [disabled]="currentPage === totalPages"> >> </button>          
-          </div>
-            
-            <div class="col-12 col-md-6 text-md-end" *ngIf="ROLE_ID == 3">
-              <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#AddModal" role="button">Add </a>
-            </div> 
-          </div>
-                   
-          
+              </ng-container> -->
+
+          <!-- <button (click)="onNextButtonClick()" class="paginationBtn" [disabled]="currentPage === totalPages"> >> </button>           -->
+          <!-- </div> -->
+
+          <div class="col-12 col-md-6 text-md-end" *ngIf="ROLE_ID == 3">
+            <a
+              class="btn btn-primary"
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#AddModal"
+              role="button"
+              >Add
+            </a>
           </div>
         </div>
-      </section> 
-</main><!-- End #main -->
+      </div>
+    </div>
+  </section>
+</main>
+<!-- End #main -->
 
 <div *ngIf="loading" class="loadingSec">
-  <img src="assets/images/loading-gif.gif" alt="Image" class="loading"/>            
+  <img src="assets/images/loading-gif.gif" alt="Image" class="loading" />
 </div>
 
-<div *ngIf="downloadSuccessmessage" class="alert alert-success" role="alert" style="width:250px; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); z-index: 9999;">
-  Files Downloaded Successfully 
+<div
+  *ngIf="downloadSuccessmessage"
+  class="alert alert-success"
+  role="alert"
+  style="
+    width: 250px;
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+  "
+>
+  Files Downloaded Successfully
 </div>
 
 <!-- status -->
 
 <div class="modal fade" id="statusModal" data-bs-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
-          <button type="button" class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
-        </div>
-       
-  
-        <form #assignStstusForm="ngForm" (ngSubmit)="assignStstusFormData()">
-          <div class="modal-body text-center">
-            <div *ngIf="updateSuccessmessage" class="alert alert-success" role="alert">
-              Update Successfully.
-            </div>
-            <span class="statusTitle w-75 m-auto m-0">Are you sure you want to change the status ?</span>
-            <div class="form-group mt-3 statusClass d-none">
-              <label class="btn btn-toggle active">
-                <input type="radio" [(ngModel)]="assignmentUpdate.STATUS" name="STATUS" [value]="true"> Active
-              </label>
-              <label class="btn btn-toggle active">
-                <input type="radio" [(ngModel)]="assignmentUpdate.STATUS" name="STATUS" [value]="false"> Inactive
-  
-              </label>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-            <button class="btn btn-primary" [disabled]="assignStstusForm.invalid">Yes</button>
-          </div>
-        </form>
-  
-  
-        
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModal3Label">Active / Inactive</h5>
+        <button
+          type="button"
+          class="btn-cls"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          x
+        </button>
       </div>
-    </div>
-  </div>
 
-    <!-- Add Modal -->
-<div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Assignment</h5>
-          <button type="reset" #closeButton class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
-        </div> 
-
-        <form #getAssignmntForm="ngForm" (ngSubmit)="getAssignmntFormdata(getAssignmntForm.value)" novalidate enctype="multipart/form-data">
-            <div class="modal-body">
-  
-              <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
-  
-              <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
-                Saved Successfully.
-              </div> 
-
-              <div class="col-md-12 mt-3">
-                <label class="form-label">Paper Name<strong class="required"> *</strong> </label> 
-                <!-- <input type="text" name="PAPER_NAME" class="form-control" ngModel required #PAPER_NAME="ngModel">  -->
-                <select required class="form-select" ngModel name="PAPER_ID" data-live-search="true" #PAPER_ID="ngModel">
-                    <option value="" disabled>Select One</option>
-                    <option *ngFor="let chapterDropdwn of showpr" [value]="chapterDropdwn.ID">{{chapterDropdwn.PAPER_NAME}}
-                    </option>
-                  </select> 
-                </div>
-                <div class="col-md-12 mt-3">
-                    <label class="form-label">Assignment Details<strong class="required"> *</strong> </label> 
-                    <input type="text" name="ASSIGNMENT_DETAILS" class="form-control" ngModel required #ASSIGNMENT_DETAILS="ngModel"> 
-                    <div class="alert alert-danger" *ngIf="ASSIGNMENT_DETAILS.touched && ASSIGNMENT_DETAILS.invalid">
-                      <div class="" *ngIf="ASSIGNMENT_DETAILS.errors?.required">
-                        This field is required
-                      </div>
-                      <div class="" *ngIf="ASSIGNMENT_DETAILS.errors?.pattern">
-                        Invalid input
-                      </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mt-3">
-                    <label class="form-label">Cut Off Date<strong class="required"> *</strong> </label> 
-                    <!-- <input type="date" name="CUTOFF_DATE" class="form-control" [max]="maxDate" ngModel required #CUTOFF_DATE="ngModel">  -->
-                    
-                    <!-- <input type="date" name="CUTOFF_DATE" class="form-control" [max]="maxDate" ngModel required #CUTOFF_DATE="ngModel"> -->
-                    <input type="date" name="CUTOFF_DATE" class="form-control" [min]="minDate" ngModel required #CUTOFF_DATE="ngModel">
-
-                    <div class="alert alert-danger" *ngIf="CUTOFF_DATE.touched && CUTOFF_DATE.invalid">
-                      <div class="" *ngIf="CUTOFF_DATE.errors?.required">
-                        This field is required
-                      </div>
-                      <div class="" *ngIf="CUTOFF_DATE.errors?.pattern">
-                        Invalid input
-                      </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mt-3">
-                    <label class="form-label">Upload Assignment<strong class="required"> *</strong> </label>  
-                    <input type="file" #fileInput class="form-control" (change)="onFileSelected($event)">
-                  </div>
-            </div>
-            <div class="modal-footer">
-              <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>              
-              <button class="btn btn-primary"  [disabled]="getAssignmntForm.invalid || isSubmit || !selectedFile" >Submit</button>
-            </div>
-        </form>
-     
-        
-     
+      <form #assignStstusForm="ngForm" (ngSubmit)="assignStstusFormData()">
+        <div class="modal-body text-center">
+          <div
+            *ngIf="updateSuccessmessage"
+            class="alert alert-success"
+            role="alert"
+          >
+            Update Successfully.
+          </div>
+          <span class="statusTitle w-75 m-auto m-0"
+            >Are you sure you want to change the status ?</span
+          >
+          <div class="form-group mt-3 statusClass d-none">
+            <label class="btn btn-toggle active">
+              <input
+                type="radio"
+                [(ngModel)]="assignmentUpdate.STATUS"
+                name="STATUS"
+                [value]="true"
+              />
+              Active
+            </label>
+            <label class="btn btn-toggle active">
+              <input
+                type="radio"
+                [(ngModel)]="assignmentUpdate.STATUS"
+                name="STATUS"
+                [value]="false"
+              />
+              Inactive
+            </label>
+          </div>
         </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            No
+          </button>
+          <button class="btn btn-primary" [disabled]="assignStstusForm.invalid">
+            Yes
+          </button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
-  <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Assignment</h5>
-          <button type="button" #closeButton2 class="btn-cls" data-bs-dismiss="modal" aria-label="Close">x</button>
-        </div> 
-        <form #assignmentFormedit="ngForm" (ngSubmit)="assignmentFormeditdata(assignmentFormedit.value)" novalidate>
-          <div class="modal-body">
-  
-            <small class="mandatoryFld"> <strong>*</strong>  Mandatory field</small>
-  
-            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
-              Saved Successfully.
-            </div> 
-            
-              <div class="row">
-  
-                <div class="col-md-12 mt-3">
-                  <label class="form-label">Paper<strong class="required"> *</strong> </label>  
+<!-- Add Modal -->
+<div
+  class="modal fade"
+  id="AddModal"
+  tabindex="-1"
+  aria-labelledby="AddModal"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Assignment</h5>
+        <button
+          type="reset"
+          #closeButton
+          class="btn-cls"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          x
+        </button>
+      </div>
 
-                  <select required class="form-select" ngModel name="PAPER_ID" data-live-search="true" #PAPER_ID="ngModel" [(ngModel)]="assignmentUpdate.PAPER_ID">
-                    <option value="" disabled>Select One</option>
-                    <option *ngFor="let assignmntDropdwn of showpr" [value]="assignmntDropdwn.ID">{{assignmntDropdwn.PAPER_NAME}}
-                    </option>
-                  </select> 
+      <form
+        #getAssignmntForm="ngForm"
+        (ngSubmit)="getAssignmntFormdata(getAssignmntForm.value)"
+        novalidate
+        enctype="multipart/form-data"
+      >
+        <div class="modal-body">
+          <small class="mandatoryFld">
+            <strong>*</strong> Mandatory field</small
+          >
 
+          <div
+            *ngIf="addSuccessmessage"
+            class="alert alert-success mt-3"
+            role="alert"
+          >
+            Saved Successfully.
+          </div>
+
+          <div class="col-md-12 mt-3">
+            <label class="form-label"
+              >Paper Name<strong class="required"> *</strong>
+            </label>
+            <!-- <input type="text" name="PAPER_NAME" class="form-control" ngModel required #PAPER_NAME="ngModel">  -->
+            <select
+              required
+              class="form-select"
+              ngModel
+              name="PAPER_ID"
+              data-live-search="true"
+              #PAPER_ID="ngModel"
+            >
+              <option value="" disabled>Select One</option>
+              <option
+                *ngFor="let chapterDropdwn of showpr"
+                [value]="chapterDropdwn.ID"
+              >
+                {{ chapterDropdwn.PAPER_NAME }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-12 mt-3">
+            <label class="form-label"
+              >Assignment Details<strong class="required"> *</strong>
+            </label>
+            <input
+              type="text"
+              name="ASSIGNMENT_DETAILS"
+              class="form-control"
+              ngModel
+              required
+              #ASSIGNMENT_DETAILS="ngModel"
+            />
+            <div
+              class="alert alert-danger"
+              *ngIf="ASSIGNMENT_DETAILS.touched && ASSIGNMENT_DETAILS.invalid"
+            >
+              <div class="" *ngIf="ASSIGNMENT_DETAILS.errors?.required">
+                This field is required
+              </div>
+              <div class="" *ngIf="ASSIGNMENT_DETAILS.errors?.pattern">
+                Invalid input
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3">
+            <label class="form-label"
+              >Cut Off Date<strong class="required"> *</strong>
+            </label>
+            <!-- <input type="date" name="CUTOFF_DATE" class="form-control" [max]="maxDate" ngModel required #CUTOFF_DATE="ngModel">  -->
+
+            <!-- <input type="date" name="CUTOFF_DATE" class="form-control" [max]="maxDate" ngModel required #CUTOFF_DATE="ngModel"> -->
+            <input
+              type="date"
+              name="CUTOFF_DATE"
+              class="form-control"
+              [min]="minDate"
+              ngModel
+              required
+              #CUTOFF_DATE="ngModel"
+            />
+
+            <div
+              class="alert alert-danger"
+              *ngIf="CUTOFF_DATE.touched && CUTOFF_DATE.invalid"
+            >
+              <div class="" *ngIf="CUTOFF_DATE.errors?.required">
+                This field is required
+              </div>
+              <div class="" *ngIf="CUTOFF_DATE.errors?.pattern">
+                Invalid input
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3">
+            <label class="form-label"
+              >Upload Assignment<strong class="required"> *</strong>
+            </label>
+            <input
+              type="file"
+              #fileInput
+              class="form-control"
+              (change)="onFileSelected($event)"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="reset"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            class="btn btn-primary"
+            [disabled]="getAssignmntForm.invalid || isSubmit || !selectedFile"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="AddModal"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Assignment</h5>
+        <button
+          type="button"
+          #closeButton2
+          class="btn-cls"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          x
+        </button>
+      </div>
+      <form
+        #assignmentFormedit="ngForm"
+        (ngSubmit)="assignmentFormeditdata(assignmentFormedit.value)"
+        novalidate
+      >
+        <div class="modal-body">
+          <small class="mandatoryFld">
+            <strong>*</strong> Mandatory field</small
+          >
+
+          <div
+            *ngIf="addSuccessmessage"
+            class="alert alert-success mt-3"
+            role="alert"
+          >
+            Saved Successfully.
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mt-3">
+              <label class="form-label"
+                >Paper<strong class="required"> *</strong>
+              </label>
+
+              <select
+                required
+                class="form-select"
+                ngModel
+                name="PAPER_ID"
+                data-live-search="true"
+                #PAPER_ID="ngModel"
+                [(ngModel)]="assignmentUpdate.PAPER_ID"
+              >
+                <option value="" disabled>Select One</option>
+                <option
+                  *ngFor="let assignmntDropdwn of showpr"
+                  [value]="assignmntDropdwn.ID"
+                >
+                  {{ assignmntDropdwn.PAPER_NAME }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label"
+                >Assignment Details<strong class="required"> *</strong>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                name="ASSIGNMENT_DETAILS"
+                pattern="^[^\s].*[^\s]$"
+                #assignDetails="ngModel"
+                required
+                [(ngModel)]="assignmentUpdate.ASSIGNMENT_DETAILS"
+                [value]="assignmentUpdate.ASSIGNMENT_DETAILS"
+              />
+              <input
+                type="hidden"
+                class="form-control"
+                [(ngModel)]="assignmentUpdate.ID"
+                name="ID"
+                [value]="assignmentUpdate.ID"
+              />
+
+              <!-- <input type="text" name="ASSIGNMENT_DETAILS" class="form-control" ngModel required #ASSIGNMENT_DETAILS="ngModel">  -->
+              <div
+                class="alert alert-danger"
+                *ngIf="assignDetails.touched && assignDetails.invalid"
+              >
+                <div class="" *ngIf="assignDetails.errors?.required">
+                  This field is required
                 </div>
-                
-                <div class="col-md-12 mt-3">
-                  <label class="form-label">Assignment Details<strong class="required"> *</strong> </label> 
-                  <input type="text" class="form-control" name="ASSIGNMENT_DETAILS" pattern="^[^\s].*[^\s]$" #assignDetails="ngModel" required [(ngModel)]="assignmentUpdate.ASSIGNMENT_DETAILS" [value]="assignmentUpdate.ASSIGNMENT_DETAILS">                
-                  <input type="hidden" class="form-control" [(ngModel)]="assignmentUpdate.ID" name="ID" [value]="assignmentUpdate.ID">  
-
-                  <!-- <input type="text" name="ASSIGNMENT_DETAILS" class="form-control" ngModel required #ASSIGNMENT_DETAILS="ngModel">  -->
-                  <div class="alert alert-danger" *ngIf="assignDetails.touched && assignDetails.invalid">
-                    <div class="" *ngIf="assignDetails.errors?.required">
-                      This field is required
-                    </div>
-                    <div class="" *ngIf="assignDetails.errors?.pattern">
-                      Invalid input
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12 mt-3">
-                    <label class="form-label">Cut Off Date<strong class="required"> *</strong> </label> 
-                    <input type="date" name="CUTOFF_DATE" class="form-control" ngModel [min]="minDate" required #CUTOFF_DATE="ngModel" [(ngModel)]="assignmentUpdate.CUTOFF_DATE" [value]="assignmentUpdate.CUTOFF_DATE"> 
-                    <div class="alert alert-danger" *ngIf="CUTOFF_DATE.touched && CUTOFF_DATE.invalid">
-                      <div class="" *ngIf="CUTOFF_DATE.errors?.required">
-                        This field is required
-                      </div>
-                      <div class="" *ngIf="CUTOFF_DATE.errors?.pattern">
-                        Invalid input
-                      </div>
-                    </div>
-                </div>
-  
-                <div class="col-md-12 mt-3">
-                  <label class="form-label">Upload Topic<strong class="required"> *</strong> </label>  
-                  <input type="file" #fileInput class="form-control mb-2" (change)="onFileSelected($event)" [(ngModel)]="assignmentUpdate.ASSIGNMENT_DOCUMENT">     
-                  <a href="{{linkurl}}{{assignmentUpdate.ASSIGNMENT_DOCUMENT}}" class="mt-2" target="_blank" download>View Selected Assignment</a>
+                <div class="" *ngIf="assignDetails.errors?.pattern">
+                  Invalid input
                 </div>
               </div>
             </div>
-          
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
-           <button class="btn btn-primary"  [disabled]="assignmentFormedit.invalid || isSubmit" >Submit</button>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label"
+                >Cut Off Date<strong class="required"> *</strong>
+              </label>
+              <input
+                type="date"
+                name="CUTOFF_DATE"
+                class="form-control"
+                ngModel
+                [min]="minDate"
+                required
+                #CUTOFF_DATE="ngModel"
+                [(ngModel)]="assignmentUpdate.CUTOFF_DATE"
+                [value]="assignmentUpdate.CUTOFF_DATE"
+              />
+              <div
+                class="alert alert-danger"
+                *ngIf="CUTOFF_DATE.touched && CUTOFF_DATE.invalid"
+              >
+                <div class="" *ngIf="CUTOFF_DATE.errors?.required">
+                  This field is required
+                </div>
+                <div class="" *ngIf="CUTOFF_DATE.errors?.pattern">
+                  Invalid input
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <label class="form-label"
+                >Upload Topic<strong class="required"> *</strong>
+              </label>
+              <input
+                type="file"
+                #fileInput
+                class="form-control mb-2"
+                (change)="onFileSelected($event)"
+                [(ngModel)]="assignmentUpdate.ASSIGNMENT_DOCUMENT"
+              />
+              <a
+                href="{{ linkurl }}{{ assignmentUpdate.ASSIGNMENT_DOCUMENT }}"
+                class="mt-2"
+                target="_blank"
+                download
+                >View Selected Assignment</a
+              >
+            </div>
           </div>
-          </form>
         </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            class="btn btn-primary"
+            [disabled]="assignmentFormedit.invalid || isSubmit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-
+</div>
