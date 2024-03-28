@@ -11,13 +11,21 @@ import { SemesterService } from 'src/app/services/semester.service';
 import { CollegeService } from '../../services/college.service';
 import * as XLSX from 'xlsx';
 import { HttpHeaders, HttpRequest } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { DataTableDirective } from 'angular-datatables';
+import jsPDF from 'jspdf';
 @Component({
   selector: 'app-student-list',
   templateUrl: './student-list.component.html',
-  styleUrls: ['./student-list.component.css']
+  styleUrls: ['./student-list.component.css'],
 })
 export class StudentListComponent implements OnInit {
-
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement!: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  // We use this trigger because fetching the list of persons can be quite long,
+  // thus we ensure the data is fetched before rendering
+  dtTrigger: Subject<any> = new Subject<any>();
   @ViewChild('closeButton') closeButton!: ElementRef;
   @ViewChild('closeButton2') closeButton2!: ElementRef;
   @ViewChild('closeButton3') closeButton3!: ElementRef;
@@ -25,6 +33,7 @@ export class StudentListComponent implements OnInit {
   @ViewChild('getStudentForm') getStudentForm!: NgForm;
   @ViewChild('studentFormedit') studentFormedit!: NgForm;
   @ViewChild('userbulklistForm') userbulklistForm!: NgForm;
+  @ViewChild('studentmasterTable') studentmasterTable!: ElementRef;
 
   availableYears: number[] = [];
 
@@ -38,32 +47,57 @@ export class StudentListComponent implements OnInit {
     private serviceData5: CollegeService,
     private http: HttpClient,
     private el: ElementRef
-    
   ) {
     this.setMaxDate();
 
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - 4;
-    
+
     for (let year = startYear; year <= currentYear; year++) {
       this.availableYears.push(year);
     }
-   }
+  }
 
-
-   states: string[] = [
-    'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
-    'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha',
-    'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
-    'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry'
+  states: string[] = [
+    'Andhra Pradesh',
+    'Arunachal Pradesh',
+    'Assam',
+    'Bihar',
+    'Chhattisgarh',
+    'Goa',
+    'Gujarat',
+    'Haryana',
+    'Himachal Pradesh',
+    'Jharkhand',
+    'Karnataka',
+    'Kerala',
+    'Madhya Pradesh',
+    'Maharashtra',
+    'Manipur',
+    'Meghalaya',
+    'Mizoram',
+    'Nagaland',
+    'Odisha',
+    'Punjab',
+    'Rajasthan',
+    'Sikkim',
+    'Tamil Nadu',
+    'Telangana',
+    'Tripura',
+    'Uttar Pradesh',
+    'Uttarakhand',
+    'West Bengal',
+    'Andaman and Nicobar Islands',
+    'Chandigarh',
+    'Dadra and Nagar Haveli and Daman and Diu',
+    'Lakshadweep',
+    'Delhi',
+    'Puducherry',
   ];
 
   selectedState: string = '';
 
-   
-
   linkurl: string = environment.baseUrl;
-
 
   showStudent: any;
   showBranchData: any;
@@ -100,59 +134,72 @@ export class StudentListComponent implements OnInit {
   itemsPerPage: number = 5;
   // pageOfItems: any[] = [];
 
-
-
-
   resetFormValue(myForm: NgForm) {
-    myForm.resetForm()
+    myForm.resetForm();
   }
-
 
   // pageOfItems!: any[];
   studentCount: number = 0; // Initialize the property
 
   ngOnInit(): void {
+    this.dtOptions = {
+      ajax: this.showBranchData,
+      dom: 'Bfrtip',
+    };
     this.currentPage = 1;
     console.log('Current Page:', this.currentPage);
 
     this.serviceData2.showBranchTrue().subscribe((data) => {
       this.showBranchData = data;
       this.showBranch = this.showBranchData['Data'];
-    })
+  
+    });
 
     this.serviceData3.showAcademicYearTrue().subscribe((data) => {
       this.showACData = data;
       this.showAcademicYearTrue = this.showACData['Data'];
-    })
+    });
 
     this.serviceData4.showSemesterTrue().subscribe((data) => {
       this.showSemesterTrue = data;
       this.showSem = this.showSemesterTrue['Data'];
       //console.log(this.showSem);
-    })
+    });
 
     this.serviceData5.showCollegeTypeTrue().subscribe((data) => {
       this.showCTData = data;
       this.showCollegeType = this.showCTData['Data'];
-    })
+    });
 
     this.serviceData.showStudentlist().subscribe((data) => {
       this.showStudentData = data['Data'];
+      this.dtTrigger.next();
       this.updateFilteredItems();
-      console.log("this.showStudentData");
+      console.log('this.showStudentData');
       console.log(this.showStudentData);
-      
+
       this.studentCount = this.showStudentData.length;
-      console.log("studentCount" + this.studentCount)
-      console.log("totalPages" + this.studentCount);
+      console.log('studentCount' + this.studentCount);
+      console.log('totalPages' + this.studentCount);
       this.totalPages = Math.ceil(this.studentCount / 4);
     });
-
   }
 
 
- 
+  // ngAfterViewInit(): void{
+  //   this.serviceData.showStudentlist().subscribe((data) => {
+  //     this.showStudentData = data['Data'];
+  //     this.dtTrigger.next();
+  //     this.updateFilteredItems();
+  //     console.log('this.showStudentData');
+  //     console.log(this.showStudentData);
 
+  //     this.studentCount = this.showStudentData.length;
+  //     console.log('studentCount' + this.studentCount);
+  //     console.log('totalPages' + this.studentCount);
+  //     this.totalPages = Math.ceil(this.studentCount / 4);
+  //   });
+  // }
   // itemsPerPage: number = 4;
   // Date Of Birth Validation should not enter future date
 
@@ -169,8 +216,6 @@ export class StudentListComponent implements OnInit {
     this.maxDate = `${year}-${month}-${day}`;
   }
 
-  
- 
   // updateFilteredItems() {
   //   this.filteredItems = this.showStudentData.filter((item) =>
   //     Object.keys(this.searchFilters).every(
@@ -181,93 +226,99 @@ export class StudentListComponent implements OnInit {
   //           item[key].toLowerCase().includes(this.searchFilters[key].toLowerCase()))
   //     )
   //   );
-  
+
   //   this.totalPages = Math.ceil(this.filteredItems.length / this.itemsPerPage);
-  
+
   //   // Adjust the current page if it exceeds the total number of pages
   //   if (this.currentPage > this.totalPages) {
   //     this.currentPage = this.totalPages;
   //   }
-  
+
   //   this.pageOfItems = this.paginate(this.filteredItems, this.currentPage, this.itemsPerPage);
 
   //   this.studentCount = this.filteredItems.length;
   // }
 
-
-
   getVisiblePages(): number[] {
     const visiblePages: number[] = [];
-    const startPage = Math.max(1, this.currentPage - Math.floor(this.pageRange / 2));
+    const startPage = Math.max(
+      1,
+      this.currentPage - Math.floor(this.pageRange / 2)
+    );
     const endPage = Math.min(this.totalPages, startPage + this.pageRange - 1);
-  
+
     for (let i = startPage; i <= endPage; i++) {
-        visiblePages.push(i);
+      visiblePages.push(i);
     }
-  
+
     return visiblePages;
   }
 
   updateFilteredItems() {
     // If search filters are present, filter the data
-    if (Object.values(this.searchFilters).some(filter => !!filter)) {
+    if (Object.values(this.searchFilters).some((filter) => !!filter)) {
       this.filteredItems = this.showStudentData.filter((item) =>
         Object.keys(this.searchFilters).every(
           (key) =>
             !this.searchFilters[key] ||
             (item[key] &&
               typeof item[key] === 'string' &&
-              item[key].toLowerCase().includes(this.searchFilters[key].toLowerCase()))
+              item[key]
+                .toLowerCase()
+                .includes(this.searchFilters[key].toLowerCase()))
         )
       );
     } else {
       // If no search filters, show all data
       this.filteredItems = this.showStudentData.slice();
     }
-  
+
     this.totalPages = Math.ceil(this.filteredItems.length / this.itemsPerPage);
-    this.pageOfItems = this.paginate(this.filteredItems, this.currentPage, this.itemsPerPage);
-  
+    this.pageOfItems = this.paginate(
+      this.filteredItems,
+      this.currentPage,
+      this.itemsPerPage
+    );
+
     // Update studentCount after filtering
     this.studentCount = this.filteredItems.length;
   }
-  
-  
-  
+
   paginate(array: any[], pageNumber: number, pageSize: number): any[] {
     const startIndex = (pageNumber - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     return array.slice(startIndex, endIndex);
   }
-  
+
   onChangePage(pageNumber: number): void {
     if (pageNumber >= 1 && pageNumber <= this.totalPages) {
       this.currentPage = pageNumber;
       this.updateFilteredItems();
     }
   }
-  
+
   onPreviousButtonClick(): void {
     if (this.currentPage > 1) {
       this.onChangePage(this.currentPage - 1);
     }
   }
-  
+
   onNextButtonClick(): void {
     if (this.currentPage < this.totalPages) {
       this.onChangePage(this.currentPage + 1);
     }
   }
-  
+
   resetPagination(): void {
     this.currentPage = 1;
     this.updateFilteredItems();
   }
-  
+
   pagesArray(): number[] {
-    return Array(this.totalPages).fill(0).map((_, index) => index + 1);
+    return Array(this.totalPages)
+      .fill(0)
+      .map((_, index) => index + 1);
   }
-  
 
   // exportToExcel(): void {
   //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredItems);
@@ -280,12 +331,12 @@ export class StudentListComponent implements OnInit {
   exportToExcel(): void {
     console.log('Exporting to Excel...');
     console.log('Filtered Items:', this.filteredItems);
-  
+
     if (this.filteredItems.length > 0) {
       const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredItems);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  
+
       try {
         // Save the Excel file
         XLSX.writeFile(wb, 'student-data.xlsx');
@@ -297,7 +348,7 @@ export class StudentListComponent implements OnInit {
       console.warn('Filtered Items array is empty. No data to export.');
     }
   }
-  
+
   selectedCollege: number = 0;
   selectedBranch: number = 0;
 
@@ -317,12 +368,10 @@ export class StudentListComponent implements OnInit {
     this.selectedFile2 = event.target.files[0];
   }
 
-  url = environment.baseUrl + "api/StudentDetails";
-
+  url = environment.baseUrl + 'api/StudentDetails';
 
   // Modify the addTopic method to send the file
   addStudent(formData: any) {
-
     const userId = getFromLocalStorage('userId');
     const data = new FormData();
 
@@ -347,7 +396,7 @@ export class StudentListComponent implements OnInit {
     data.append('PINCODE', formData.PINCODE);
     data.append('GENDER', formData.GENDER);
     data.append('CATEGORY', formData.CATEGORY);
-    data.append('IS_PWD', formData.IS_PWD,);
+    data.append('IS_PWD', formData.IS_PWD);
     data.append('MARITAL_STATUS', formData.MARITAL_STATUS);
 
     // Check if a file is selected before adding it to FormData
@@ -355,7 +404,11 @@ export class StudentListComponent implements OnInit {
       data.append('PHOTO_PATH', this.selectedFile, this.selectedFile.name);
     }
     if (this.selectedFile2) {
-      data.append('SIGNATURE_PATH', this.selectedFile2, this.selectedFile2.name);
+      data.append(
+        'SIGNATURE_PATH',
+        this.selectedFile2,
+        this.selectedFile2.name
+      );
     }
     data.append('STATUS', 'true');
     if (userId !== null) {
@@ -373,18 +426,15 @@ export class StudentListComponent implements OnInit {
 
   // Add Data
   getStudentFormdata(data: any) {
-    
     this.loading = true;
     // this.isSubmit = true;
-    this.addStudent(data).subscribe((resp: any)=>{
-      
-      if (resp.Res.StatusCode == 200 ){
-        this.addSuccessmessage=true;  
-        this.loading = false; 
-      }
-      else{
-        this.errorMessage=true;   
-        this.loading = false; 
+    this.addStudent(data).subscribe((resp: any) => {
+      if (resp.Res.StatusCode == 200) {
+        this.addSuccessmessage = true;
+        this.loading = false;
+      } else {
+        this.errorMessage = true;
+        this.loading = false;
       }
       setTimeout(() => {
         this.addSuccessmessage = false;
@@ -392,74 +442,69 @@ export class StudentListComponent implements OnInit {
         this.closeButton.nativeElement.click();
         this.getStudentForm.resetForm();
 
-          if (this.fileInput && this.fileInput.nativeElement) {
-            this.fileInput.nativeElement.value = ''; // Clear file input value
-          }    
-          if (this.fileInput2 && this.fileInput2.nativeElement) {
-            this.fileInput2.nativeElement.value = ''; // Clear file input value
-          }   
+        if (this.fileInput && this.fileInput.nativeElement) {
+          this.fileInput.nativeElement.value = ''; // Clear file input value
+        }
+        if (this.fileInput2 && this.fileInput2.nativeElement) {
+          this.fileInput2.nativeElement.value = ''; // Clear file input value
+        }
       }, 1500);
 
+      // setTimeout(() => {
+      //   this.addSuccessmessage = false;
+      //   this.closeButton.nativeElement.click();
+      //   this.getStudentForm.resetForm();
 
-        // setTimeout(() => {
-        //   this.addSuccessmessage = false;
-        //   this.closeButton.nativeElement.click();
-        //   this.getStudentForm.resetForm();
+      //   if (this.fileInput && this.fileInput.nativeElement) {
+      //     this.fileInput.nativeElement.value = ''; // Clear file input value
+      //   }
+      //   if (this.fileInput2 && this.fileInput2.nativeElement) {
+      //     this.fileInput2.nativeElement.value = ''; // Clear file input value
+      //   }
+      // }, 1000);
 
-
-        //   if (this.fileInput && this.fileInput.nativeElement) {
-        //     this.fileInput.nativeElement.value = ''; // Clear file input value
-        //   }    
-        //   if (this.fileInput2 && this.fileInput2.nativeElement) {
-        //     this.fileInput2.nativeElement.value = ''; // Clear file input value
-        //   }   
-        // }, 1000); 
-
-
-        this.ngOnInit(); 
+      this.ngOnInit();
     });
   }
-
 
   // edit Data
 
   studentUpdate = {
-    ID: "",
-    PHOTO_PATH: "",
-    SIGNATURE_PATH: "",
-    STUDENT_NAME: "",
-    STATUS: "",
-    STUDENT_REGISTRATION: "",
-    REGISTRATION_YEAR: "",
-    BRANCH_NAME: "",
-    BRANCH_ID: "",
-    CURRENT_AY: "",
-    AY: "",
-    COLLEGE_ID: "",
-    COLLEGE_NAME: "",
-    CURRENT_SEM: "",
-    SEM: "",
-    FATHER_NAME: "",
-    MOTHER_NAME: "",
-    PH_NUMBER: "",
-    EMAIL: "",
-    ADHAAR_NO: "",
-    DOB: "",
-    ADDRESS: "",
-    STATE: "",
-    DISTRICT: "",
-    PINCODE: "",
-    GENDER: "",
-    CATEGORY: "",
-    IS_PWD: "",
-    MARITAL_STATUS: "",
-  }
-
+    ID: '',
+    PHOTO_PATH: '',
+    SIGNATURE_PATH: '',
+    STUDENT_NAME: '',
+    STATUS: '',
+    STUDENT_REGISTRATION: '',
+    REGISTRATION_YEAR: '',
+    BRANCH_NAME: '',
+    BRANCH_ID: '',
+    CURRENT_AY: '',
+    AY: '',
+    COLLEGE_ID: '',
+    COLLEGE_NAME: '',
+    CURRENT_SEM: '',
+    SEM: '',
+    FATHER_NAME: '',
+    MOTHER_NAME: '',
+    PH_NUMBER: '',
+    EMAIL: '',
+    ADHAAR_NO: '',
+    DOB: '',
+    ADDRESS: '',
+    STATE: '',
+    DISTRICT: '',
+    PINCODE: '',
+    GENDER: '',
+    CATEGORY: '',
+    IS_PWD: '',
+    MARITAL_STATUS: '',
+  };
 
   editBtn(showStudnt: any, event: Event) {
     this.studentUpdate = JSON.parse(JSON.stringify(showStudnt));
-    this.studentUpdate.DOB = this.DateString(showStudnt.DOB) ?? "";
-    console.log("showStudnt.DOB");
+    this.studentUpdate.DOB = this.DateString(showStudnt.DOB) ?? '';
+    console.log('showStudnt.DOB');
     console.log(showStudnt.DOB);
     console.log(showStudnt.SIGNATURE_PATH);
     console.log(showStudnt.PHOTO_PATH);
@@ -481,12 +526,8 @@ export class StudentListComponent implements OnInit {
     return;
   }
 
-
-
   editStudent(formData: any) {
-
     console.log(formData.GENDER);
-
 
     const userId = getFromLocalStorage('userId');
     const isPwd = !!formData.IS_PWD;
@@ -515,7 +556,7 @@ export class StudentListComponent implements OnInit {
     data.append('PINCODE', formData.PINCODE);
     data.append('GENDER', formData.GENDER);
     data.append('CATEGORY', formData.CATEGORY);
-    data.append('IS_PWD', formData.IS_PWD,);
+    data.append('IS_PWD', formData.IS_PWD);
     data.append('MARITAL_STATUS', formData.MARITAL_STATUS);
 
     // Check if a file is selected before adding it to FormData
@@ -523,7 +564,11 @@ export class StudentListComponent implements OnInit {
       data.append('PHOTO_PATH', this.selectedFile, this.selectedFile.name);
     }
     if (this.selectedFile2) {
-      data.append('SIGNATURE_PATH', this.selectedFile2, this.selectedFile2.name);
+      data.append(
+        'SIGNATURE_PATH',
+        this.selectedFile2,
+        this.selectedFile2.name
+      );
     }
     data.append('STATUS', 'true');
     if (userId !== null) {
@@ -537,19 +582,22 @@ export class StudentListComponent implements OnInit {
     return this.http.post<any>(this.url, data);
   }
 
-
   studentFormeditdata(data: any) {
+    debugger
     this.loading = true;
     // this.isSubmit = true;
-    this.editStudent(data).subscribe((resp: any)=>{
-
-      if (resp.Res.StatusCode == 200 ){
-        this.addSuccessmessage=true;  
-        this.loading = false; 
-      }
-      else{
-        this.errorMessage=true;   
-        this.loading = false; 
+    this.editStudent(data).subscribe((resp: any) => {
+      if (resp.Res.StatusCode == 200) {
+        this.addSuccessmessage = true;
+        this.loading = false;
+        // this.updateDiv();
+        this.rerender();
+      } else {
+        this.errorMessage = true;
+        this.loading = false;
+        // debugger
+        // this.updateDiv();
+        this.rerender();
       }
       setTimeout(() => {
         this.addSuccessmessage = false;
@@ -557,12 +605,12 @@ export class StudentListComponent implements OnInit {
         this.closeButton2.nativeElement.click();
         this.studentFormedit.resetForm();
 
-          if (this.fileInput && this.fileInput.nativeElement) {
-            this.fileInput.nativeElement.value = ''; // Clear file input value
-          }    
-          if (this.fileInput2 && this.fileInput2.nativeElement) {
-            this.fileInput2.nativeElement.value = ''; // Clear file input value
-          }   
+        if (this.fileInput && this.fileInput.nativeElement) {
+          this.fileInput.nativeElement.value = ''; // Clear file input value
+        }
+        if (this.fileInput2 && this.fileInput2.nativeElement) {
+          this.fileInput2.nativeElement.value = ''; // Clear file input value
+        }
       }, 1500);
 
       // this.addSuccessmessage = true;
@@ -571,12 +619,9 @@ export class StudentListComponent implements OnInit {
       //     this.addSuccessmessage = false;
       //     this.closeButton2.nativeElement.click();
       //     this.studentFormedit.resetForm();
-      //   }, 1000); 
-        this.ngOnInit();
-
-
-
-    });    
+      //   }, 1000);
+      this.ngOnInit();
+    });
   }
 
   // active / deactive Data
@@ -595,22 +640,19 @@ export class StudentListComponent implements OnInit {
         setTimeout(() => {
           this.updateSuccessmessage = false;
           this.closeButton3.nativeElement.click();
-        }, 1000); 
+        }, 1000);
         this.ngOnInit();
       },
       (err) => {
         console.log(err);
         this.updateSuccessmessage = false;
       }
-    )
-
-
+    );
   }
-
 
   // *************bulk upload***********
 
-  url4 = environment.baseUrl + "api/BulkStudentUpload/BulkStudentUpload";
+  url4 = environment.baseUrl + 'api/BulkStudentUpload/BulkStudentUpload';
 
   // selectedFile: File = null;
   fd = new FormData();
@@ -621,31 +663,60 @@ export class StudentListComponent implements OnInit {
   }
 
   userbulklistFormData() {
-    const token = localStorage.getItem("token");
-    this.http.post(this.url4, this.fd, {
-      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + token })
-    }).subscribe(
-      (resp) => {
-        console.log(resp);
-        this.addSuccessmessage = true;
-        this.loading = false;
-        setTimeout(() => {
-          this.addSuccessmessage = false;
-          this.closeButton4.nativeElement.click();
-          this.userbulklistForm.resetForm();
-        }, 1000); 
-      },
-      (err) => {
-        console.log(err);
-        this.errorMessage = true;
-        //   setTimeout(function() {
-        //     window.location.reload();
-        // }, 1000);
-      }
-    );
+    const token = localStorage.getItem('token');
+    this.http
+      .post(this.url4, this.fd, {
+        headers: new HttpHeaders({ Authorization: 'Bearer ' + token }),
+      })
+      .subscribe(
+        (resp) => {
+          console.log(resp);
+          this.addSuccessmessage = true;
+          this.loading = false;
+          setTimeout(() => {
+            this.addSuccessmessage = false;
+            this.closeButton4.nativeElement.click();
+            this.userbulklistForm.resetForm();
+          }, 1000);
+        },
+        (err) => {
+          console.log(err);
+          this.errorMessage = true;
+          //   setTimeout(function() {
+          //     window.location.reload();
+          // }, 1000);
+        }
+      );
   }
 
   // *************bulk upload end***********
 
+  // for updating the datatable
+  updateDiv() {
+    debugger
+    $('#ssstudentTable').load(window.location.href + ' #ssstudentTable');
+  }
 
+  rerender(): void {
+    debugger
+    // this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    //    dtInstance.destroy();
+    //    this.dtTrigger.next();     
+    // });
+    window.location.reload();
+  }
+
+  openPDF(): void {
+    const doc = new jsPDF();
+
+    // Get the table element
+    const DATA = this.studentmasterTable.nativeElement;
+  
+    // Convert table to PDF
+    (doc as any).autoTable({ html: DATA });
+
+  
+    // Save or display the PDF
+    doc.save('table.pdf');
+  }
 }

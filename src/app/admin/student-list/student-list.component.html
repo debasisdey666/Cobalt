@@ -45,7 +45,7 @@
               </div> -->
             <div class="col-xl-12">
 
-                <div class="tblMN table-responsive text-nowrap">
+                <div class="tblMN table-responsive assing-table text-nowrap">
 
 
 
@@ -69,8 +69,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <table class="table table-striped">
+                    <button class="pdfButton btn-pdf" (click)="openPDF()">PDF</button>
+                    <table #studentmasterTable datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped" id="ssstudentTable">
                         <!-- ... your table headers ... -->
                         <thead>
                             <tr>
@@ -82,9 +82,9 @@
                                 <th class="actionTd1">Action</th>
                             </tr>
                         </thead>
-                        <tbody *ngIf="pageOfItems.length > 0;">
+                        <tbody>
                             
-                            <tr *ngFor="let showStudnt of pageOfItems">
+                            <tr *ngFor="let showStudnt of showStudentData">
                                 <td>{{ showStudnt.STUDENT_REGISTRATION }}</td>
                                 <td>{{ showStudnt.STUDENT_NAME }}</td>
                                 <td>{{ showStudnt.COLLEGE_NAME }}</td>
@@ -118,17 +118,12 @@
 
                                 </td>
                             </tr>
-                            <tr>
-                                <td colspan="6">
-                                    <strong>TOTAL STUDENT COUNT: {{ studentCount }} </strong>
-                                </td>
-                            </tr>
                         </tbody>
                         <!-- <ng-template #noDataMessage>
                             <p class="alert alert-danger w-100">No data found</p>
                           </ng-template> -->
                     </table>
-
+                    <!-- <strong>TOTAL STUDENT COUNT: {{ studentCount }} </strong> -->
 
 
 
@@ -214,10 +209,10 @@
                             </button>
                 </div> -->
 
-                <div class="col-12 col-md-6 pull-left mt-3"> 
+                <!-- <div class="col-12 col-md-6 pull-left mt-3"> 
                     <button (click)="onPreviousButtonClick()" class="paginationBtn" [disabled]="currentPage === 1"> << </button>
                     
-                    <!-- Display a subset of pages -->
+             
                     <ng-container *ngFor="let page of getVisiblePages()">
                         <button (click)="onChangePage(page)" [class.active]="currentPage === page" class="paginationBtn">
                             {{ page }}
@@ -225,7 +220,7 @@
                     </ng-container>
                     
                     <button (click)="onNextButtonClick()" class="paginationBtn" [disabled]="currentPage === totalPages"> >> </button>          
-                </div>
+                </div> -->
 
 
                 <div class="col-12 col-md-6 pull-right mt-2 text-md-end">
