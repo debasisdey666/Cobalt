@@ -53,8 +53,8 @@
               <thead>
                 <tr>
                   <th style="text-align:center; width:100px;">Day</th>
-                  <th class="text-center">Paper</th>
-                  <th class="text-center">Instructor</th>
+                  <th class="text-left">Paper</th>
+                  <th class="text-left">Instructor</th>
                   <th class="text-center">Start Time</th>
                   <th class="text-center">End Time</th>
                   <th class="text-center">Room No.</th>
@@ -70,8 +70,8 @@
                   <ng-container *ngIf="i === 0 || showWkTm.WEEKDAY_NAME !== showwktmtabl[i-1].WEEKDAY_NAME">
                     <th class="text-center" style="color:#fff; text-align: center; vertical-align: middle;" [attr.rowspan]="calculateRowspan(showWkTm.WEEKDAY_NAME)">{{showWkTm.WEEKDAY_NAME}}</th>
                   </ng-container>
-                  <td class="text-center">{{showWkTm.PAPER_ID}}</td>
-                  <td class="text-center">{{showWkTm.INSTRUCTOR_ID}}</td>
+                  <td class="text-left">{{showWkTm.PAPER_NAME}}</td>
+                  <td class="text-left">{{showWkTm.NAME}}</td>
                   <td class="text-center">{{showWkTm.STTIME}}</td>
                   <td class="text-center">{{showWkTm.ENDTIME}}</td>
                   <td class="text-center">{{showWkTm.ROOMNO}}</td>
@@ -79,23 +79,7 @@
                     <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showWkTm,$event)" data-bs-target="#editModal">
                       <i class="fa fa-pencil" aria-hidden="true"></i>
                   </a>
-                   <!-- <p class="mb-0" *ngIf="showUnv.STATUS==true; else elseBlock">
-                            <a class="editBtn" title="Edit" data-bs-toggle="modal" (click)="editBtn(showUnv,$event)" data-bs-target="#editModal">
-                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                            </a>
-                            <a href="#" class="activeBtntrue" data-bs-toggle="modal" data-bs-target="#statusModal" (click)="actvinactv(showUnv,$event)">
-                                <i title="Active" class="fa fa-check" aria-hidden="true"></i>
-                            </a>
-                          </p>
-                           <ng-template #elseBlock>
-                            <a class="editBtn inactiveEdit" title="Field Deactive"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                            
-                            <a href="#" class="activeBtn{{showUnv.STATUS}} ms-0" (click)="actvinactv(showUnv,$event)" data-bs-toggle="modal" data-bs-target="#statusModal">
-                              <i title="Active" class="fa fa-check" aria-hidden="true"></i>
-                              <i title="Deactive" class="fa fa-ban" aria-hidden="true"></i>
-                            </a>
-  
-                          </ng-template> -->
+                   
                   </td>
                 </tr>
   
@@ -115,3 +99,169 @@
     </section>
   
   </main><!-- End #main -->
+
+
+  <div *ngIf="loading" class="loadingSec">
+    <img src="assets/images/loading-gif.gif" alt="ITC-MBS" class="loading"/>            
+  </div>
+  
+  
+  <!-- Add Modal -->
+  <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="AddModal" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+          <button type="button" class="btn-cls" #closeButton data-bs-dismiss="modal" aria-label="Close">x</button>
+        </div>
+  
+        <form #wweklytimetableForm="ngForm" (ngSubmit)="wweklytimetableFormdata(wweklytimetableForm.value)" novalidate>
+          <div class="modal-body">
+  
+            <small class="mandatoryFld"> <strong>*</strong> Mandatory field</small>
+  
+            <div *ngIf="addSuccessmessage" class="alert alert-success mt-3" role="alert">
+              Saved Successfully.
+            </div>
+            <div *ngIf="errormessage" class="alert alert-danger mt-3" role="alert">
+              Data Not Saved (Duplicate Data Not Allowed)
+            </div>
+  
+            <div class="row">  
+
+              <div class="col-md-12 mt-3">
+                <label class="form-label">Day<strong class="required"> *</strong> </label>
+                <!-- <input type="text" name="UNIVERSITY_CODE" class="form-control" pattern="^[a-zA-Z]+( [a-zA-Z]+)*$" ngModel required #UNIVERSITY_CODE="ngModel">  -->
+                
+                <select class="form-select" ngModel name="weekdaY_NAME" data-live-search="true" required
+                #weekdaY_NAME="ngModel">
+                <option value="">-- Select One --</option>
+                <!-- <option *ngFor="let sr of showRole" [value]="sr.ROLE_ID">{{sr.ROLE_Name}}</option> -->
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thurseday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+                <option value="7">Sunday</option>
+                 
+               </select>
+  
+                <div class="alert alert-danger" *ngIf="weekdaY_NAME.touched && weekdaY_NAME.invalid">
+                  <div *ngIf="weekdaY_NAME.errors?.required">
+                    This field is required
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mt-3">
+                <table class="table table-striped inputSet">
+                  <tr>
+                    <th class="text-center py-2" style="width:100px;"> Start Time </th>
+                    <th class="text-center py-2" style="width:100px;"> End Time </th>
+                    <th class="text-center py-2"> Paper </th>
+                    <th class="text-center py-2"> Instructor </th>
+                    <th class="text-center py-2"> </th>
+                  </tr>
+                  <tr *ngFor="let formData of formDataSet; let i = index">
+                    <td>
+                      <input type="time" name="START_TIME" class="form-control" ngModel [(ngModel)]="formData.startTime" #START_TIME="ngModel" required>
+                    </td>
+                  
+                    <td>
+                      <input type="time" name="END_TIME" class="form-control" ngModel [(ngModel)]="formData.endTime" #END_TIME="ngModel" required >
+                      
+                    </td>
+                    <td>
+                      <select required class="form-select" ngModel name="PAPER_ID" [(ngModel)]="formData.PAPER_ID" data-live-search="true" #PAPER_ID="ngModel">                 
+                        <option *ngFor="let paperDropdwn of showPaper" [value]="paperDropdwn.PAPER_ID">{{paperDropdwn.PAPER_NAME}}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select required class="form-select" ngModel name="instructoR_ID" [(ngModel)]="formData.instructoR_ID" data-live-search="true" #instructoR_ID="ngModel">                 
+                        <option *ngFor="let instrucDropdwn of showIns" [value]="instrucDropdwn.instructoR_ID">{{instrucDropdwn.NAME}}</option>
+                      </select>                      
+                    </td>
+                    <td>
+                      <ng-container *ngIf="i > 0"> <!-- Skip the first iteration (i=0) -->
+                        <button (click)="removeSet(i)" class="btn btn-danger">X</button>
+                      </ng-container>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="5">
+                      <div class="alert alert-danger" *ngIf="endTimeLessThanStartTime()"> 
+                        End time must be greater than the start time.
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <button (click)="addSet()" type="button" class="btn btn-primary w-auto">Add Fees Type</button>
+              </div>
+              
+  
+              <!-- <div class="col-md-12 mt-3">
+                <label class="form-label">Start Time<strong class="required"> *</strong> </label> 
+                <input type="time" name="START_TIME" class="form-control" ngModel [(ngModel)]="startTime" #START_TIME="ngModel" required>
+                <div class="alert alert-danger" *ngIf="START_TIME.touched && START_TIME.invalid">
+                  <div class="" *ngIf="START_TIME.errors?.required">
+                    This field is required
+                  </div>
+                  <div class="" *ngIf="START_TIME.errors?.pattern">
+                    Invalid input
+                  </div>
+                </div>
+              </div> -->
+              
+              <!-- <div class="col-md-12 mt-3">
+                <label class="form-label">End Time<strong class="required"> *</strong> </label> 
+                <input type="time" name="END_TIME" class="form-control" ngModel [(ngModel)]="endTime" #END_TIME="ngModel" required >
+                <div class="alert alert-danger" *ngIf="endTimeLessThanStartTime()"> 
+                  End time must be greater than the start time.
+                </div>
+                <div class="alert alert-danger" *ngIf="END_TIME.touched && END_TIME.invalid">
+                  <div class="" *ngIf="END_TIME.errors?.required">
+                    This field is required
+                  </div>
+                  <div class="" *ngIf="END_TIME.errors?.pattern">
+                    Invalid input
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- <div class="col-md-12 mt-3">
+                <label class="form-label">Paper <strong class="required"> *</strong> </label>
+                <select required class="form-select" ngModel name="PAPER_ID" data-live-search="true" #PAPER_ID="ngModel">                 
+                  <option *ngFor="let paperDropdwn of showPaper" [value]="paperDropdwn.PAPER_ID">{{paperDropdwn.PAPER_NAME}}</option>
+                </select>
+                <div class="" *ngIf="PAPER_ID.touched">
+                  <div class="alert alert-danger" *ngIf="PAPER_ID.errors?.required">
+                    This field is required
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- <div class="col-md-12 mt-3">
+                <label class="form-label">Instructor <strong class="required"> *</strong> </label>
+                <select required class="form-select" ngModel name="instructoR_ID" data-live-search="true" #instructoR_ID="ngModel">                 
+                  <option *ngFor="let instrucDropdwn of showIns" [value]="instrucDropdwn.instructoR_ID">{{instrucDropdwn.NAME}}</option>
+                </select>
+                <div class="" *ngIf="instructoR_ID.touched">
+                  <div class="alert alert-danger" *ngIf="instructoR_ID.errors?.required">
+                    This field is required
+                  </div>
+                </div>
+              </div> -->
+  
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary" [disabled]="wweklytimetableForm.invalid || isSubmit">Submit</button>
+          </div>
+        </form>
+  
+      </div>
+    </div>
+  </div>
